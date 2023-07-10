@@ -35,9 +35,9 @@ export class AuthController {
         @Req() req,
         @Res({ passthrough: true }) response: Response,
     ) {
-        const { sub: userId, refreshToken } = req.user;
+        const { sub: id, refreshToken } = req.user;
 
-        const payload = await this.authService.refreshTokens(userId, refreshToken);
+        const payload = await this.authService.refreshTokens(id, refreshToken);
 
         const { refresh_token } = payload;
 

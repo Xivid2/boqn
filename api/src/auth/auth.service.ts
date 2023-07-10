@@ -11,8 +11,8 @@ export class AuthService {
         private config: ConfigService,
     ) { }
 
-    async validateUser(username: string, pass: string): Promise<any> {
-        const user = await this.usersService.findOne(username);
+    async validateUser(email: string, pass: string): Promise<any> {
+        const user = await this.usersService.findByEmail(email);
 
         if (user && user.password === pass) {
             const { password, ...result } = user;
@@ -24,17 +24,17 @@ export class AuthService {
     }
 
     async login(user: any) {
-        const { userId, username } = user;
+        const { id, email } = user;
 
-        return this.genTokens(userId, username);
+        return this.genTokens(id, email);
     }
 
-    async logout(userId: string | number) {
-        console.log('da', userId);
+    async logout(id: string | number) {
+        console.log('da', id);
     }
 
-    async refreshTokens(userId: number, refreshToken: string) {
-        const user = await this.usersService.findById(userId);
+    async refreshTokens(id: number, refreshToken: string) {
+        const user = await this.usersService.findById(id);
 
         // if (!user || !user.refreshToken)
         //     throw new ForbiddenException('Access Denied');
@@ -43,17 +43,17 @@ export class AuthService {
         //     refreshToken,
         // );
         // if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
-        const tokens = await this.genTokens(user.userId, user.username);
+        const tokens = await this.genTokens(user.id, user.email);
         // await this.updateRefreshToken(user.id, tokens.refreshToken);
         return tokens;
     }
 
-    async genTokens(userId: number, username: string) {
+    async genTokens(id: number, email: string) {
         const [access_token, refresh_token] = await Promise.all([
             this.jwtService.signAsync(
                 {
-                    sub: userId,
-                    username,
+                    sub: id,
+                    email,
                 },
                 {
                     secret: this.config.get<string>('JWT_ACCESS_TOKEN_SECRET'),
@@ -62,8 +62,8 @@ export class AuthService {
             ),
             this.jwtService.signAsync(
                 {
-                    sub: userId,
-                    username,
+                    sub: id,
+                    email,
                 },
                 {
                     secret: this.config.get<string>('JWT_REFRESH_TOKEN_SECRET'),

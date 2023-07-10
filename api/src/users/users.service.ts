@@ -1,28 +1,48 @@
+import * as bcrypt from "bcrypt";
 import { Injectable } from '@nestjs/common';
-
-// This should be a real class/interface representing a user entity
-export type User = any;
+import { InjectModel } from '@nestjs/sequelize';
+import { User } from './user.model';
+import { ConfigService } from '@nestjs/config';
+import { CreateUserDto } from "./dto/create-user.dto";
+import { DuplicateUserException } from "./users.errors";
 
 @Injectable()
 export class UsersService {
-    private readonly users = [
-        {
-            userId: 1,
-            username: 'john',
-            password: 'changeme',
-        },
-        {
-            userId: 2,
-            username: 'maria',
-            password: 'guess',
-        },
-    ];
+    constructor(
+        @InjectModel(User)
+        private userModel: typeof User,
+        private config: ConfigService,
+    ) {}
 
-    async findOne(username: string): Promise<User | undefined> {
-        return this.users.find(user => user.username === username);
+    async findByEmail(email: string): Promise<User> {
+        return this.userModel.findOne({
+            where: {
+                email: email.toLocaleLowerCase()
+            },
+        })
     }
 
-    async findById(id: number) {
-        return this.users.find(user => user.userId === id);
+    async findById(id: number): Promise<User> {
+        return this.userModel.findByPk(id);
+    }
+
+    async create(createUserDto: CreateUserDto) {
+        const userWithSameEmail = await this.findByEmail(createUserDto.email);
+
+        if (userWithSameEmail) {
+            throw new DuplicateUserException();
+        }
+
+        const encryptedPassword = await bcrypt.hash(
+            createUserDto.password,
+            +this.config.get<number>("AUTH_SALT_ROUNDS"),
+        );
+
+        const input = {
+            ...createUserDto,
+            password: encryptedPassword,
+        };
+
+        return this.userModel.create(input);
     }
 }
