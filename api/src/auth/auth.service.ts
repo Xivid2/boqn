@@ -24,44 +24,32 @@ export class AuthService {
     }
 
     async login(user: any) {
-        const payload = {
-            username: user.username,
-            sub: user.userId
-        };
+        const { userId, username } = user;
 
-        return {
-            access_token: this.jwtService.sign(payload),
-            refresh_token: this.jwtService.sign(
-                payload,
-                {
-                    expiresIn: this.config.get<string>('JWT_REFRESH_TOKEN_LIFE')
-                }
-            ),
-        };
+        return this.genTokens(userId, username);
     }
 
-    async refresh(refreshToken: string) {
-        try {
-            const payload = this.jwtService.verify(refreshToken);
-
-            const { sub, username } = payload;
-
-            return {
-                access_token: this.jwtService.sign({ username, sub }),
-                refresh_token: this.jwtService.sign(
-                    { username, sub },
-                    {
-                        expiresIn: this.config.get<string>('JWT_REFRESH_TOKEN_LIFE')
-                    }
-                ),
-            };
-        } catch (error) {
-            throw new UnauthorizedException();
-        }
+    async logout(userId: string | number) {
+        console.log('da', userId);
     }
 
-    async genTokens(userId: string, username: string) {
-        const [accessToken, refreshToken] = await Promise.all([
+    async refreshTokens(userId: number, refreshToken: string) {
+        const user = await this.usersService.findById(userId);
+
+        // if (!user || !user.refreshToken)
+        //     throw new ForbiddenException('Access Denied');
+        // const refreshTokenMatches = await argon2.verify(
+        //     user.refreshToken,
+        //     refreshToken,
+        // );
+        // if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
+        const tokens = await this.genTokens(user.userId, user.username);
+        // await this.updateRefreshToken(user.id, tokens.refreshToken);
+        return tokens;
+    }
+
+    async genTokens(userId: number, username: string) {
+        const [access_token, refresh_token] = await Promise.all([
             this.jwtService.signAsync(
                 {
                     sub: userId,
@@ -85,8 +73,8 @@ export class AuthService {
         ]);
 
         return {
-            accessToken,
-            refreshToken,
+            access_token,
+            refresh_token,
         };
     }
 }

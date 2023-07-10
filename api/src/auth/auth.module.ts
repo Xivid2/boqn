@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config';
+import { RefreshTokenStrategy } from './strategies/jwt-refresh.strategy';
 
 @Module({
     imports: [
@@ -17,7 +18,7 @@ import { ConfigService } from '@nestjs/config';
         JwtModule.registerAsync({
             imports: [ConfigModule],
             useFactory: async (config: ConfigService) => ({
-                secretOrPrivateKey: config.get<string>('JWT_ACCESS_TOKEN_SECRET'),
+                secret: config.get<string>('JWT_ACCESS_TOKEN_SECRET'),
                 signOptions: {
                     expiresIn: config.get<string>('JWT_ACCESS_TOKEN_LIFE')
                 }
@@ -25,7 +26,7 @@ import { ConfigService } from '@nestjs/config';
             inject: [ConfigService],
         }),
     ],
-    providers: [AuthService, LocalStrategy, JwtStrategy],
+    providers: [AuthService, LocalStrategy, JwtStrategy, RefreshTokenStrategy],
     exports: [AuthService],
     controllers: [AuthController],
 })
