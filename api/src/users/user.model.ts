@@ -1,4 +1,5 @@
 import { Column, Model, Table, PrimaryKey, AutoIncrement, DefaultScope, Scopes } from 'sequelize-typescript';
+import * as bcrypt from "bcrypt";
 
 @DefaultScope({
     attributes: {
@@ -36,4 +37,8 @@ export class User extends Model {
 
     @Column
     password: string;
+
+    async comparePassword(candidatePassword: string): Promise<boolean> {
+        return bcrypt.compare(candidatePassword, this.password);
+    }
 }

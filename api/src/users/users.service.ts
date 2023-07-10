@@ -14,6 +14,14 @@ export class UsersService {
         private config: ConfigService,
     ) {}
 
+    async findByEmailIncludePassword(email: string): Promise<User> {
+        return this.userModel.scope('withPassword').findOne({
+            where: {
+                email: email.toLocaleLowerCase(),
+            }
+        })
+    }
+
     async findByEmail(email: string): Promise<User> {
         return this.userModel.findOne({
             where: {

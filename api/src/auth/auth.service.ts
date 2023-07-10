@@ -12,10 +12,16 @@ export class AuthService {
     ) { }
 
     async validateUser(email: string, pass: string): Promise<any> {
-        const user = await this.usersService.findByEmail(email);
+        const user = await this.usersService.findByEmailIncludePassword(email);
 
-        if (user && user.password === pass) {
-            const { password, ...result } = user;
+        if (!user) return null;
+
+        const isPasswordSame = await user.comparePassword(pass);
+        
+        if (isPasswordSame) {
+            const result = { ...user.dataValues };
+
+            delete result.password;
 
             return result;
         }
