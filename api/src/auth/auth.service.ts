@@ -11,11 +11,17 @@ export class AuthService {
         private config: ConfigService,
     ) { }
 
-    async validateUser(username: string, pass: string): Promise<any> {
-        const user = await this.usersService.findOne(username);
+    async validateUser(email: string, pass: string): Promise<any> {
+        const user = await this.usersService.findByEmailIncludePassword(email);
 
-        if (user && user.password === pass) {
-            const { password, ...result } = user;
+        if (!user) return null;
+
+        const isPasswordSame = await user.comparePassword(pass);
+        
+        if (isPasswordSame) {
+            const result = { ...user.dataValues };
+
+            delete result.password;
 
             return result;
         }
@@ -24,48 +30,36 @@ export class AuthService {
     }
 
     async login(user: any) {
-        const payload = {
-            username: user.username,
-            sub: user.userId
-        };
+        const { id, email } = user;
 
-        return {
-            access_token: this.jwtService.sign(payload),
-            refresh_token: this.jwtService.sign(
-                payload,
-                {
-                    expiresIn: this.config.get<string>('JWT_REFRESH_TOKEN_LIFE')
-                }
-            ),
-        };
+        return this.genTokens(id, email);
     }
 
-    async refresh(refreshToken: string) {
-        try {
-            const payload = this.jwtService.verify(refreshToken);
-
-            const { sub, username } = payload;
-
-            return {
-                access_token: this.jwtService.sign({ username, sub }),
-                refresh_token: this.jwtService.sign(
-                    { username, sub },
-                    {
-                        expiresIn: this.config.get<string>('JWT_REFRESH_TOKEN_LIFE')
-                    }
-                ),
-            };
-        } catch (error) {
-            throw new UnauthorizedException();
-        }
+    async logout(id: string | number) {
+        console.log('da', id);
     }
 
-    async genTokens(userId: string, username: string) {
-        const [accessToken, refreshToken] = await Promise.all([
+    async refreshTokens(id: number, refreshToken: string) {
+        const user = await this.usersService.findById(id);
+
+        // if (!user || !user.refreshToken)
+        //     throw new ForbiddenException('Access Denied');
+        // const refreshTokenMatches = await argon2.verify(
+        //     user.refreshToken,
+        //     refreshToken,
+        // );
+        // if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
+        const tokens = await this.genTokens(user.id, user.email);
+        // await this.updateRefreshToken(user.id, tokens.refreshToken);
+        return tokens;
+    }
+
+    async genTokens(id: number, email: string) {
+        const [access_token, refresh_token] = await Promise.all([
             this.jwtService.signAsync(
                 {
-                    sub: userId,
-                    username,
+                    sub: id,
+                    email,
                 },
                 {
                     secret: this.config.get<string>('JWT_ACCESS_TOKEN_SECRET'),
@@ -74,8 +68,8 @@ export class AuthService {
             ),
             this.jwtService.signAsync(
                 {
-                    sub: userId,
-                    username,
+                    sub: id,
+                    email,
                 },
                 {
                     secret: this.config.get<string>('JWT_REFRESH_TOKEN_SECRET'),
@@ -85,8 +79,8 @@ export class AuthService {
         ]);
 
         return {
-            accessToken,
-            refreshToken,
+            access_token,
+            refresh_token,
         };
     }
 }

@@ -5,5 +5,5 @@ export class JwtPayloadDto {
     sub: string
 
     @IsNotEmpty()
-    username: string
+    email: string
 };
