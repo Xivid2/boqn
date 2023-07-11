@@ -103,6 +103,20 @@ module.exports = {
                     transaction,
                 },
             );
+
+            await queryInterface.bulkInsert(
+                'users',
+                [{
+                    userRoleId: 1,
+                    firstName: "Boris",
+                    lastName: "Marinov",
+                    email: "boris.marinov99@gmail.com",
+                    password: "$2b$12$kW4LxuNejhqcOxfg.lyy3exhVBdRbuqQiiy1O8JMq7rVafNtpVMbK",
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                }],
+                { transaction }
+            );
         });
     },
 
