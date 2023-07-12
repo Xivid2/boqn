@@ -15,6 +15,16 @@ export default class AuthService {
         }
     }
 
+    async logout() {
+        try {
+            const { data } = await this.http.post('/auth/logout');
+
+            return { data };
+        } catch (error) {
+            return { error };
+        }
+    }
+
     async refreshTokens() {
         try {
             const { data } = await this.http.post('/auth/refresh');
