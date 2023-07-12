@@ -27,7 +27,7 @@
             <v-spacer></v-spacer>
 
             <v-col cols="1" class="text-right">
-                <router-link to="/sign-in">
+                <router-link to="/login">
                     My Account
                 </router-link>
             </v-col>
