@@ -19,7 +19,7 @@
 
 <script lang="ts" setup>
 import HeaderAlpha from './components/header/HeaderAlpha.vue';
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router';
 </script>
 
 <style scoped>
