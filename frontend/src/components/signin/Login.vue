@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="login" class="bg-green w-50">
+    <form @submit.prevent="login" class="bg-green w-50" v-if="!loading">
         <p>
             <label>
                 Email:
@@ -20,31 +20,64 @@
     </form>
 </template>
 
-<script lang="ts" setup>
-import { ref } from "vue";
-import { useHttp } from '../../plugins/api';
-const http = useHttp();
-
+<script lang="ts">
 import { useAuthStore } from '../../stores/auth.store';
+import { defineComponent } from "vue";
+import { ref } from "vue";
+import { useRouter } from 'vue-router'
+import AuthService from "../../services/auth.service";
+import { useHttp } from '../../plugins/api';
 
-const authStore = useAuthStore();
+export default defineComponent({
+    setup() {
+        const authStore = useAuthStore();
+        const auth = new AuthService(useHttp);
+        const router = useRouter();
+        
+        const loading = ref(true);
 
-const email = ref("boris.marinov99@gmail.com");
-const password = ref("devil666Zeroid2!");
+        const email = ref("");
+        const password = ref("");
 
-const login = async () => {
-    const response = await http.post('/auth/login', {
-        email: email.value,
-        password: password.value,
-    });
+        const onLogin = (response: any) => {
+            const { data, error } = response;
 
-    console.log('da', response);
+            if (error) return console.log('error', error);
 
-    const { access_token, refresh_token } = response.data;
-    authStore.setTokens(access_token, refresh_token);
+            const { access_token, refresh_token } = data;
 
-    console.log('this', this);
-    console.log('1', authStore.accessToken)
-    console.log('2', authStore.refreshToken)
-}
+            authStore.setTokens(access_token, refresh_token);
+        }
+
+        const login = async () => {
+            const response = await auth.login(email.value, password.value);
+
+            onLogin(response);
+        }
+
+        const refreshTokens = async () => {
+            const response = await auth.refreshTokens();
+
+            onLogin(response);
+        }
+
+        return {
+            refreshTokens,
+            login,
+            email,
+            password,
+            router,
+            loading,
+        };
+    },
+    async created() {
+        await this.refreshTokens();
+
+        this.loading = false;
+
+        this.router.push('/');
+    }
+})
+
+
 </script>
