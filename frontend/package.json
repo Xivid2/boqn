@@ -14,12 +14,15 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@kyvg/vue3-notification": "^2.9.1",
     "axios": "^1.4.0",
     "pinia": "^2.1.3",
+    "vee-validate": "^4.10.6",
     "vue": "^3.3.4",
     "vue-fontawesome": "^0.0.2",
     "vue-router": "^4.2.2",
-    "vuetify": "^3.3.7"
+    "vuetify": "^3.3.7",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@tsconfig/node18": "^2.0.1",
