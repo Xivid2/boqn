@@ -5,6 +5,7 @@ import { createPinia } from 'pinia';
 import { plugin } from './plugins/api';
 import App from './App.vue'
 import router from './router'
+import Notifications from '@kyvg/vue3-notification'
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -37,5 +38,6 @@ app.use(plugin);
 app.use(createPinia())
 app.use(router)
 app.use(vuetify)
+app.use(Notifications)
 
 app.mount('#app')
