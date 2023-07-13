@@ -13,7 +13,7 @@
       </nav>
     </div>
   </header>
-
+  <notifications />
   <RouterView />
 </template>
 
