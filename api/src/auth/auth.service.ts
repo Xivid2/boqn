@@ -1,11 +1,23 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ForbiddenException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { decode } from "jsonwebtoken"
 import { ConfigService } from '@nestjs/config';
+import { User } from '../users/user.model';
+import { UserRefreshToken } from '../users/user-refresh-token.model';
+import { Sequelize } from 'sequelize-typescript';
+import { TokenPayload } from './payloads/token.payload';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
     constructor(
+        private sequelize: Sequelize,
+        @InjectModel(User)
+        private userModel: typeof User,
+        @InjectModel(UserRefreshToken)
+        private userRefreshTokenModel: typeof UserRefreshToken,
         private usersService: UsersService,
         private jwtService: JwtService,
         private config: ConfigService,
@@ -19,9 +31,7 @@ export class AuthService {
         const isPasswordSame = await user.comparePassword(pass);
         
         if (isPasswordSame) {
-            const result = { ...user.dataValues };
-
-            delete result.password;
+            const { password, ...result } = user.dataValues;
 
             return result;
         }
@@ -32,26 +42,80 @@ export class AuthService {
     async login(user: any) {
         const { id, email } = user;
 
-        return this.genTokens(id, email);
+        const tokens = await this.genTokens(id, email);
+
+        const decoded = decode(tokens.refresh_token, { json: true });
+        const expiresAt = decoded.exp * 1000;
+        const hashed = await bcrypt.hash(
+            tokens.refresh_token,
+            +this.config.get<number>("AUTH_SALT_ROUND"),
+        );
+
+        return this.sequelize.transaction(async (transaction): Promise<TokenPayload> => {
+            await this.userRefreshTokenModel.destroy({
+                where: {
+                    userId: id
+                },
+                transaction
+            });
+
+            
+            await this.userRefreshTokenModel.create({
+                userId: id,
+                token: hashed,
+                expiresAt,
+            }, { transaction });
+
+            return tokens;
+        });
     }
 
-    async logout(id: string | number) {
-        console.log('da', id);
+    async logout(userId: number) {
+        return this.userRefreshTokenModel.destroy({
+            where: {
+                userId
+            },
+        });
     }
 
-    async refreshTokens(id: number, refreshToken: string) {
-        const user = await this.usersService.findById(id);
+    async refreshTokens(userId: number, refreshToken: string) {
+        return this.sequelize.transaction(async (transaction): Promise<TokenPayload> => {
+            const user = await this.userModel.findByPk(userId, {
+                include: [this.userRefreshTokenModel],
+                transaction,
+            });
 
-        // if (!user || !user.refreshToken)
-        //     throw new ForbiddenException('Access Denied');
-        // const refreshTokenMatches = await argon2.verify(
-        //     user.refreshToken,
-        //     refreshToken,
-        // );
-        // if (!refreshTokenMatches) throw new ForbiddenException('Access Denied');
-        const tokens = await this.genTokens(user.id, user.email);
-        // await this.updateRefreshToken(user.id, tokens.refreshToken);
-        return tokens;
+            if (!user || !user.refreshToken || user.refreshToken.isTokenExpired()) {
+                throw new ForbiddenException();
+            }
+
+            const isTokenSame = await user.refreshToken.compareToken(refreshToken);
+            if (!isTokenSame) {
+                throw new ForbiddenException();
+            }
+
+            const tokens = await this.genTokens(user.id, user.email);
+    
+            const decoded = decode(tokens.refresh_token, { json: true });
+            const expiresAt = decoded.exp * 1000;
+            const hashed = await bcrypt.hash(
+                tokens.refresh_token,
+                +this.config.get<number>("AUTH_SALT_ROUND"),
+            )
+
+            await this.userRefreshTokenModel.destroy({
+                where: { userId },
+                transaction
+            });
+
+            await this.userRefreshTokenModel.create({
+                userId,
+                token: hashed,
+                expiresAt,
+            }, { transaction });
+
+            return tokens;
+        });
     }
 
     async genTokens(id: number, email: string) {
