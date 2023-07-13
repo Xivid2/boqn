@@ -46,10 +46,7 @@ export class AuthService {
 
         const decoded = decode(tokens.refresh_token, { json: true });
         const expiresAt = decoded.exp * 1000;
-        const hashed = await bcrypt.hash(
-            tokens.refresh_token,
-            +this.config.get<number>("AUTH_SALT_ROUND"),
-        );
+        const hashed = await this.hashToken(tokens.refresh_token);
 
         return this.sequelize.transaction(async (transaction): Promise<TokenPayload> => {
             await this.userRefreshTokenModel.destroy({
@@ -98,10 +95,7 @@ export class AuthService {
     
             const decoded = decode(tokens.refresh_token, { json: true });
             const expiresAt = decoded.exp * 1000;
-            const hashed = await bcrypt.hash(
-                tokens.refresh_token,
-                +this.config.get<number>("AUTH_SALT_ROUND"),
-            )
+            const hashed = await this.hashToken(tokens.refresh_token);
 
             await this.userRefreshTokenModel.destroy({
                 where: { userId },
@@ -118,7 +112,7 @@ export class AuthService {
         });
     }
 
-    async genTokens(id: number, email: string) {
+    async genTokens(id: number, email: string): Promise<TokenPayload> {
         const [access_token, refresh_token] = await Promise.all([
             this.jwtService.signAsync(
                 {
@@ -146,5 +140,12 @@ export class AuthService {
             access_token,
             refresh_token,
         };
+    }
+
+    async hashToken(token: string): Promise<string> {
+        return bcrypt.hash(
+            token,
+            +this.config.get<number>("AUTH_SALT_ROUND"),
+        );
     }
 }
