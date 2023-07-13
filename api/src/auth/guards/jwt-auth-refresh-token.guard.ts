@@ -8,13 +8,7 @@ export class JwtRefreshTokenGuard extends AuthGuard('jwt-refresh') {
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const request = context.switchToHttp().getRequest<Request>();
 
-        let refreshToken;
-
-        refreshToken = request.cookies['jwt'];
-
-        if (!refreshToken) {
-            refreshToken = request.body?.refreshToken;
-        }
+        const refreshToken = request.cookies['jwt'] || request.body?.refreshToken;
 
         request.headers['authorization'] = `Bearer ${refreshToken}`;
 
