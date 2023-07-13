@@ -6,12 +6,18 @@ import { AuthService } from './auth.service';
 import { Request, Response } from "express";
 import { decode } from 'jsonwebtoken';
 import * as dayjs from 'dayjs';
+import { RegistrationDto } from './dto/registration.dto';
 
 @Controller('auth')
 export class AuthController {
     constructor(
         private authService: AuthService
     ) {}
+
+    @Post('register')
+    async register(@Body() registrationDto: RegistrationDto) {
+        return this.authService.register(registrationDto);
+    }
 
     @UseGuards(LocalAuthGuard)
     @Post('login')

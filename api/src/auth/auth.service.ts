@@ -6,14 +6,18 @@ import { decode } from "jsonwebtoken"
 import { ConfigService } from '@nestjs/config';
 import { User } from '../users/user.model';
 import { UserRefreshToken } from '../users/user-refresh-token.model';
+import { g_UserRole } from 'src/users/user-roles.model';
 import { Sequelize } from 'sequelize-typescript';
 import { TokenPayload } from './payloads/token.payload';
 import * as bcrypt from 'bcrypt';
+import { RegistrationDto } from './dto/registration.dto';
 
 @Injectable()
 export class AuthService {
     constructor(
         private sequelize: Sequelize,
+        @InjectModel(g_UserRole)
+        private userRole: typeof g_UserRole,
         @InjectModel(User)
         private userModel: typeof User,
         @InjectModel(UserRefreshToken)
@@ -37,6 +41,23 @@ export class AuthService {
         }
 
         return null;
+    }
+
+    async register(input: RegistrationDto) {
+        const role = await this.userRole.findOne({
+            where: {
+                name: "customer",
+            },
+        });
+
+        const payload = await this.usersService.create({
+            ...input,
+            userRoleId: role.id
+        });
+
+        const { password, ...result } = payload.dataValues;
+
+        return result;
     }
 
     async login(user: any) {
