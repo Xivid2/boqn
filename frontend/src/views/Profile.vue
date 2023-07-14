@@ -20,10 +20,12 @@
 
 <script lang="ts" setup>
     import { useAuthStore } from '../stores/auth.store';
+    import { useNotification } from '@kyvg/vue3-notification';
     import { useRouter } from 'vue-router'
     import AuthService from "../services/auth.service";
     import { useHttp } from '../plugins/api';
 
+    const { notify } = useNotification();
     const authStore = useAuthStore();
     const auth = new AuthService(useHttp);
     const router = useRouter();
@@ -31,7 +33,12 @@
     const logout = async () => {
         const { error } = await auth.logout();
 
-        if (error) return console.log('error', error);
+        if (error) {
+            return notify({
+                type: "error",
+                text: error.response?.data?.message || "Something went wrong",
+            });
+        }
 
         authStore.setUnauthenticated();
 

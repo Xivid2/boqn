@@ -45,11 +45,13 @@
 
 <script lang="ts" setup>
     import { useAuthStore } from '../stores/auth.store';
+    import { useNotification } from "@kyvg/vue3-notification";
     import { ref } from "vue";
     import { useRouter } from 'vue-router'
     import AuthService from "../services/auth.service";
     import { useHttp } from '../plugins/api';
-
+    
+    const { notify}  = useNotification();
     const authStore = useAuthStore();
     const auth = new AuthService(useHttp);
     const router = useRouter();
@@ -61,7 +63,10 @@
         const { data, error } = await auth.login(email.value, password.value);
 
         if (error) {
-            return console.log('error', error);
+            return notify({
+                type: "error",
+                text: error.response?.data?.message || "Something went wrong",
+            });
         }
 
         const { access_token } = data;
