@@ -3,7 +3,10 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAccessTokenGuard } from './guards/jwt-auth-access-token.guard';
 import { JwtRefreshTokenGuard } from './guards/jwt-auth-refresh-token.guard';
 import { AuthService } from './auth.service';
-import { Response } from "express";
+import { Request, Response } from "express";
+import { decode } from 'jsonwebtoken';
+import * as dayjs from 'dayjs';
+import { RegistrationDto } from './dto/registration.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -11,21 +14,52 @@ export class AuthController {
         private authService: AuthService
     ) {}
 
+    @Post('register')
+    async register(@Body() registrationDto: RegistrationDto) {
+        return this.authService.register(registrationDto);
+    }
+
     @UseGuards(LocalAuthGuard)
     @Post('login')
-    async login(@Req() req) {
-        return this.authService.login(req.user);
+    async login(
+        @Req() req: Request,
+        @Res({ passthrough: true }) response: Response,
+    ) {
+        const payload = await this.authService.login(req.user);
+
+        const decoded = decode(payload.refresh_token, { json: true });
+        const expires = new Date(dayjs(decoded.exp * 1000).toDate());
+ 
+        response.cookie(
+            "jwt",
+            payload.refresh_token,
+            {
+                httpOnly: true,
+                secure: true,
+                sameSite: true,
+                expires,
+            }
+        );
+
+        return payload;
     }
 
     @UseGuards(JwtAccessTokenGuard)
     @Post('logout')
-    async logout(@Req() req) {
-        return this.authService.logout(req.user['sub']);
+    async logout(
+        @Req() req: Request,
+        @Res({ passthrough: true }) response: Response,
+    ) {
+        await this.authService.logout(req.user['sub']);
+        
+        response.clearCookie("jwt");
+
+        return;
     }
 
     @UseGuards(JwtAccessTokenGuard)
     @Get('profile')
-    getProfile(@Req() req) {
+    getProfile(@Req() req: Request) {
         return req.user;
     }
 

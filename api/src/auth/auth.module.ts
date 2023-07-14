@@ -9,12 +9,17 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { User } from '../users/user.model';
+import { UserRefreshToken } from '../users/user-refresh-token.model';
+import { g_UserRole } from '../users/user-roles.model';
 
 @Module({
     imports: [
         ConfigModule,
         UsersModule,
         PassportModule,
+        SequelizeModule.forFeature([User, UserRefreshToken, g_UserRole]),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             useFactory: async (config: ConfigService) => ({
@@ -27,7 +32,7 @@ import { ConfigService } from '@nestjs/config';
         }),
     ],
     providers: [AuthService, LocalStrategy, JwtStrategy, RefreshTokenStrategy],
-    exports: [AuthService],
+    exports: [AuthService, SequelizeModule],
     controllers: [AuthController],
 })
 export class AuthModule { }

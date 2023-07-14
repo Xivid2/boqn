@@ -117,6 +117,41 @@ module.exports = {
                 }],
                 { transaction }
             );
+
+            await queryInterface.createTable("userRefreshTokens", {
+                id: {
+                    type: Sequelize.INTEGER,
+                    autoIncrement: true,
+                    allowNull: false,
+                    primaryKey: true,
+                },
+                userId: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                    references: {
+                        model: 'users',
+                        key: 'id'
+                    },
+                    onUpdate: 'cascade',
+                    onDelete: 'cascade',
+                },
+                token: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
+                expiresAt: {
+                    type: Sequelize.DATE,
+                    allowNull: false,
+                },
+                createdAt: {
+                    type: Sequelize.DATE,
+                    allowNull: false,
+                },
+                updatedAt: {
+                    type: Sequelize.DATE,
+                    allowNull: false,
+                },
+            }, { transaction });
         });
     },
 
