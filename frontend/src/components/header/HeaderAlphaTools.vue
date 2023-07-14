@@ -26,11 +26,38 @@
 
             <v-spacer></v-spacer>
 
+            
             <v-col cols="1" class="text-right">
-                <router-link to="/login">
-                    My Account
-                </router-link>
+                <v-btn
+                    type="submit"
+                    variant="outlined"
+                    color="primary"
+                    block class="mt-2"
+                    @click="handleClick"
+                >
+                    {{ signInText }}
+                </v-btn>
             </v-col>
         </v-row>
     </div>
 </template>
+
+<script lang="ts" setup>
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth.store';
+const authStore = useAuthStore();
+const router = useRouter();
+
+const signInText = computed(() => {
+    return authStore.isAuthenticated ? "My account" : "Sign in";
+});
+
+const handleClick = async () => {
+    if (authStore.isAuthenticated) {
+        router.push('/profile');
+    } else {
+        router.push('/login');
+    }
+};
+</script>
