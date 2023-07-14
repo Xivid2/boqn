@@ -68,7 +68,7 @@
 
         authStore.setToken(access_token);
 
-        if (authStore.accessToken) {
+        if (authStore.isAuthenticated) {
             router.push('/');
         }
 
