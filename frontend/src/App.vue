@@ -24,28 +24,13 @@
 <script lang="ts" setup>
 import HeaderAlpha from './components/header/HeaderAlpha.vue';
 import { RouterLink, RouterView } from 'vue-router';
-import { useHttp } from '@/plugins/api';
-import AuthService from '@/services/auth.service';
 import { useAuthStore } from '@/stores/auth.store';
-import { ref } from 'vue';
+import { computed } from 'vue';
 const authStore = useAuthStore();
-const auth = new AuthService(useHttp);
 
-const isLoaded = ref(false);
-
-const refreshTokens = async () => {
-    const { data, error } = await auth.refreshTokens();
-
-    isLoaded.value = true;
-
-    if (error) return;
-
-    const { access_token } = data;
-
-    authStore.setToken(access_token);
-};
-
-refreshTokens();
+const isLoaded = computed(() => {
+    return authStore.isInitialRefreshComplete;
+});
 </script>
 
 <style scoped>

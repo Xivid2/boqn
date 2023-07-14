@@ -56,6 +56,20 @@ router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
     const auth = new AuthService(useHttp);
 
+    if (!authStore.isInitialRefreshComplete) {
+        const { data, error } = await auth.refreshTokens();
+
+        if (error) {
+            authStore.setUnauthenticated();
+        } else {
+            const { access_token } = data;
+
+            authStore.setToken(access_token);
+        }
+
+        authStore.isInitialRefreshComplete = true;
+    }
+
     const requiresAuth = to.meta.requiresAuth;
     const redirectIfAuthenticated = to.meta.redirectIfAuthenticated;
 
@@ -71,12 +85,12 @@ router.beforeEach(async (to, from, next) => {
 
             authStore.setToken(access_token);
 
-            if (redirectIfAuthenticated) {
-                return next('/');
-            }
-
             return next();
         }
+    }
+
+    if (authStore.isAuthenticated && redirectIfAuthenticated) {
+        return next('/');
     }
 
     next();
