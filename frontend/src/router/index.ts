@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useAuthStore } from '@/stores/auth.store';
+import { useHttp } from '@/plugins/api';
+import AuthService from '@/services/auth.service';
 
 const router = createRouter({
 history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,25 +26,60 @@ history: createWebHistory(import.meta.env.BASE_URL),
         {
             path: '/login',
             name: 'login',
-            component: () => import('../views/SignInView.vue'),
+            component: () => import('../views/Login.vue'),
             meta: {
                 requiresAuth: false,
                 redirectIfAuthenticated: true,
             }
-        }
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: () => import('../views/Register.vue'),
+            meta: {
+                requiresAuth: false,
+                redirectIfAuthenticated: true,
+            }
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: () => import('../views/Profile.vue'),
+            meta: {
+                requiresAuth: true,
+            }
+        },
     ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
-    
-    const isAuthenticated = !!authStore.accessToken;
+    const auth = new AuthService(useHttp);
 
-    if (to.meta.requiresAuth && !isAuthenticated) {
-        next('/login');
-    } else {
-        next();
+    const requiresAuth = to.meta.requiresAuth;
+    const redirectIfAuthenticated = to.meta.redirectIfAuthenticated;
+
+    if (requiresAuth) {
+        const { data, error } = await auth.refreshTokens();
+
+        if (error) {
+            authStore.setUnauthenticated();
+
+            return next('/login');
+        } else {
+            const { access_token } = data;
+
+            authStore.setToken(access_token);
+
+            if (redirectIfAuthenticated) {
+                return next('/');
+            }
+
+            return next();
+        }
     }
+
+    next();
 });
 
 export default router
