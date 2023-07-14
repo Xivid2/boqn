@@ -33,7 +33,7 @@
 
         if (error) return console.log('error', error);
 
-        authStore.setToken("");
+        authStore.setUnauthenticated();
 
         router.push('/');
     };
