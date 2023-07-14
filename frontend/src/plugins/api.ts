@@ -13,7 +13,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((request): any => {
     const authStore = useAuthStore();
 
-    if (authStore.accessToken && request.url !== '/auth/refresh') {
+    if (authStore.isAuthenticated && request.url !== '/auth/refresh') {
         request.headers.Authorization = `Bearer ${authStore.accessToken}`;
     }
 
@@ -39,12 +39,11 @@ axiosInstance.interceptors.response.use(
 
                     const { access_token } = rs.data;
 
-                    console.log('da');
                     authStore.setToken(access_token);
 
                     return axiosInstance(originalConfig);
                 } catch (_error) {
-                    authStore.setToken("");
+                    authStore.setUnauthenticated();
 
                     return Promise.reject(_error);
                 }
@@ -52,7 +51,7 @@ axiosInstance.interceptors.response.use(
         }
 
         if (originalConfig.url === "/auth/refresh" && err.response) {
-            authStore.setToken("");
+            authStore.setUnauthenticated();
         }
 
         return Promise.reject(err);
