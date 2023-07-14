@@ -111,7 +111,7 @@
         if (error) {
             return notify({
                 type: "error",
-                text: error,
+                text: error.response?.data?.message || "Something went wrong",
             });
         }
 
