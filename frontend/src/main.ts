@@ -10,6 +10,8 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import DatePicker from 'vue-datepicker-next';
+import 'vue-datepicker-next/index.css';
 
 const vuetify = createVuetify({
     components,
@@ -34,6 +36,7 @@ library.add(faLocationPin)
 
 const app = createApp(App)
     .component('fai', FontAwesomeIcon)
+    .component('DatePicker', DatePicker)
 app.use(plugin);
 app.use(createPinia())
 app.use(router)
