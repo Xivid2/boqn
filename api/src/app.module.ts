@@ -3,6 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { ErgoAppointmentsModule } from './ergo-appointments/ergo-appointments.module';
 import models from "./models";
 
 @Module({
@@ -26,6 +27,7 @@ import models from "./models";
             }),
             inject: [ConfigService],
         }),
+        ErgoAppointmentsModule,
     ],
 })
 export class AppModule {}

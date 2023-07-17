@@ -1,6 +1,9 @@
 <template>
     <div class="d-flex align-center justify-center">
         <v-sheet width="400" class="mx-auto mt-16">
+
+            <DatePicker v-model="date" @update:model-value="setDate"/>
+
             <h1 class="block text-center">
                 My account
             </h1>
@@ -24,6 +27,15 @@
     import { useRouter } from 'vue-router'
     import AuthService from "../services/auth.service";
     import { useHttp } from '../plugins/api';
+    import DatePicker from '@/components/DatePicker.vue';
+
+    import { ref } from "vue"
+    const date = ref(null);
+
+    const setDate = (value: any) => {
+        date.value = value
+    }
+
 
     const { notify } = useNotification();
     const authStore = useAuthStore();

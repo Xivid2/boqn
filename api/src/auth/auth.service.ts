@@ -4,9 +4,9 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { decode } from "jsonwebtoken"
 import { ConfigService } from '@nestjs/config';
-import { User } from '../users/user.model';
-import { UserRefreshToken } from '../users/user-refresh-token.model';
-import { g_UserRole } from 'src/users/user-roles.model';
+import { User } from '../users/models/user.model';
+import { UserRefreshToken } from '../users/models/user-refresh-token.model';
+import { g_UserRole } from 'src/users/models/user-roles.model';
 import { Sequelize } from 'sequelize-typescript';
 import { TokenPayload } from './payloads/token.payload';
 import * as bcrypt from 'bcrypt';

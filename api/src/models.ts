@@ -1,6 +1,6 @@
-import { g_UserRole } from "./users/user-roles.model";
-import { User } from "./users/user.model";
-import { UserRefreshToken } from "./users/user-refresh-token.model";
+import { g_UserRole } from "./users/models/user-roles.model";
+import { User } from "./users/models/user.model";
+import { UserRefreshToken } from "./users/models/user-refresh-token.model";
 
 export default [
     g_UserRole,

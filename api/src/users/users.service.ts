@@ -1,7 +1,7 @@
 import * as bcrypt from "bcrypt";
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { User } from './user.model';
+import { User } from './models/user.model';
 import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from "./dto/create-user.dto";
 import { DuplicateUserException } from "./users.errors";
