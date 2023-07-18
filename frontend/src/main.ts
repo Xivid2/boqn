@@ -28,11 +28,17 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
     faPhoneFlip,
     faLocationPin,
+    faHouse,
+    faPhone,
+    faMailBulk,
 } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
 library.add(faPhoneFlip)
 library.add(faLocationPin)
+library.add(faHouse)
+library.add(faPhone)
+library.add(faMailBulk)
 
 const app = createApp(App)
     .component('fai', FontAwesomeIcon)

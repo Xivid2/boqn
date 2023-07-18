@@ -23,6 +23,46 @@ history: createWebHistory(import.meta.env.BASE_URL),
                 requiresAuth: true,
             }
         },
+        // {
+        //     path: '/services',
+        //     name: 'services',
+        //     component: () => import('../views/ServicesView.vue'),
+        //     meta: {
+        //         requiresAuth: true,
+        //     }
+        // },
+        // {
+        //     path: '/prices',
+        //     name: 'prices',
+        //     component: () => import('../views/PricesView.vue'),
+        //     meta: {
+        //         requiresAuth: true,
+        //     }
+        // },
+        {
+            path: '/appointment',
+            name: 'appointment',
+            component: () => import('../views/AppointmentView.vue'),
+            meta: {
+                requiresAuth: true,
+            }
+        },
+        {
+            path: '/gallery',
+            name: 'gallery',
+            component: () => import('../views/GalleryView.vue'),
+            meta: {
+                requiresAuth: false,
+            }
+        },
+        {
+            path: '/contact',
+            name: 'contact',
+            component: () => import('../views/ContactView.vue'),
+            meta: {
+                requiresAuth: false,
+            }
+        },
         {
             path: '/login',
             name: 'login',

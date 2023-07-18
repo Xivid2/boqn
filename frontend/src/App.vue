@@ -8,7 +8,7 @@
                     <RouterLink to="/about">За Нас</RouterLink>
                     <RouterLink to="/services">Услуги</RouterLink>
                     <RouterLink to="/prices">Ценоразпис</RouterLink>
-                    <RouterLink to="/book">Запис на час</RouterLink>
+                    <RouterLink to="/appointment">Запис на час</RouterLink>
                     <RouterLink to="/gallery">Галерия</RouterLink>
                     <RouterLink to="/contact">Контакти</RouterLink>
                 </nav>
