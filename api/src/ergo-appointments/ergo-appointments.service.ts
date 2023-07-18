@@ -4,6 +4,7 @@ import * as dayjs from "dayjs-with-plugins";
 import { BadRequestException } from '@nestjs/common';
 import { ErgoAppointment } from './models/ergo-appointments.model';
 import { Op } from "sequelize";
+import { CreateErgoAppointmentDto } from './dto/create-ergo-appointment.dto';
 
 const maximumEndDate = dayjs().add(1, 'month').endOf('day');
 
@@ -15,7 +16,7 @@ export class ErgoAppointmentsService {
     ) {}
 
     async getForPeriod(startDate: Date, endDate: Date): Promise<any> {
-        this.validatePeriod(startDate, endDate);
+        this.validateQueryPeriod(startDate, endDate);
 
         const appointments = await this.ergoAppointment.findAll({
             where: {
@@ -45,7 +46,14 @@ export class ErgoAppointmentsService {
         return groupedByDay;
     }
 
-    validatePeriod(startDate: Date, endDate: Date) {
+    async create(createErgoAppointmentDto: CreateErgoAppointmentDto) {
+        return this.ergoAppointment.create({
+            date: createErgoAppointmentDto.date,
+            userId: createErgoAppointmentDto.userId
+        });
+    }
+
+    validateQueryPeriod(startDate: Date, endDate: Date) {
         const isStartDateAfterToday = dayjs(startDate).isAfter(dayjs().endOf('day'));
 
         if (!isStartDateAfterToday) {
