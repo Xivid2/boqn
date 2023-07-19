@@ -2,6 +2,7 @@ import * as bcrypt from "bcrypt";
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './models/user.model';
+import { g_UserRole } from "./models/user-roles.model";
 import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from "./dto/create-user.dto";
 import { DuplicateUserException } from "./users.errors";
@@ -11,14 +12,17 @@ export class UsersService {
     constructor(
         @InjectModel(User)
         private userModel: typeof User,
+        @InjectModel(g_UserRole)
+        private userRole: typeof g_UserRole,
         private config: ConfigService,
     ) {}
 
-    async findByEmailIncludePassword(email: string): Promise<User> {
+    async getUserForAuth(email: string): Promise<User> {
         return this.userModel.scope('withPassword').findOne({
             where: {
                 email: email.toLocaleLowerCase(),
-            }
+            },
+            include: [this.userRole]
         })
     }
 

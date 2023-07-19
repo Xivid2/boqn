@@ -28,7 +28,7 @@ export class AuthService {
     ) { }
 
     async validateUser(email: string, pass: string): Promise<any> {
-        const user = await this.usersService.findByEmailIncludePassword(email);
+        const user = await this.usersService.getUserForAuth(email);
 
         if (!user) return null;
 
@@ -61,9 +61,9 @@ export class AuthService {
     }
 
     async login(user: any) {
-        const { id, email } = user;
+        const { id, email, role } = user;
 
-        const tokens = await this.genTokens(id, email);
+        const tokens = await this.genTokens(id, email, role.name);
 
         const decoded = decode(tokens.refresh_token, { json: true });
         const expiresAt = decoded.exp * 1000;
@@ -99,7 +99,7 @@ export class AuthService {
     async refreshTokens(userId: number, refreshToken: string) {
         return this.sequelize.transaction(async (transaction): Promise<TokenPayload> => {
             const user = await this.userModel.findByPk(userId, {
-                include: [this.userRefreshTokenModel],
+                include: [this.userRefreshTokenModel, this.userRole],
                 transaction,
             });
 
@@ -112,7 +112,7 @@ export class AuthService {
                 throw new ForbiddenException();
             }
 
-            const tokens = await this.genTokens(user.id, user.email);
+            const tokens = await this.genTokens(user.id, user.email, user.role.name);
     
             const decoded = decode(tokens.refresh_token, { json: true });
             const expiresAt = decoded.exp * 1000;
@@ -133,12 +133,13 @@ export class AuthService {
         });
     }
 
-    async genTokens(id: number, email: string): Promise<TokenPayload> {
+    async genTokens(id: number, email: string, roleName: string): Promise<TokenPayload> {
         const [access_token, refresh_token] = await Promise.all([
             this.jwtService.signAsync(
                 {
                     sub: id,
                     email,
+                    role: roleName,
                 },
                 {
                     secret: this.config.get<string>('JWT_ACCESS_TOKEN_SECRET'),
@@ -149,6 +150,7 @@ export class AuthService {
                 {
                     sub: id,
                     email,
+                    role: roleName,
                 },
                 {
                     secret: this.config.get<string>('JWT_REFRESH_TOKEN_SECRET'),
