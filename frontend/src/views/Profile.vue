@@ -1,24 +1,40 @@
 <template>
     <div class="d-flex align-center justify-center">
-        <v-sheet width="400" class="mx-auto mt-16">
+        <v-sheet
+            width="500"
+            class="mx-auto mt-16 py-12 px-16"
+            :elevation="20"
+        >
             <h1 class="block text-center">
-                My account
+                Акаунт
             </h1>
 
             <v-btn
-                @click="logout"
-                type="submit"
+                v-if="isAdmin"
                 variant="outlined"
                 color="primary"
                 block class="mt-2"
             >
-                Logout
+                <router-link to="/admin">
+                    Админ панел
+                </router-link>
+            </v-btn>
+
+            <v-btn
+                @click="logout"
+                variant="outlined"
+                color="primary"
+                block
+                class="mt-16"
+            >
+                Изход
             </v-btn>
         </v-sheet>
     </div>
 </template>
 
 <script lang="ts" setup>
+    import { computed } from 'vue';
     import { useAuthStore } from '../stores/auth.store';
     import { useNotification } from '@kyvg/vue3-notification';
     import { useRouter } from 'vue-router'
@@ -29,6 +45,8 @@
     const authStore = useAuthStore();
     const auth = new AuthService(useHttp);
     const router = useRouter();
+
+    const isAdmin = computed(() => authStore.isAdmin );
 
     const logout = async () => {
         const { error } = await auth.logout();
