@@ -12,7 +12,6 @@ history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: '/',
-            name: 'home',
             component: HomeView,
             meta: {
                 requiresAuth: false,
@@ -21,7 +20,6 @@ history: createWebHistory(import.meta.env.BASE_URL),
         },
         {
             path: '/about',
-            name: 'about',
             component: () => import('../views/AboutView.vue'),
             meta: {
                 requiresAuth: false,
@@ -30,7 +28,6 @@ history: createWebHistory(import.meta.env.BASE_URL),
         },
         // {
         //     path: '/services',
-        //     name: 'services',
         //     component: () => import('../views/ServicesView.vue'),
         //     meta: {
         //         requiresAuth: false,
@@ -39,7 +36,6 @@ history: createWebHistory(import.meta.env.BASE_URL),
         // },
         // {
         //     path: '/prices',
-        //     name: 'prices',
         //     component: () => import('../views/PricesView.vue'),
         //     meta: {
         //         requiresAuth: false,
@@ -48,7 +44,6 @@ history: createWebHistory(import.meta.env.BASE_URL),
         // },
         {
             path: '/appointment',
-            name: 'appointment',
             component: () => import('../views/AppointmentView.vue'),
             meta: {
                 requiresAuth: true,
@@ -57,7 +52,6 @@ history: createWebHistory(import.meta.env.BASE_URL),
         },
         {
             path: '/gallery',
-            name: 'gallery',
             component: () => import('../views/GalleryView.vue'),
             meta: {
                 requiresAuth: false,
@@ -66,7 +60,6 @@ history: createWebHistory(import.meta.env.BASE_URL),
         },
         {
             path: '/contact',
-            name: 'contact',
             component: () => import('../views/ContactView.vue'),
             meta: {
                 requiresAuth: false,
@@ -75,7 +68,6 @@ history: createWebHistory(import.meta.env.BASE_URL),
         },
         {
             path: '/login',
-            name: 'login',
             component: () => import('../views/Login.vue'),
             meta: {
                 requiresAuth: false,
@@ -85,7 +77,6 @@ history: createWebHistory(import.meta.env.BASE_URL),
         },
         {
             path: '/register',
-            name: 'register',
             component: () => import('../views/Register.vue'),
             meta: {
                 requiresAuth: false,
@@ -95,7 +86,6 @@ history: createWebHistory(import.meta.env.BASE_URL),
         },
         {
             path: '/profile',
-            name: 'profile',
             component: () => import('../views/Profile.vue'),
             meta: {
                 requiresAuth: true,
@@ -105,31 +95,34 @@ history: createWebHistory(import.meta.env.BASE_URL),
         {
             path: '/admin',
             meta: {
-                group: 'admin',
                 requiresAuth: true,
                 canSee: (role: string) => admin.includes(role),
             },
-            component: () => import('../components/admin/AdminPanel.vue'),
+            component: () => import('../views/admin/Admin.vue'),
             children: [
                 {
-                    path: '/appointments',
-                    name: 'appointments',
+                    path: "",
                     meta: {
-                        group: 'admin',
                         requiresAuth: true,
                         canSee: (role: string) => admin.includes(role),
                     },
-                    component: () => import('../components/admin/AdminAppointments.vue')
+                    component: () => import('../views/admin/AdminPanel.vue')
                 },
                 {
-                    path: '/users',
-                    name: 'users',
+                    path: 'appointments',
                     meta: {
-                        group: 'admin',
                         requiresAuth: true,
                         canSee: (role: string) => admin.includes(role),
                     },
-                    component: () => import('../components/admin/AdminUsers.vue')
+                    component: () => import('../views/admin/AdminAppointments.vue')
+                },
+                {
+                    path: 'users',
+                    meta: {
+                        requiresAuth: true,
+                        canSee: (role: string) => admin.includes(role),
+                    },
+                    component: () => import('../views/admin/AdminUsers.vue')
                 },
             ]
         },
