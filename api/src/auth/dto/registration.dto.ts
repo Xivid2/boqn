@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsEmail, Equals, MinLength, MaxLength } from 'class-validator';
+import { Match } from '../validators/match.decorator';
 
 export class RegistrationDto {
     @IsNotEmpty()
@@ -23,6 +24,6 @@ export class RegistrationDto {
     @IsNotEmpty()
     @MinLength(8)
     @MaxLength(50)
-    @Equals('password', { message: 'Passwords missmatch' })
+    @Match('password', { message: 'Passwords missmatch' })
     confirmPassword: string
 };
