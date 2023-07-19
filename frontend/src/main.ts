@@ -31,6 +31,7 @@ import {
     faHouse,
     faPhone,
     faMailBulk,
+    faTrash,
 } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
@@ -39,6 +40,7 @@ library.add(faLocationPin)
 library.add(faHouse)
 library.add(faPhone)
 library.add(faMailBulk)
+library.add(faTrash)
 
 const app = createApp(App)
     .component('fai', FontAwesomeIcon)
