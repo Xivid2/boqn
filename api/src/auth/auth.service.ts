@@ -69,7 +69,7 @@ export class AuthService {
         const expiresAt = decoded.exp * 1000;
         const hashed = await this.hashToken(tokens.refresh_token);
 
-        return this.sequelize.transaction(async (transaction): Promise<TokenPayload> => {
+        return this.sequelize.transaction(async (transaction): Promise<any> => {
             await this.userRefreshTokenModel.destroy({
                 where: {
                     userId: id
@@ -84,7 +84,10 @@ export class AuthService {
                 expiresAt,
             }, { transaction });
 
-            return tokens;
+            return {
+                ...tokens,
+                role: role.name,
+            };
         });
     }
 
@@ -97,7 +100,7 @@ export class AuthService {
     }
 
     async refreshTokens(userId: number, refreshToken: string) {
-        return this.sequelize.transaction(async (transaction): Promise<TokenPayload> => {
+        return this.sequelize.transaction(async (transaction): Promise<any> => {
             const user = await this.userModel.findByPk(userId, {
                 include: [this.userRefreshTokenModel, this.userRole],
                 transaction,
@@ -129,7 +132,10 @@ export class AuthService {
                 expiresAt,
             }, { transaction });
 
-            return tokens;
+            return {
+                ...tokens,
+                role: user.role.name,
+            };
         });
     }
 

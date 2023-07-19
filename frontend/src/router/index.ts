@@ -4,6 +4,9 @@ import { useAuthStore } from '@/stores/auth.store';
 import { useHttp } from '@/plugins/api';
 import AuthService from '@/services/auth.service';
 
+const authenticated = ["admin", "customer"];
+const admin = ["admin"];
+
 const router = createRouter({
 history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -12,7 +15,8 @@ history: createWebHistory(import.meta.env.BASE_URL),
             name: 'home',
             component: HomeView,
             meta: {
-                requiresAuth: false
+                requiresAuth: false,
+                canSee: () => true
             }
         },
         {
@@ -20,7 +24,8 @@ history: createWebHistory(import.meta.env.BASE_URL),
             name: 'about',
             component: () => import('../views/AboutView.vue'),
             meta: {
-                requiresAuth: true,
+                requiresAuth: false,
+                canSee: () => true
             }
         },
         // {
@@ -28,7 +33,8 @@ history: createWebHistory(import.meta.env.BASE_URL),
         //     name: 'services',
         //     component: () => import('../views/ServicesView.vue'),
         //     meta: {
-        //         requiresAuth: true,
+        //         requiresAuth: false,
+        //         canSee: () => true
         //     }
         // },
         // {
@@ -36,7 +42,8 @@ history: createWebHistory(import.meta.env.BASE_URL),
         //     name: 'prices',
         //     component: () => import('../views/PricesView.vue'),
         //     meta: {
-        //         requiresAuth: true,
+        //         requiresAuth: false,
+        //         canSee: () => true,
         //     }
         // },
         {
@@ -45,6 +52,7 @@ history: createWebHistory(import.meta.env.BASE_URL),
             component: () => import('../views/AppointmentView.vue'),
             meta: {
                 requiresAuth: true,
+                canSee: (role: string) => authenticated.includes(role),
             }
         },
         {
@@ -53,6 +61,7 @@ history: createWebHistory(import.meta.env.BASE_URL),
             component: () => import('../views/GalleryView.vue'),
             meta: {
                 requiresAuth: false,
+                canSee: () => true,
             }
         },
         {
@@ -61,6 +70,7 @@ history: createWebHistory(import.meta.env.BASE_URL),
             component: () => import('../views/ContactView.vue'),
             meta: {
                 requiresAuth: false,
+                canSee: () => true
             }
         },
         {
@@ -69,6 +79,7 @@ history: createWebHistory(import.meta.env.BASE_URL),
             component: () => import('../views/Login.vue'),
             meta: {
                 requiresAuth: false,
+                canSee: () => true,
                 redirectIfAuthenticated: true,
             }
         },
@@ -78,6 +89,7 @@ history: createWebHistory(import.meta.env.BASE_URL),
             component: () => import('../views/Register.vue'),
             meta: {
                 requiresAuth: false,
+                canSee: () => true,
                 redirectIfAuthenticated: true,
             }
         },
@@ -87,7 +99,39 @@ history: createWebHistory(import.meta.env.BASE_URL),
             component: () => import('../views/Profile.vue'),
             meta: {
                 requiresAuth: true,
+                canSee: (role: string) => authenticated.includes(role),
             }
+        },
+        {
+            path: '/admin',
+            meta: {
+                group: 'admin',
+                requiresAuth: true,
+                canSee: (role: string) => admin.includes(role),
+            },
+            component: () => import('../components/admin/AdminPanel.vue'),
+            children: [
+                {
+                    path: '/appointments',
+                    name: 'appointments',
+                    meta: {
+                        group: 'admin',
+                        requiresAuth: true,
+                        canSee: (role: string) => admin.includes(role),
+                    },
+                    component: () => import('../components/admin/AdminAppointments.vue')
+                },
+                {
+                    path: '/users',
+                    name: 'users',
+                    meta: {
+                        group: 'admin',
+                        requiresAuth: true,
+                        canSee: (role: string) => admin.includes(role),
+                    },
+                    component: () => import('../components/admin/AdminUsers.vue')
+                },
+            ]
         },
     ]
 })
@@ -102,9 +146,10 @@ router.beforeEach(async (to, from, next) => {
         if (error) {
             authStore.setUnauthenticated();
         } else {
-            const { access_token } = data;
+            const { access_token, role } = data;
 
             authStore.setToken(access_token);
+            authStore.setRole(role);
         }
 
         authStore.isInitialRefreshComplete = true;
@@ -121,9 +166,20 @@ router.beforeEach(async (to, from, next) => {
 
             return next('/login');
         } else {
-            const { access_token } = data;
+            const { access_token, role } = data;
 
             authStore.setToken(access_token);
+            authStore.setRole(role);
+
+            const {
+                canSee = () => true,
+            } = to.meta || {};
+
+            if (!canSee(authStore.role)) {
+                authStore.setUnauthenticated();
+
+                return next('/login');
+            }
 
             return next();
         }
