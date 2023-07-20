@@ -46,17 +46,14 @@
                 </tbody>
             </v-table>
 
-            <v-pagination
+            <Pagination
                 v-if="paginationInfo.pages > 1"
-                rounded="circle"
-                :show-first-last-page="true"
-                class="pagination mb-2 mt-10"
                 v-model="paginationInfo.page"
-                :length="paginationInfo.pages"
-                :total-visible="5"
-                @prev="updatePage"
-                @next="updatePage">
-            </v-pagination>
+                @update:model-value="updatePage"
+                :totalPages="paginationInfo.pages"
+                class="mb-2 mt-10"
+            >
+            </Pagination>
         </v-sheet>
     </div>
 
@@ -71,6 +68,7 @@
 </template>
 
 <script lang="ts" setup>
+import Pagination from "@/components/Pagination.vue"
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { ref, watch } from 'vue';
 import { useHttp } from '@/plugins/api';
