@@ -13,13 +13,12 @@ import * as directives from 'vuetify/directives'
 import DatePicker from 'vue-datepicker-next';
 import 'vue-datepicker-next/index.css';
 
-const vuetify = createVuetify({
-    components,
-    directives,
-})
-
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { fa } from "vuetify/iconsets/fa";
+import { aliases, mdi } from "vuetify/iconsets/mdi";
+import "@fortawesome/fontawesome-free/css/all.css";
+import "@mdi/font/css/materialdesignicons.css";
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -41,6 +40,19 @@ library.add(faHouse)
 library.add(faPhone)
 library.add(faMailBulk)
 library.add(faTrash)
+
+const vuetify = createVuetify({
+    components,
+    directives,
+    icons: {
+        defaultSet: "mdi",
+        aliases,
+        sets: {
+            mdi,
+            fa,
+        },
+    },
+});
 
 const app = createApp(App)
     .component('fai', FontAwesomeIcon)
