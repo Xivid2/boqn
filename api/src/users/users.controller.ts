@@ -1,6 +1,11 @@
-import { Controller, Req, Res, Get, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Req, Res, Get, Post, Body, UseGuards, Param, Delete, Query, ValidationPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { JwtAccessTokenGuard } from 'src/auth/guards/jwt-auth-access-token.guard';
+import { Role } from 'src/common/constants/role';
+import { Roles } from 'src/common/decorators/role.decorator';
+import { RolesGuard } from 'src/common/guards/role.guard';
 
 @Controller('users')
 export class UsersController {
@@ -8,8 +13,19 @@ export class UsersController {
         private userService: UsersService
     ) {}
 
-    @Post('')
-    async create(@Body() createUserDto: CreateUserDto) {
-        return this.userService.create(createUserDto);
+    @Roles(Role.ADMIN)
+    @UseGuards(JwtAccessTokenGuard, RolesGuard)
+    @Get('')
+    async getAll(
+        @Query(new ValidationPipe({ transform: true })) pagination: PaginationDto
+    ) {
+        return this.userService.getPaginated(pagination);
+    }
+
+    @Roles(Role.ADMIN)
+    @UseGuards(JwtAccessTokenGuard, RolesGuard)
+    @Delete(':id')
+    async destroy(@Param('id') id: number): Promise<any> {
+        return this.userService.destroy(id);
     }
 }
