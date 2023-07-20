@@ -105,6 +105,8 @@ const openDeleteModal = (id: number) => {
 const destroy = async (id: number) => {
     const { error } = await user.destroy(id);
 
+    isDeleteModalOpen.value = false;
+
     if (error) {
         return notify({
             type: "error",
@@ -118,7 +120,6 @@ const destroy = async (id: number) => {
     });
 
     userIdToDelete.value = 0;
-    isDeleteModalOpen.value = false;
 
     await getAll();
 };
