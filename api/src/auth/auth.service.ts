@@ -11,6 +11,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { TokenPayload } from './payloads/token.payload';
 import * as bcrypt from 'bcrypt';
 import { RegistrationDto } from './dto/registration.dto';
+import { Role } from 'src/common/constants/role';
 
 @Injectable()
 export class AuthService {
@@ -46,7 +47,7 @@ export class AuthService {
     async register(input: RegistrationDto) {
         const role = await this.userRole.findOne({
             where: {
-                name: "customer",
+                name: Role.CUSTOMER,
             },
         });
 
