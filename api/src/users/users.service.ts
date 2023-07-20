@@ -1,11 +1,12 @@
 import * as bcrypt from "bcrypt";
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './models/user.model';
 import { g_UserRole } from "./models/user-roles.model";
 import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from "./dto/create-user.dto";
 import { DuplicateUserException } from "./users.errors";
+import { Role } from "src/common/constants/role";
 
 @Injectable()
 export class UsersService {
@@ -56,5 +57,39 @@ export class UsersService {
         };
 
         return this.userModel.create(input);
+    }
+
+    async getPaginated(query) {
+        const { limit, page } = query;
+        const offset = (page - 1) * limit;
+
+        const queryOptions = {
+            limit,
+            offset,
+            include: [{
+                model: this.userRole,
+                where: {
+                    name: Role.CUSTOMER,
+                },
+            }],
+        }
+
+        const { count, rows } = await this.userModel.findAndCountAll(queryOptions);
+
+        return {
+            totalCount: count,
+            pages: Math.ceil(count / limit),
+            users: rows,
+        };
+    }
+
+    async destroy(id: number) {
+        const user = await this.userModel.findByPk(id);
+
+        if (!user) {
+            throw new BadRequestException();
+        }
+
+        return user.destroy();
     }
 }
