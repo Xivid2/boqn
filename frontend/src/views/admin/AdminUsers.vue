@@ -34,13 +34,13 @@
                         <td>{{ user.email }}</td>
                         <td>{{ user.role.name }}</td>
                         <td>
-                            <v-btn
+                            <v-button
+                                round
                                 @click="openDeleteModal(user.id)"
-                                rounded="xl"
                                 title="Изтрий"
                             >
                                 <fai icon="fa-solid fa-trash" class="fa-l" />
-                            </v-btn>
+                            </v-button>
                         </td>
                     </tr>
                 </tbody>

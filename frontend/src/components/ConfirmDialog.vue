@@ -5,34 +5,29 @@
             persistent
             width="auto"
         >
+            <v-card class="py-12 px-16 text-center">
+                <v-card-title class="text-h5" v-if="title">
+                    {{ title }}
+                </v-card-title>
 
-        <v-card class="py-12 px-16 text-center">
-            <v-card-title class="text-h5" v-if="title">
-                {{ title }}
-            </v-card-title>
+                <v-card-text>
+                    {{ text }}
+                </v-card-text>
 
-            <v-card-text>
-                {{ text }}
-            </v-card-text>
+                <v-card-actions class="d-flex justify-center">
+                    <v-button @click="emit('onConfirm')">
+                        Потвърди
+                    </v-button>
 
-            <v-card-actions class="d-flex justify-center">
-                <v-btn
-                    color="green-darken-1"
-                    variant="text"
-                    @click="emit('onConfirm')"
-                >
-                    Потвърди
-                </v-btn>
-
-                <v-btn
-                    color="green-darken-1"
-                    variant="text"
-                    @click="emit('update:modelValue', false);"
-                >
-                    Откажи
-                </v-btn>
-            </v-card-actions>
-        </v-card>
+                    <v-button
+                        @click="emit('update:modelValue', false);"
+                        variant="secondary"
+                        class="ml-8"
+                    >
+                        Откажи
+                    </v-button>
+                </v-card-actions>
+            </v-card>
         </v-dialog>
     </v-row>
 </template>

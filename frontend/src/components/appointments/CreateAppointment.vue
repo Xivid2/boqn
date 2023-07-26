@@ -29,15 +29,13 @@
                     Избран час: {{ formattedDate }}
                 </p>
 
-                <v-btn
+                <v-button
                     type="submit"
-                    variant="outlined"
-                    color="primary"
                     block
                     class="mt-8"
                 >
                     Запиши
-                </v-btn>
+                </v-button>
             </v-form>
         </v-sheet>
     </div>
