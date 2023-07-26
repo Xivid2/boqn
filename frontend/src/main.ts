@@ -1,4 +1,4 @@
-import './assets/main.css'
+import './assets/main.scss';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia';
@@ -12,6 +12,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import DatePicker from 'vue-datepicker-next';
 import 'vue-datepicker-next/index.css';
+import Button from './components/Button.vue';
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -57,6 +58,7 @@ const vuetify = createVuetify({
 const app = createApp(App)
     .component('fai', FontAwesomeIcon)
     .component('DatePicker', DatePicker)
+    .component('v-button', Button)
 app.use(plugin);
 app.use(createPinia())
 app.use(router)

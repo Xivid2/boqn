@@ -26,17 +26,10 @@
 
             <v-spacer></v-spacer>
 
-            
             <v-col cols="1" class="text-right">
-                <v-btn
-                    type="submit"
-                    variant="outlined"
-                    color="primary"
-                    block class="mt-2"
-                    @click="handleClick"
-                >
-                    {{ signInText }}
-                </v-btn>
+                <v-button @click="handleClick">
+                    {{ signInText.toUpperCase() }}
+                </v-button>
             </v-col>
         </v-row>
     </div>

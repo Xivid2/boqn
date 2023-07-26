@@ -9,26 +9,23 @@
                 Акаунт
             </h1>
 
-            <v-btn
+            <v-button
                 v-if="isAdmin"
-                variant="outlined"
-                color="primary"
-                block class="mt-2"
+                block
+                class="mt-2"
             >
                 <router-link to="/admin">
-                    Админ панел
+                    ADMIN PANEL
                 </router-link>
-            </v-btn>
+            </v-button>
 
-            <v-btn
-                @click="logout"
-                variant="outlined"
-                color="primary"
-                block
+            <v-button
                 class="mt-16"
+                block
+                @click="logout"
             >
-                Изход
-            </v-btn>
+                LOGOUT
+            </v-button>
         </v-sheet>
     </div>
 </template>
