@@ -1,4 +1,4 @@
-import './assets/main.css'
+import './assets/main.scss';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia';
@@ -10,6 +10,7 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import Button from './components/Button.vue';
 
 const vuetify = createVuetify({
     components,
@@ -34,6 +35,7 @@ library.add(faLocationPin)
 
 const app = createApp(App)
     .component('fai', FontAwesomeIcon)
+    .component('v-button', Button)
 app.use(plugin);
 app.use(createPinia())
 app.use(router)
