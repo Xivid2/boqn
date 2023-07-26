@@ -1,0 +1,19 @@
+@import './variables.scss';
+
+.button {
+    font-size: 14px;
+
+    &.primary {
+        color: $primary-color;
+        background-color: #ffffff;
+        border: 1px solid $primary-color;
+
+        &:hover {
+            background-color: $primary-color-fade;
+        }
+    }
+}
+
+.button.rounded {
+    border-radius: 50%;
+}
