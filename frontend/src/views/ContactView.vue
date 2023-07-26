@@ -1,41 +1,43 @@
 <template>
     <div class="d-flex align-center justify-center">
         <v-sheet width="1200" class="mx-auto mt-16">
-            <h1 class="block text-center">
+            <!-- <h1 class="block text-center">
                 Контакти
-            </h1>
+            </h1> -->
 
             <v-row class="mt-8">
                 <v-col cols="4" class="text-center">
-                    <p class="mb-2">
-                        <fai icon="fa-solid fa-house" class="fa-xl" />
-                    </p>
-
                     <a
                         href="https://maps.google.com/?q=гр. Казанлък, ул. Хината 14"
                         target="_blank"
-                        class="ml-2"
                     >
+                        <p class="mb-2">
+                            <fai icon="fa-solid fa-house" class="fa-xl" />
+                        </p>
+
                         гр. Казанлък, ул. Хината 14
                     </a>
                 </v-col>
 
                 <v-col cols="4" class="text-center">
-                    <p class="mb-2">
-                        <fai icon="fa-solid fa-phone" class="fa-xl" />
-                    </p>
-
                     <a href="tel:0887107087">
+                        <p class="mb-2">
+                            <fai icon="fa-solid fa-phone" class="fa-xl" />
+                        </p>
+
                         0887107087
                     </a>
                 </v-col>
 
                 <v-col cols="4" class="text-center">
-                    <p class="mb-2">
-                        <fai icon="fa-solid fa-mail-bulk" class="fa-xl" />
-                    </p>
+                    <a href="mailto: boris.marinov99@gmail.com">
+                        <p class="mb-2">
+                            <fai icon="fa-solid fa-mail-bulk" class="fa-xl" />
+                        </p>
 
-                    <a href="mailto: boris.marinov99@gmail.com">boris.marinov99@gmail.com</a>
+                        boris.marinov99@gmail.com
+                    </a>
+
                 </v-col>
             </v-row>
 
