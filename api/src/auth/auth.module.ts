@@ -10,9 +10,9 @@ import { UsersModule } from '../users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User } from '../users/user.model';
-import { UserRefreshToken } from '../users/user-refresh-token.model';
-import { g_UserRole } from '../users/user-roles.model';
+import { User } from '../users/models/user.model';
+import { UserRefreshToken } from '../users/models/user-refresh-token.model';
+import { g_UserRole } from '../users/models/user-roles.model';
 
 @Module({
     imports: [

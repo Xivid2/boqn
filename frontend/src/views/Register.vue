@@ -5,7 +5,7 @@
                 Register
             </h1>
 
-            <v-form @submit.prevent="register" ref="form">
+            <v-form @submit.prevent="register" ref="form" :disabled="isFormDisabled">
                 <v-text-field
                     variant="underlined"
                     v-model="firstName"
@@ -63,6 +63,7 @@
                 ></v-text-field>
 
                 <v-button
+                    :disabled="isFormDisabled"
                     type="submit"
                     block
                     class="mt-2"
@@ -82,7 +83,7 @@
     import { useNotification } from "@kyvg/vue3-notification";
 
     const form = ref(null);
-
+    const isFormDisabled = ref(false);
     const firstName = ref("");
     const lastName = ref("");
     const email = ref("");
@@ -99,6 +100,8 @@
 
         if (!isValid) return;
 
+        isFormDisabled.value = true;
+
         const { data, error } = await auth.register({
             firstName: firstName.value,
             lastName: lastName.value,
@@ -108,6 +111,8 @@
         });
 
         if (error) {
+            isFormDisabled.value = false;
+
             return notify({
                 type: "error",
                 text: error.response?.data?.message || "Something went wrong",

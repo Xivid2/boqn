@@ -1,4 +1,6 @@
 import { IsNotEmpty, IsEmail, Equals, MinLength, MaxLength } from 'class-validator';
+import { Match } from '../validators/match.decorator';
+import { EmailNotRegistered } from '../validators/unique-email.decorator';
 
 export class RegistrationDto {
     @IsNotEmpty()
@@ -13,6 +15,7 @@ export class RegistrationDto {
 
     @IsEmail()
     @MaxLength(255)
+    @EmailNotRegistered({ message: 'User with same email already exists' })
     email: string
 
     @IsNotEmpty()
@@ -23,6 +26,6 @@ export class RegistrationDto {
     @IsNotEmpty()
     @MinLength(8)
     @MaxLength(50)
-    @Equals('password', { message: 'Passwords missmatch' })
+    @Match('password', { message: 'Passwords missmatch' })
     confirmPassword: string
 };

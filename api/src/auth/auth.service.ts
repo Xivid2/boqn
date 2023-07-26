@@ -4,13 +4,14 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { decode } from "jsonwebtoken"
 import { ConfigService } from '@nestjs/config';
-import { User } from '../users/user.model';
-import { UserRefreshToken } from '../users/user-refresh-token.model';
-import { g_UserRole } from 'src/users/user-roles.model';
+import { User } from '../users/models/user.model';
+import { UserRefreshToken } from '../users/models/user-refresh-token.model';
+import { g_UserRole } from 'src/users/models/user-roles.model';
 import { Sequelize } from 'sequelize-typescript';
 import { TokenPayload } from './payloads/token.payload';
 import * as bcrypt from 'bcrypt';
 import { RegistrationDto } from './dto/registration.dto';
+import { Role } from 'src/common/constants/role';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,7 @@ export class AuthService {
     ) { }
 
     async validateUser(email: string, pass: string): Promise<any> {
-        const user = await this.usersService.findByEmailIncludePassword(email);
+        const user = await this.usersService.getUserForAuth(email);
 
         if (!user) return null;
 
@@ -46,7 +47,7 @@ export class AuthService {
     async register(input: RegistrationDto) {
         const role = await this.userRole.findOne({
             where: {
-                name: "customer",
+                name: Role.CUSTOMER,
             },
         });
 
@@ -61,15 +62,15 @@ export class AuthService {
     }
 
     async login(user: any) {
-        const { id, email } = user;
+        const { id, email, role } = user;
 
-        const tokens = await this.genTokens(id, email);
+        const tokens = await this.genTokens(id, email, role.name);
 
         const decoded = decode(tokens.refresh_token, { json: true });
         const expiresAt = decoded.exp * 1000;
         const hashed = await this.hashToken(tokens.refresh_token);
 
-        return this.sequelize.transaction(async (transaction): Promise<TokenPayload> => {
+        return this.sequelize.transaction(async (transaction): Promise<any> => {
             await this.userRefreshTokenModel.destroy({
                 where: {
                     userId: id
@@ -84,7 +85,10 @@ export class AuthService {
                 expiresAt,
             }, { transaction });
 
-            return tokens;
+            return {
+                ...tokens,
+                role: role.name,
+            };
         });
     }
 
@@ -97,9 +101,9 @@ export class AuthService {
     }
 
     async refreshTokens(userId: number, refreshToken: string) {
-        return this.sequelize.transaction(async (transaction): Promise<TokenPayload> => {
+        return this.sequelize.transaction(async (transaction): Promise<any> => {
             const user = await this.userModel.findByPk(userId, {
-                include: [this.userRefreshTokenModel],
+                include: [this.userRefreshTokenModel, this.userRole],
                 transaction,
             });
 
@@ -112,7 +116,7 @@ export class AuthService {
                 throw new ForbiddenException();
             }
 
-            const tokens = await this.genTokens(user.id, user.email);
+            const tokens = await this.genTokens(user.id, user.email, user.role.name);
     
             const decoded = decode(tokens.refresh_token, { json: true });
             const expiresAt = decoded.exp * 1000;
@@ -129,16 +133,20 @@ export class AuthService {
                 expiresAt,
             }, { transaction });
 
-            return tokens;
+            return {
+                ...tokens,
+                role: user.role.name,
+            };
         });
     }
 
-    async genTokens(id: number, email: string): Promise<TokenPayload> {
+    async genTokens(id: number, email: string, roleName: string): Promise<TokenPayload> {
         const [access_token, refresh_token] = await Promise.all([
             this.jwtService.signAsync(
                 {
                     sub: id,
                     email,
+                    role: roleName,
                 },
                 {
                     secret: this.config.get<string>('JWT_ACCESS_TOKEN_SECRET'),
@@ -149,6 +157,7 @@ export class AuthService {
                 {
                     sub: id,
                     email,
+                    role: roleName,
                 },
                 {
                     secret: this.config.get<string>('JWT_REFRESH_TOKEN_SECRET'),

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full">
+    <div class="w-full header-alpha">
         <HeaderAlphaText />
         <HeaderAlphaTools
             class="mt-2"

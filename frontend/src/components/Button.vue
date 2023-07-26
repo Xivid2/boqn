@@ -22,6 +22,10 @@ const props = defineProps({
     block: {
         type: Boolean,
         default: false,
+    },
+    round: {
+        type: Boolean,
+        default: false,
     }
 });
 
@@ -30,5 +34,6 @@ const btnType = computed(() => props.variant);
 const classes = [
     btnType.value,
     props.block ? 'block' : '',
+    props.round ? 'round' : '',
 ];
 </script>

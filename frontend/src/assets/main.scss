@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import './buttons.scss';
+@import './card.scss';
 
 body {
     box-sizing: border-box;
@@ -13,9 +14,23 @@ a {
     color: inherit;
 }
 
+.header-alpha, .nav {
+    background-color: #ffffff;
+}
+
 .header-alpha__text {
     background-color: $primary-color;
     padding: 20px 0;
     color: #ffffff;
     text-align: center;
+}
+
+.wrapper {
+    max-width: 992px;
+    margin: 0 auto;
+}
+
+.image {
+    width: 400px;
+    height: auto
 }

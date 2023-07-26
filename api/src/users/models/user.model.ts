@@ -1,6 +1,7 @@
-import { Column, Model, Table, PrimaryKey, AutoIncrement, DefaultScope, Scopes, HasOne } from 'sequelize-typescript';
+import { Column, Model, Table, PrimaryKey, ForeignKey, AutoIncrement, DefaultScope, Scopes, HasOne, BelongsTo } from 'sequelize-typescript';
 import * as bcrypt from "bcrypt";
 import { UserRefreshToken } from './user-refresh-token.model';
+import { g_UserRole } from './user-roles.model';
 
 @DefaultScope({
     attributes: {
@@ -24,6 +25,7 @@ export class User extends Model {
     @Column
     id: number
 
+    @ForeignKey(() => g_UserRole)
     @Column
     userRoleId: number
 
@@ -41,6 +43,9 @@ export class User extends Model {
 
     @HasOne(() => UserRefreshToken)
     refreshToken: UserRefreshToken
+
+    @BelongsTo(() => g_UserRole)
+    role: g_UserRole
 
     async comparePassword(candidatePassword: string): Promise<boolean> {
         return bcrypt.compare(candidatePassword, this.password);

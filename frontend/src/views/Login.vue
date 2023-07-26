@@ -68,9 +68,10 @@
             });
         }
 
-        const { access_token } = data;
+        const { access_token, role } = data;
 
         authStore.setToken(access_token);
+        authStore.setRole(role);
 
         if (authStore.isAuthenticated) {
             router.push('/');
