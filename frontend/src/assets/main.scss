@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import './buttons.scss';
+@import './card.scss';
 
 body {
     box-sizing: border-box;
@@ -11,6 +12,10 @@ body {
 a {
     text-decoration: none;
     color: inherit;
+}
+
+.header-alpha, .nav {
+    background-color: #ffffff;
 }
 
 .header-alpha__text {

@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <v-card class="py-4 px-8">
+        <card>
             <v-row>
                 <v-col>
                     <img class="image" src="../assets/images/man.png" />
@@ -29,9 +29,9 @@
                     Et ipsa non iure nemo reiciendis consequatur accusantium tenetur eos laboriosam minus adipisci porro perspiciatis eum fugiat odio, itaque unde nostrum eius explicabo iste, repellendus quasi corporis nobis dicta! Asperiores.
                 </v-col>
             </v-row>
-        </v-card>
+        </card>
 
-        <v-card class="mt-8 py-4 px-8 mb-4">
+        <card class="my-8">
             <v-row>
                 <v-col>
                     <p style="margin-top:20%">Names: Boris Milkov Marinov</p>
@@ -60,7 +60,7 @@
                     Et ipsa non iure nemo reiciendis consequatur accusantium tenetur eos laboriosam minus adipisci porro perspiciatis eum fugiat odio, itaque unde nostrum eius explicabo iste, repellendus quasi corporis nobis dicta! Asperiores.
                 </v-col>
             </v-row>
-        </v-card>
+        </card>
     </div>
 </template>
 

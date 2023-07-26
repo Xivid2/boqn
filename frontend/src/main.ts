@@ -13,6 +13,7 @@ import * as directives from 'vuetify/directives'
 import DatePicker from 'vue-datepicker-next';
 import 'vue-datepicker-next/index.css';
 import Button from './components/Button.vue';
+import Card from './components/Card.vue';
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -59,6 +60,7 @@ const app = createApp(App)
     .component('fai', FontAwesomeIcon)
     .component('DatePicker', DatePicker)
     .component('v-button', Button)
+    .component('card', Card)
 app.use(plugin);
 app.use(createPinia())
 app.use(router)
