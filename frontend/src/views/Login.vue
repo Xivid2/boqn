@@ -21,14 +21,13 @@
 
                 <a href="#" class="text-body-2 font-weight-regular">Forgot Password?</a>
 
-                <v-btn
+                <v-button
                     type="submit"
-                    variant="outlined"
-                    color="primary"
-                    block class="mt-2"
+                    class="mt-2"
+                    block
                 >
-                    Sign in
-                </v-btn>
+                    SIGN IN
+                </v-button>
             </v-form>
 
             <div class="mt-2">

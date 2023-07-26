@@ -62,14 +62,13 @@
                     ]"
                 ></v-text-field>
 
-                <v-btn
+                <v-button
                     type="submit"
-                    variant="outlined"
-                    color="primary"
-                    block class="mt-2"
+                    block
+                    class="mt-2"
                 >
-                    Sign in
-                </v-btn>
+                    SIGN UP
+                </v-button>
             </v-form>
         </v-sheet>
     </div>

@@ -5,15 +5,13 @@
                 My account
             </h1>
 
-            <v-btn
+            <v-button
+                class="mt-2"
+                block
                 @click="logout"
-                type="submit"
-                variant="outlined"
-                color="primary"
-                block class="mt-2"
             >
-                Logout
-            </v-btn>
+                LOGOUT
+            </v-button>
         </v-sheet>
     </div>
 </template>
