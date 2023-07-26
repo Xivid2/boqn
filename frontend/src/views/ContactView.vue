@@ -1,10 +1,10 @@
 <template>
-    <div class="d-flex align-center justify-center">
-        <v-sheet width="1200" class="mx-auto mt-16">
-            <!-- <h1 class="block text-center">
-                Контакти
-            </h1> -->
-
+    <div class="wrapper">
+        <card>
+                    <!-- <h1 class="block text-center">
+                        Контакти
+                    </h1> -->
+        
             <v-row class="mt-8">
                 <v-col cols="4" class="text-center">
                     <a
@@ -41,20 +41,22 @@
                 </v-col>
             </v-row>
 
-            <div class="mapouter mt-12">
-                <div class="gmap_canvas">
-                    <iframe
-                        class="gmap_iframe"
-                        width="100%"
-                        frameborder="0"
-                        scrolling="no"
-                        marginheight="0"
-                        marginwidth="0"
-                        src="https://maps.google.com/maps?width=800&amp;height=400&amp;hl=en&amp;q=България, гр. Казанлък, ул. Хината 14&amp;t=p&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
-                    </iframe>
+            <v-row>
+                <div class="mapouter mt-12">
+                    <div class="gmap_canvas">
+                        <iframe
+                            class="gmap_iframe"
+                            width="100%"
+                            frameborder="0"
+                            scrolling="no"
+                            marginheight="0"
+                            marginwidth="0"
+                            src="https://maps.google.com/maps?width=800&amp;height=400&amp;hl=en&amp;q=България, гр. Казанлък, ул. Хината 14&amp;t=p&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+                        </iframe>
+                    </div>
                 </div>
-            </div>
-        </v-sheet>
+            </v-row>
+        </card>
     </div>
 </template>
 
