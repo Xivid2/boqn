@@ -1,18 +1,14 @@
 <template>
-    <div class="d-flex align-center justify-center">
-        <v-sheet
-            width="500"
-            class="mx-auto mt-16 py-12 px-16"
-            :elevation="20"
-        >
+    <div class="wrapper">
+        <card>
             <h1 class="block text-center">
                 Акаунт
             </h1>
-
+    
             <v-button
                 v-if="isAdmin"
                 block
-                class="mt-2"
+                class="mt-8"
             >
                 <router-link to="/admin">
                     ADMIN PANEL
@@ -26,7 +22,7 @@
             >
                 LOGOUT
             </v-button>
-        </v-sheet>
+        </card>
     </div>
 </template>
 

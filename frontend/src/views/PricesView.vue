@@ -31,7 +31,7 @@
                         <td>{{ massage.goal }}</td>
                         <td>{{ massage.description }}</td>
                         <td class="text-center">{{ massage.duration }}</td>
-                        <td class="text-center">{{ massage.price }}</td>
+                        <td class="text-center">{{ massage.price + 'лв.' }}</td>
                     </tr>
                 </tbody>
             </table>
