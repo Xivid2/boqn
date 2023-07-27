@@ -34,14 +34,14 @@ history: createWebHistory(import.meta.env.BASE_URL),
         //         canSee: () => true
         //     }
         // },
-        // {
-        //     path: '/prices',
-        //     component: () => import('../views/PricesView.vue'),
-        //     meta: {
-        //         requiresAuth: false,
-        //         canSee: () => true,
-        //     }
-        // },
+        {
+            path: '/prices',
+            component: () => import('../views/PricesView.vue'),
+            meta: {
+                requiresAuth: false,
+                canSee: () => true,
+            }
+        },
         {
             path: '/appointment',
             component: () => import('../views/AppointmentView.vue'),

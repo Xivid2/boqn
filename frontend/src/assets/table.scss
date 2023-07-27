@@ -1,0 +1,30 @@
+@import './variables.scss';
+
+table {
+    width: 100%;
+    text-align: left;
+    overflow: hidden;
+    margin: auto;
+}
+
+table th {
+    background-color: $primary-color;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+table tr:nth-child(even) td {
+    background-color: $secondary-color;
+}
+
+table tr:hover td {
+    background-color: $primary-color-fade;
+}
+
+table td {
+    background-color: #fff;
+    padding: 10px;
+    border-bottom: 1px solid $primary-color;
+}

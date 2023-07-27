@@ -3,6 +3,7 @@
 .card {
     padding: 3em;
     border: 2px solid $secondary-color;
-    border-radius: 3%;
+    border-radius: 20px;
     box-shadow: 5px 5px 10px $primary-color;
+    overflow: hidden;
 }
