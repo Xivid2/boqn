@@ -1,16 +1,11 @@
 <template>
-    <div class="d-flex align-center justify-center">
-        <v-sheet
-            class="mx-auto mt-16 mb-16 py-12 px-16"
-            :elevation="20"
-        >
-            <h1 class="block text-center">
+    <div class="mx-16 mb-16">
+        <card>
+            <h1 class="block text-center mb-8">
                 Потребители
             </h1>
-
-            <v-table
-                fixed-header
-            >
+        
+            <table>
                 <thead>
                     <tr>
                         <th class="text-left">
@@ -19,12 +14,13 @@
                         <th class="text-left">
                             Имейл
                         </th>
-                        <th class="text-left">
+                        <th class="text-center">
                             Тип
                         </th>
-                        <th></th>
+                        <th class="text-center"></th>
                     </tr>
                 </thead>
+        
                 <tbody>
                     <tr
                         v-for="user in users"
@@ -32,8 +28,8 @@
                     >
                         <td>{{ user.firstName + " " + user.lastName }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.role.name }}</td>
-                        <td>
+                        <td class="text-center">{{ user.role.name }}</td>
+                        <td class="text-center">
                             <v-button
                                 round
                                 @click="openDeleteModal(user.id)"
@@ -44,8 +40,8 @@
                         </td>
                     </tr>
                 </tbody>
-            </v-table>
-
+            </table>
+        
             <Pagination
                 v-if="paginationInfo.pages > 1"
                 v-model="paginationInfo.page"
@@ -54,7 +50,7 @@
                 class="mb-2 mt-10"
             >
             </Pagination>
-        </v-sheet>
+        </card>
     </div>
 
     <ConfirmDialog

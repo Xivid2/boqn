@@ -1,5 +1,9 @@
 <template>
-    <CreateAppointment />
+    <div class="wrapper">
+        <card>
+            <CreateAppointment />
+        </card>
+    </div>
 </template>
 
 <script lang="ts" setup>
