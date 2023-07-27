@@ -1,65 +1,90 @@
 <template>
-    <div class="d-flex align-center justify-center">
-        <v-sheet width="400" class="mx-auto mt-16">
-            <h1 class="block text-center">
-                Login
-            </h1>
+    <div class="wrapper">
+        <card class="d-flex justify-center">
+            <form @submit.prevent="login" class="login-form">
+                <h1 class="mb-16 text-center">
+                    Вписване
+                </h1>
 
-            <v-form fast-fail @submit.prevent="login">
-                <v-text-field
-                     variant="underlined"
-                     v-model="email"
-                     label="email"
-                ></v-text-field>
+                <b-input
+                    v-model="v$.email.$model"
+                    :models="v$.email"
+                    text="email"
+                >
+                </b-input>
 
-                <v-text-field
-                    variant="underlined"
+                <b-input
+                    v-model="v$.password.$model"
+                    :models="v$.password"
+                    text="password"
                     type="password"
-                    v-model="password"
-                    label="password"
-                ></v-text-field>
+                >
+                </b-input>
 
                 <a href="#" class="text-body-2 font-weight-regular">Forgot Password?</a>
 
                 <v-button
                     type="submit"
-                    class="mt-2"
+                    class="mt-4"
                     block
                 >
                     SIGN IN
                 </v-button>
-            </v-form>
 
-            <div class="mt-2">
-                <p class="text-body-2">
+                <p class="text-body-2 mt-4">
                     Don't have an account?
                     <router-link to="/register">
                         Sign Up
                     </router-link>
                 </p>
-            </div>
-        </v-sheet>
+            </form>
+        </card>
     </div>
 </template>
 
 <script lang="ts" setup>
     import { useAuthStore } from '../stores/auth.store';
     import { useNotification } from "@kyvg/vue3-notification";
-    import { ref } from "vue";
+    import { reactive, computed } from "vue";
     import { useRouter } from 'vue-router'
     import AuthService from "../services/auth.service";
     import { useHttp } from '../plugins/api';
+    import useValidate from '@vuelidate/core'
+    import { required, maxLength, minLength, email } from '@vuelidate/validators';
     
     const { notify}  = useNotification();
     const authStore = useAuthStore();
     const auth = new AuthService(useHttp);
     const router = useRouter();
 
-    const email = ref("");
-    const password = ref("");
+    const state = reactive({
+        email: '',
+        password: '',
+    });
+
+    const rules = computed(() => {
+        return {
+            email: {
+                email,
+                required,
+                maxLength: maxLength(255),
+            },
+            password: {
+                required,
+                maxLength: maxLength(50),
+                minLength: minLength(8),
+            },
+        };
+    });
+
+    const v$ = useValidate(rules, state);
 
     const login = async () => {
-        const { data, error } = await auth.login(email.value, password.value);
+        v$.value.$touch();
+
+        if (v$.value.$error) return;
+
+        const { data, error } = await auth.login(state.email, state.password);
 
         if (error) {
             return notify({

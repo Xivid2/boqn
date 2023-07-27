@@ -109,6 +109,32 @@ history: createWebHistory(import.meta.env.BASE_URL),
                     component: () => import('../views/admin/AdminPanel.vue')
                 },
                 {
+                    path: 'prices',
+                    meta: {
+                        requiresAuth: true,
+                        canSee: (role: string) => admin.includes(role),
+                    },
+                    component: () => import('../views/admin/AdminPrices/AdminPrices.vue'),
+                    children: [
+                        {
+                            path: '',
+                            meta: {
+                                requiresAuth: true,
+                                canSee: (role: string) => admin.includes(role),
+                            },
+                            component: () => import('../views/admin/AdminPrices/AdminPricesList.vue'),
+                        },
+                        {
+                            path: 'create',
+                            meta: {
+                                requiresAuth: true,
+                                canSee: (role: string) => admin.includes(role),
+                            },
+                            component: () => import('../views/admin/AdminPrices/AdminPricesCreate.vue'),
+                        },
+                    ],
+                },
+                {
                     path: 'appointments',
                     meta: {
                         requiresAuth: true,

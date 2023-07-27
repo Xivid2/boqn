@@ -1,0 +1,40 @@
+@import './variables.scss';
+
+.input-container {
+    margin-bottom: 2.5em;
+}
+
+.input-label {
+    position: relative;
+    margin-bottom: 1.25em;
+}
+
+.input {
+    width: 100%;
+    border-bottom: 3px solid $primary-color;
+    outline: none;
+    height: 2em;
+}
+
+.input-text {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    cursor: text;
+    top: -0;
+    left: 0;
+    transition: .3s ease-in-out;
+    width: 100%;
+}
+
+.input:focus + span,
+.input:valid + span {
+    color: $primary-color;
+    font-size: .85em;
+    top: -25px;
+}
+
+.input-error {
+    color: red;
+    margin-top: 5px;
+}
