@@ -2,6 +2,8 @@ export interface Massage {
     id: number;
     name: string;
     goal: string;
+    imgSrc: string,
+    shortDescription: string,
     description: string;
     duration: number;
     price: number;

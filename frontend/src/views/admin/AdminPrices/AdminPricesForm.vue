@@ -2,14 +2,56 @@
     <div>
         <b-input
             text="Име"
-            :modelValue="data.name"
+            v-model="v$.name.$model"
+            :models="v$.name"
             @update:modelValue="(name: string) => data.name = name"
         ></b-input>
 
         <b-input
             text="Цел"
-            v-model="data.goal"
+            v-model="v$.goal.$model"
+            :models="v$.goal"
         ></b-input>
+
+        <b-input
+            text="Линк към изображение"
+            v-model="v$.imgSrc.$model"
+            :models="v$.imgSrc"
+        ></b-input>
+
+        <b-input
+            text="Кратко описание"
+            v-model="v$.shortDescription.$model"
+            :models="v$.shortDescription"
+            type="textarea"
+        ></b-input>
+
+        <b-input
+            text="Описание"
+            v-model="v$.description.$model"
+            :models="v$.description"
+            type="textarea"
+        ></b-input>
+
+        <v-row>
+            <v-col>
+                <b-input
+                    text="Продължителност (минути)"
+                    v-model="v$.duration.$model"
+                    :models="v$.duration"
+                    number
+                ></b-input>
+            </v-col>
+
+            <v-col>
+                <b-input
+                    text="Цена"
+                    v-model="v$.price.$model"
+                    :models="v$.price"
+                    number
+                ></b-input>
+            </v-col>
+        </v-row>
     </div>
 </template>
 
@@ -25,7 +67,7 @@ const props = defineProps<{
 
 const data = computed(() => props.data);
 
-const validationRules = computed(() => {
+const rules = computed(() => {
     return {
         name: {
             required,
@@ -35,9 +77,16 @@ const validationRules = computed(() => {
             required,
             maxLength: maxLength(255),
         },
-        description: {
+        imgSrc: {
+            required,
+        },
+        shortDescription: {
             required,
             maxLength: maxLength(500),
+        },
+        description: {
+            required,
+            maxLength: maxLength(5000),
         },
         duration: {
             required,
@@ -50,5 +99,13 @@ const validationRules = computed(() => {
     }
 });
 
-const v$ = useValidate(validationRules, data);
+const v$ = useValidate(rules, data);
+
+const validate = () => {
+    v$.value.$touch();
+
+    return !v$.value.$error;
+}
+
+defineExpose({ validate });
 </script>

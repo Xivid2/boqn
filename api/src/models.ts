@@ -3,11 +3,13 @@ import { ErgoAppointment } from "./ergo-appointments/models/ergo-appointments.mo
 import { User } from "./users/models/user.model";
 import { UserRefreshToken } from "./users/models/user-refresh-token.model";
 import { Massage } from "./massages/models/massage.model";
+import { Service } from "./services/service.model";
 
 export default [
     g_UserRole,
     ErgoAppointment,
     Massage,
+    Service,
     User,
     UserRefreshToken,
 ];
