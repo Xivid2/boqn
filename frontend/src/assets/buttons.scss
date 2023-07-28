@@ -28,7 +28,8 @@
         border-radius: 100%;
     }
 
-    &.is-delete {
+    &.is-delete,
+    &.is-update {
         font-size: 1.2em;
         line-height: 1.2em;
         width: 50px;
