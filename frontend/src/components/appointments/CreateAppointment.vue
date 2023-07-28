@@ -45,8 +45,7 @@
 import dayjs from "dayjs";
 import { ref, watch } from "vue";
 import { useHttp } from '@/plugins/api';
-import { useNotification } from "@kyvg/vue3-notification";
-const { notify } = useNotification();
+import { $error, $success } from "@/services/notify.service";
 import ErgoAppointmentService from '../../services/ergo-appointment.service';
 const appointment = new ErgoAppointmentService(useHttp);
 import DatePicker from '../DatePicker.vue';
@@ -101,16 +100,10 @@ const createAppointment = async () => {
     const { data, error } = await appointment.create(new Date(chosenDate.value));
 
     if (error) {
-        return notify({
-            type: "error",
-            text: error.response?.data?.message || "Something went wrong"
-        });
+        return $error(error.response?.data?.message || "Something went wrong");
     }
 
-    notify({
-        type: "success",
-        text: "Успешно записахте час"
-    });
+    $success("Успешно записахте час");
 
     await setUnavailableDates();
 

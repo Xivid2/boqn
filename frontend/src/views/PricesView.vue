@@ -44,8 +44,7 @@ import { ref } from 'vue';
 import { useHttp } from '@/plugins/api';
 import { type Massage, MassageService } from '@/services/massage.service';
 const massage = new MassageService(useHttp);
-import { useNotification } from '@kyvg/vue3-notification';
-const { notify } = useNotification();
+import { $error } from '@/services/notify.service';
 
 const massages = ref(ref<Massage[]>([]));
 
@@ -53,10 +52,7 @@ const getAll = async () => {
     const { data, error } = await massage.getAll();
 
     if (error) {
-        return notify({
-            type: "error",
-            text: error.response?.data?.message || "Something went wrong"
-        });
+        return $error(error.response?.data?.message || "Something went wrong");
     }
 
     massages.value = data;

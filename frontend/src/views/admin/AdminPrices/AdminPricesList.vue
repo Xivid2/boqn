@@ -41,7 +41,7 @@
                         <td class="text-center">{{ massage.price + 'лв.' }}</td>
                         <td class="text-center">
                             <v-button
-                                round
+                                isDelete
                                 @click="openDeleteModal(massage.id)"
                                 title="Изтрий"
                             >
@@ -70,8 +70,7 @@ import { ref } from 'vue';
 import { useHttp } from '@/plugins/api';
 import { type Massage, MassageService } from '@/services/massage.service';
 const massage = new MassageService(useHttp);
-import { useNotification } from '@kyvg/vue3-notification';
-const { notify } = useNotification();
+import { $error, $success } from '@/services/notify.service';
 
 const massages = ref(ref<Massage[]>([]));
 
@@ -89,16 +88,10 @@ const destroy = async (id: number) => {
     isDeleteModalOpen.value = false;
 
     if (error) {
-        return notify({
-            type: "error",
-            text: error.response?.data?.message || "Something went wrong"
-        });
+        return $error(error.response?.data?.message || "Something went wrong");
     }
 
-    notify({
-        type: "success",
-        text: "Изпешно изтриване"
-    });
+    $success("Изпешно изтриване");
 
     massageIdToDelete.value = 0;
 
@@ -109,10 +102,7 @@ const getAll = async () => {
     const { data, error } = await massage.getAll();
 
     if (error) {
-        return notify({
-            type: "error",
-            text: error.response?.data?.message || "Something went wrong"
-        });
+        $error(error.response?.data?.message || "Something went wrong");
     }
 
     massages.value = data;
