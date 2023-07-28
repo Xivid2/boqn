@@ -125,6 +125,14 @@ history: createWebHistory(import.meta.env.BASE_URL),
                             component: () => import('../views/admin/AdminServices/AdminServicesList.vue'),
                         },
                         {
+                            path: ':id',
+                            meta: {
+                                requiresAuth: true,
+                                canSee: (role: string) => admin.includes(role),
+                            },
+                            component: () => import('../views/admin/AdminServices/AdminServicesEdit.vue'),
+                        },
+                        {
                             path: 'create',
                             meta: {
                                 requiresAuth: true,

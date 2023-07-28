@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Service } from './service.model';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { QueryServicesDto } from './dto/query-services-dto';
+import { UpdateServiceDto } from './dto/update-service.dto';
 
 @Injectable()
 export class ServicesService {
@@ -10,6 +11,16 @@ export class ServicesService {
         @InjectModel(Service)
         private service: typeof Service,
     ) {}
+
+    async get(id: number): Promise<Service> {
+        const service = await this.service.findByPk(id);
+
+        if (!service) {
+            throw new NotFoundException();
+        }
+
+        return service;
+    }
 
     async getAll(queryServicesDto: QueryServicesDto): Promise<Service[]> {
         const where = { type: queryServicesDto.type };
@@ -21,6 +32,20 @@ export class ServicesService {
 
     async create(createServiceDto: CreateServiceDto): Promise<Service> {
         return this.service.create({ ...createServiceDto });
+    }
+
+    async update(id: number, updateServiceDto: UpdateServiceDto): Promise<Service> {
+        const service = await this.service.findByPk(id);
+
+        if (!service) {
+            throw new NotFoundException();
+        }
+
+        service.set(updateServiceDto);
+
+        await service.save();
+
+        return service;
     }
 
     async destroy(id: number): Promise<void> {

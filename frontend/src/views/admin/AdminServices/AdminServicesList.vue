@@ -40,13 +40,25 @@
                         <td class="text-center">{{ service.duration }}</td>
                         <td class="text-center">{{ service.price + 'лв.' }}</td>
                         <td class="text-center">
-                            <v-button
-                                isDelete
-                                @click="openDeleteModal(service.id)"
-                                title="Изтрий"
-                            >
-                                <fai icon="fa-solid fa-trash" class="fa-l" />
-                            </v-button>
+                            <div class="d-flex">
+                                <v-button
+                                    class="mr-2"
+                                    isUpdate
+                                    title="Обнови"
+                                >
+                                    <router-link :to="'/admin/services/' + service.id">
+                                        <fai icon="fa-solid fa-edit" />
+                                    </router-link>
+                                </v-button>
+    
+                                <v-button
+                                    isDelete
+                                    @click="openDeleteModal(service.id)"
+                                    title="Изтрий"
+                                >
+                                    <fai icon="fa-solid fa-trash" />
+                                </v-button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
