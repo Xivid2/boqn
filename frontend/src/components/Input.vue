@@ -1,13 +1,30 @@
 <template>
     <div class="mb-8">
-        <label class="input-wrapper">
+        <label class="textarea-wrapper" v-if="type === 'textarea'">
+            <textarea
+                :value="modelValue"
+                @input="emit('update:modelValue', $event.target.value)"
+                @blur="onBlur"
+                @focus="onFocus"
+                class="textarea"
+            ></textarea>
+        
+            <div
+                class="textarea-placeholder"
+                :class="{ active: isFocused || modelValue }"
+            >
+                <span>{{ text }}</span>
+            </div>
+        </label>
+
+        <label class="input-wrapper" v-else>
             <input
                 :type="type"
                 :value="modelValue"
                 @input="emit('update:modelValue', $event.target.value)"
                 @blur="onBlur"
                 @focus="onFocus"
-                class="mb-1"
+                class="input mb-1"
             />
         
             <div

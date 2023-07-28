@@ -1,10 +1,17 @@
 @import './variables.scss';
 
-.input-wrapper {
+.input-wrapper,
+.textarea-wrapper {
     position: relative;
 }
 
-.input-wrapper input {
+.textarea {
+    resize: none;
+    height: 10em;
+}
+
+.input-wrapper .input,
+.textarea-wrapper .textarea {
     border: 1px solid $primary-color;
     padding: 15px;
     border-radius: 4px;
@@ -25,10 +32,24 @@
     padding: 4px 8px;
 }
 
-.input-wrapper input:not([disabled]):focus~.input-placeholder,
+.input-wrapper .input:not([disabled]):focus~.input-placeholder,
+.textarea-wrapper .textarea:not([disabled]):focus~.textarea-placeholder,
 .active {
-    transform: scale(.75) translateY(-2.25em) translateX(-3.5em);
+    transform: scale(.75) translateY(-2.25em) translateX(-16%);
     color: $primary-color;
+}
+
+.textarea-wrapper .textarea-placeholder{
+    position: absolute;
+    bottom: 125px;
+    left: 8px;
+    transition: transform 250ms cubic-bezier(0.4,0,0.2,1),opacity 250ms cubic-bezier(0.4,0,0.2,1);
+    width: 100%;
+}
+
+.textarea-wrapper .textarea-placeholder span {
+    background-color: #ffffff;
+    padding: 4px 8px;
 }
 
 .input-error {
