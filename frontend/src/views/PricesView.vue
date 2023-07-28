@@ -24,7 +24,7 @@
     
                 <tbody>
                     <tr
-                        v-for="massage in massages"
+                        v-for="massage in services"
                         :key="massage.id"
                     >
                         <td>{{ massage.name }}</td>
@@ -42,20 +42,20 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useHttp } from '@/plugins/api';
-import { type Massage, MassageService } from '@/services/massage.service';
-const massage = new MassageService(useHttp);
+import { type Service, ServicesService } from '@/services/services.service';
+const service = new ServicesService(useHttp);
 import { $error } from '@/services/notify.service';
 
-const massages = ref(ref<Massage[]>([]));
+const services = ref(ref<Service[]>([]));
 
 const getAll = async () => {
-    const { data, error } = await massage.getAll();
+    const { data, error } = await service.getAll();
 
     if (error) {
         return $error(error.response?.data?.message || "Something went wrong");
     }
 
-    massages.value = data;
+    services.value = data;
 };
 
 getAll();

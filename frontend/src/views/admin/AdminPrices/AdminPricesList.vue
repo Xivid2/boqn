@@ -31,18 +31,18 @@
     
                 <tbody>
                     <tr
-                        v-for="massage in massages"
-                        :key="massage.id"
+                        v-for="service in services"
+                        :key="service.id"
                     >
-                        <td>{{ massage.name }}</td>
-                        <td>{{ massage.goal }}</td>
-                        <td>{{ massage.description }}</td>
-                        <td class="text-center">{{ massage.duration }}</td>
-                        <td class="text-center">{{ massage.price + 'лв.' }}</td>
+                        <td>{{ service.name }}</td>
+                        <td>{{ service.goal }}</td>
+                        <td>{{ service.description }}</td>
+                        <td class="text-center">{{ service.duration }}</td>
+                        <td class="text-center">{{ service.price + 'лв.' }}</td>
                         <td class="text-center">
                             <v-button
                                 isDelete
-                                @click="openDeleteModal(massage.id)"
+                                @click="openDeleteModal(service.id)"
                                 title="Изтрий"
                             >
                                 <fai icon="fa-solid fa-trash" class="fa-l" />
@@ -57,7 +57,7 @@
     <ConfirmDialog
         v-model="isDeleteModalOpen"
         @update:modelValue="isDeleteModalOpen = $event"
-        @onConfirm="destroy(massageIdToDelete)"
+        @onConfirm="destroy(serviceIdToDelete)"
         title="Изтриване на потребител"
         text="Сигурни ли сте че искате да изтриете този потребител?"
     >
@@ -68,22 +68,22 @@
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { ref } from 'vue';
 import { useHttp } from '@/plugins/api';
-import { type Massage, MassageService } from '@/services/massage.service';
-const massage = new MassageService(useHttp);
+import { type Service, ServicesService } from '@/services/services.service';
+const service = new ServicesService(useHttp);
 import { $error, $success } from '@/services/notify.service';
 
-const massages = ref(ref<Massage[]>([]));
+const services = ref(ref<Service[]>([]));
 
-const massageIdToDelete = ref(0);
+const serviceIdToDelete = ref(0);
 const isDeleteModalOpen = ref(false);
 
 const openDeleteModal = (id: number) => {
     isDeleteModalOpen.value = true;
-    massageIdToDelete.value = id;
+    serviceIdToDelete.value = id;
 };
 
 const destroy = async (id: number) => {
-    const { error } = await massage.destroy(id);
+    const { error } = await service.destroy(id);
 
     isDeleteModalOpen.value = false;
 
@@ -93,19 +93,19 @@ const destroy = async (id: number) => {
 
     $success("Изпешно изтриване");
 
-    massageIdToDelete.value = 0;
+    serviceIdToDelete.value = 0;
 
     await getAll();
 };
 
 const getAll = async () => {
-    const { data, error } = await massage.getAll();
+    const { data, error } = await service.getAll();
 
     if (error) {
         $error(error.response?.data?.message || "Something went wrong");
     }
 
-    massages.value = data;
+    services.value = data;
 };
 
 getAll();

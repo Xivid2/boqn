@@ -28,7 +28,7 @@ export class ServicesService {
 
     async getAll() {
         try {
-            const { data } = await this.http.get<Service[]>(`/massages`);
+            const { data } = await this.http.get<Service[]>(`/services`);
 
             return { data };
         } catch (error) {
