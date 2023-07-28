@@ -1,16 +1,21 @@
 <template>
-    <div class="input-container">
-        <label class="input-label">
+    <div class="mb-8">
+        <label class="input-wrapper">
             <input
                 :type="type"
-                class="input"
                 :value="modelValue"
                 @input="emit('update:modelValue', $event.target.value)"
                 @blur="onBlur"
                 @focus="onFocus"
+                class="mb-1"
             />
-    
-            <span class="input-text">{{ text }}</span>
+        
+            <div
+                class="input-placeholder"
+                :class="{ active: isFocused || modelValue }"
+            >
+                <span>{{ text }}</span>
+            </div>
         </label>
 
         <div v-if="models && models.$invalid">
@@ -85,6 +90,8 @@ const onFocus = () => {
 
 const onBlur = () => {
     if (!models.value) return;
+
+    isFocused.value = false;
 
     touchAndHandle();
 };
