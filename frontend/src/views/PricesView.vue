@@ -11,7 +11,7 @@
                             Цел
                         </th>
                         <th class="text-center">
-                            Описание
+                            Кратко описание
                         </th>
                         <th class="text-center">
                             Времетраене
@@ -24,14 +24,14 @@
     
                 <tbody>
                     <tr
-                        v-for="massage in services"
-                        :key="massage.id"
+                        v-for="service in services"
+                        :key="service.id"
                     >
-                        <td>{{ massage.name }}</td>
-                        <td>{{ massage.goal }}</td>
-                        <td>{{ massage.description }}</td>
-                        <td class="text-center">{{ massage.duration }}</td>
-                        <td class="text-center">{{ massage.price + 'лв.' }}</td>
+                        <td>{{ service.name }}</td>
+                        <td>{{ service.goal }}</td>
+                        <td>{{ service.shortDescription }}</td>
+                        <td class="text-center">{{ service.duration }}</td>
+                        <td class="text-center">{{ service.price + 'лв.' }}</td>
                     </tr>
                 </tbody>
             </table>

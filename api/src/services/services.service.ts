@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Service } from './service.model';
 import { CreateServiceDto } from './dto/create-service.dto';
@@ -11,7 +11,7 @@ export class ServicesService {
         private service: typeof Service,
     ) {}
 
-    async getAll(queryServicesDto: QueryServicesDto) {
+    async getAll(queryServicesDto: QueryServicesDto): Promise<Service[]> {
         const where = { type: queryServicesDto.type };
 
         if (!queryServicesDto.type) delete where.type;
@@ -19,7 +19,17 @@ export class ServicesService {
         return this.service.findAll({ where });
     }
 
-    async create(createServiceDto: CreateServiceDto) {
+    async create(createServiceDto: CreateServiceDto): Promise<Service> {
         return this.service.create({ ...createServiceDto });
+    }
+
+    async destroy(id: number): Promise<void> {
+        const service = await this.service.findByPk(id);
+
+        if (!service) {
+            throw new NotFoundException();
+        }
+
+        await service.destroy();
     }
 }

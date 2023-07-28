@@ -109,12 +109,12 @@ history: createWebHistory(import.meta.env.BASE_URL),
                     component: () => import('../views/admin/AdminPanel.vue')
                 },
                 {
-                    path: 'prices',
+                    path: 'services',
                     meta: {
                         requiresAuth: true,
                         canSee: (role: string) => admin.includes(role),
                     },
-                    component: () => import('../views/admin/AdminPrices/AdminPrices.vue'),
+                    component: () => import('../views/admin/AdminServices/AdminServices.vue'),
                     children: [
                         {
                             path: '',
@@ -122,7 +122,7 @@ history: createWebHistory(import.meta.env.BASE_URL),
                                 requiresAuth: true,
                                 canSee: (role: string) => admin.includes(role),
                             },
-                            component: () => import('../views/admin/AdminPrices/AdminPricesList.vue'),
+                            component: () => import('../views/admin/AdminServices/AdminServicesList.vue'),
                         },
                         {
                             path: 'create',
@@ -130,7 +130,7 @@ history: createWebHistory(import.meta.env.BASE_URL),
                                 requiresAuth: true,
                                 canSee: (role: string) => admin.includes(role),
                             },
-                            component: () => import('../views/admin/AdminPrices/AdminPricesCreate.vue'),
+                            component: () => import('../views/admin/AdminServices/AdminServicesCreate.vue'),
                         },
                     ],
                 },

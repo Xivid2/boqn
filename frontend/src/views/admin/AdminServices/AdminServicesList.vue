@@ -2,7 +2,7 @@
     <div class="mx-16 mb-8">
         <card>
             <v-button class="mb-4">
-                <router-link to="/admin/prices/create">
+                <router-link to="/admin/services/create">
                     Създай
                 </router-link>
             </v-button>
@@ -17,7 +17,7 @@
                             Цел
                         </th>
                         <th class="text-center">
-                            Описание
+                            Кратко описание
                         </th>
                         <th class="text-center">
                             Времетраене
@@ -36,7 +36,7 @@
                     >
                         <td>{{ service.name }}</td>
                         <td>{{ service.goal }}</td>
-                        <td>{{ service.description }}</td>
+                        <td>{{ service.shortDescription }}</td>
                         <td class="text-center">{{ service.duration }}</td>
                         <td class="text-center">{{ service.price + 'лв.' }}</td>
                         <td class="text-center">
@@ -58,8 +58,8 @@
         v-model="isDeleteModalOpen"
         @update:modelValue="isDeleteModalOpen = $event"
         @onConfirm="destroy(serviceIdToDelete)"
-        title="Изтриване на потребител"
-        text="Сигурни ли сте че искате да изтриете този потребител?"
+        title="Изтриване на услуга"
+        text="Сигурни ли сте че искате да изтриете тази услуга?"
     >
     </ConfirmDialog>
 </template>

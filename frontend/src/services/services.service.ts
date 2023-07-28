@@ -45,4 +45,14 @@ export class ServicesService {
             return { error };
         }
     }
+
+    async destroy(id: number) {
+        try {
+            const { data } = await this.http.delete(`/services/${id}`);
+
+            return { data };
+        } catch (error) {
+            return { error };
+        }
+    }
 }

@@ -57,12 +57,12 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { type CreateMassageDto } from '@/services/massage.service';
+import { type CreateServiceDto } from '@/services/services.service'
 import useValidate from '@vuelidate/core'
 import { required, maxLength, integer, decimal } from '@vuelidate/validators';
 
 const props = defineProps<{
-    data: CreateMassageDto
+    data: CreateServiceDto
 }>();
 
 const data = computed(() => props.data);

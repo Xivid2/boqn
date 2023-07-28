@@ -5,8 +5,8 @@
                 block
                 class="mt-2"
             >
-                <router-link to="/admin/prices">
-                    Ценоразпис
+                <router-link to="/admin/services">
+                    Услуги
                 </router-link>
             </v-button>
 

@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Post, Query, Body, ValidationPipe } from '@nestjs/common';
+import { Controller, UseGuards, Get, Post, Query, Body, ValidationPipe, Param, Delete } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { Roles } from 'src/common/decorators/role.decorator';
 import { Role } from 'src/common/constants/role';
@@ -27,5 +27,14 @@ export class ServicesController {
         @Body(new ValidationPipe({ transform: true })) createServiceDto: CreateServiceDto
     ) {
         return this.servicesService.create(createServiceDto);
+    }
+
+    @Roles(Role.ADMIN)
+    @UseGuards(JwtAccessTokenGuard, RolesGuard)
+    @Delete(':id')
+    async destroy(
+        @Param('id') id: number
+    ): Promise<void> {
+        return this.servicesService.destroy(id);
     }
 }

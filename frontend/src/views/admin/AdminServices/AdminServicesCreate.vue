@@ -6,7 +6,7 @@
                     Създаване на услуга
                 </h1>
 
-                <AdminPricesForm :data="createData" ref="form" />
+                <AdminServicesForm :data="createData" ref="form" />
 
                 <v-button
                     :disabled="isFormDisabled"
@@ -27,7 +27,9 @@ import { CreateServiceDto, ServicesService } from '@/services/services.service';
 import { useHttp } from '@/plugins/api';
 import { $error, $success } from '@/services/notify.service';
 const service = new ServicesService(useHttp);
-import AdminPricesForm from './AdminPricesForm.vue';
+import AdminServicesForm from './AdminServicesForm.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const genInitialData = () => {
     return {
@@ -55,12 +57,13 @@ const save = async () => {
     isFormDisabled.value = true;
 
     const { data, error } = await service.create({ ...createData.value });
-    console.log('data:', data)
 
     if (error) {
         return $error(error.response?.data?.message || "Something went wrong");
     }
 
-    $success('dadar');
+    $success('Успешно създаване');
+
+    router.push('/admin/services')
 }
 </script>
