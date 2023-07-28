@@ -2,7 +2,7 @@
     <button
         class="
             button
-            py-2
+            py-3
             px-3
         "
         :class="classes"
@@ -26,7 +26,11 @@ const props = defineProps({
     round: {
         type: Boolean,
         default: false,
-    }
+    },
+    isDelete: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const btnType = computed(() => props.variant);
@@ -35,5 +39,6 @@ const classes = [
     btnType.value,
     props.block ? 'block' : '',
     props.round ? 'round' : '',
+    props.isDelete ? 'is-delete' : '',
 ];
 </script>

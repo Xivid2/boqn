@@ -7,10 +7,26 @@
 @import './table.scss';
 @import './input.scss';
 
-*{
+.primary-color {
+    color: $primary-color;
+}
+
+.secondary-color {
+    color: $secondary-color;
+}
+
+* {
     margin:0;
     padding:0;
     box-sizing:border-box;
+}
+
+body {
+    font-size: 1em;
+}
+
+h1 {
+    font-size: 2em;
 }
 
 a {
@@ -39,6 +55,6 @@ a {
     height: auto
 }
 
-.login-form {
+.tight-box {
     width: 400px;
 }
