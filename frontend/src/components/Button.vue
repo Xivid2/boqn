@@ -31,6 +31,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    isUpdate: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const btnType = computed(() => props.variant);
@@ -40,5 +44,6 @@ const classes = [
     props.block ? 'block' : '',
     props.round ? 'round' : '',
     props.isDelete ? 'is-delete' : '',
+    props.isUpdate ? 'is-update': '',
 ];
 </script>
