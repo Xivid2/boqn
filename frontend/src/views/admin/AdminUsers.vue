@@ -31,7 +31,7 @@
                         <td class="text-center">{{ user.role.name }}</td>
                         <td class="text-center">
                             <v-button
-                                round
+                                isDelete
                                 @click="openDeleteModal(user.id)"
                                 title="Изтрий"
                             >
@@ -70,8 +70,7 @@ import { ref, watch } from 'vue';
 import { useHttp } from '@/plugins/api';
 import UserService from '@/services/user.service';
 const user = new UserService(useHttp);
-import { useNotification } from '@kyvg/vue3-notification';
-const { notify } = useNotification();
+import { $error, $success } from "@/services/notify.service";
 const limit = 10;
 
 const updatePage = (page: number) => {
@@ -102,16 +101,10 @@ const destroy = async (id: number) => {
     isDeleteModalOpen.value = false;
 
     if (error) {
-        return notify({
-            type: "error",
-            text: error.response?.data?.message || "Something went wrong"
-        });
+        return $error(error.response?.data?.message || "Something went wrong");
     }
 
-    notify({
-        type: "success",
-        text: "Изпешно изтриване"
-    });
+    $success("Изпешно изтриване");
 
     userIdToDelete.value = 0;
 

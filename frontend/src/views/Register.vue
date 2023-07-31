@@ -1,66 +1,46 @@
 <template>
-    <div class="d-flex align-center justify-center">
-        <v-sheet width="400" class="mx-auto mt-16">
-            <h1 class="block text-center">
-                Register
-            </h1>
+    <div class="wrapper">
+        <card class="d-flex justify-center mb-16">
+            <form @submit.prevent="register" class="tight-box">
+                <h1 class="mb-8 text-center">
+                    Регистрация
+                </h1>
+                <b-input
+                    v-model="v$.firstName.$model"
+                    :models="v$.firstName"
+                    text="First name"
+                >
+                </b-input>
 
-            <v-form @submit.prevent="register" ref="form" :disabled="isFormDisabled">
-                <v-text-field
-                    variant="underlined"
-                    v-model="firstName"
-                    label="First name"
-                    :rules="[
-                        v => !!v || 'First name is required',
-                        v => (v && v.length >= 3) || 'First name must have 3+ characters',
-                        v => (v && v.length <= 50) || 'First name must have less than 50 characters'
-                    ]"
-                ></v-text-field>
+                <b-input
+                    v-model="v$.lastName.$model"
+                    :models="v$.lastName"
+                    text="Last name"
+                >
+                </b-input>
 
-                <v-text-field
-                    variant="underlined"
-                    v-model="lastName"
-                    label="Last name"
-                    :rules="[
-                        v => !!v || 'Last name is required',
-                        v => (v && v.length >= 3) || 'Last name must have 3+ characters',
-                        v => (v && v.length <= 50) || 'Last name must have less than 50 characters'
-                    ]"
-                ></v-text-field>
+                <b-input
+                    v-model="v$.email.$model"
+                    :models="v$.email"
+                    text="Email"
+                >
+                </b-input>
 
-                <v-text-field
-                    variant="underlined"
-                    v-model="email"
-                    label="Email"
-                    :rules="[
-                        v => !!v || 'Email is required',
-                        v => (v && v.length >= 3) || 'Email must have 3+ characters',
-                        v => (v && v.length <= 50) || 'Email must have less than 255 characters',
-                        v => /.+@.+/.test(v) || 'E-mail must be valid' 
-                    ]"
-                ></v-text-field>
-
-                <v-text-field
-                    variant="underlined"
+                <b-input
+                    v-model="v$.password.$model"
+                    :models="v$.password"
                     type="password"
-                    v-model="password"
-                    label="password"
-                    :rules="[
-                        v => !!v || 'Password is required',
-                        v => (v && v.length >= 8) || 'Password must have 8+ characters',
-                        v => (v && v.length <= 50) || 'Password must have less than 50 characters'
-                    ]"
-                ></v-text-field>
+                    text="Password"
+                >
+                </b-input>
 
-                <v-text-field
-                    variant="underlined"
+                <b-input
+                    v-model="v$.confirmPassword.$model"
+                    :models="v$.confirmPassword"
                     type="password"
-                    v-model="confirmPassword"
-                    label="confirm password"
-                    :rules="[
-                        v => v === password || 'Passwords do not match'
-                    ]"
-                ></v-text-field>
+                    text="Confirm password"
+                >
+                </b-input>
 
                 <v-button
                     :disabled="isFormDisabled"
@@ -68,61 +48,87 @@
                     block
                     class="mt-2"
                 >
-                    SIGN UP
+                    Регистрация
                 </v-button>
-            </v-form>
-        </v-sheet>
+            </form>
+        </card>
     </div>
 </template>
 
 <script lang="ts" setup>
-    import { ref } from "vue";
+    import { ref, reactive, computed } from "vue";
     import { useRouter } from 'vue-router'
     import AuthService from "../services/auth.service";
     import { useHttp } from '../plugins/api';
-    import { useNotification } from "@kyvg/vue3-notification";
+    import { $error, $success } from '../services/notify.service';
+    import useValidate from '@vuelidate/core'
+    import { required, maxLength, minLength, email, sameAs } from '@vuelidate/validators';
 
-    const form = ref(null);
     const isFormDisabled = ref(false);
-    const firstName = ref("");
-    const lastName = ref("");
-    const email = ref("");
-    const password = ref("");
-    const confirmPassword = ref("");
-
-    const { notify}  = useNotification();
 
     const auth = new AuthService(useHttp);
     const router = useRouter();
 
-    const register = async () => {
-        const { valid: isValid } = await form.value.validate();
+    const state = reactive({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
 
-        if (!isValid) return;
+    const rules = computed(() => {
+        return {
+            firstName: {
+                required,
+                minLength: minLength(3),
+                maxLength: maxLength(50),
+            },
+            lastName: {
+                required,
+                minLength: minLength(3),
+                maxLength: maxLength(50),
+            },
+            email: {
+                email,
+                required,
+                maxLength: maxLength(255),
+            },
+            password: {
+                required,
+                maxLength: maxLength(50),
+                minLength: minLength(8),
+            },
+            confirmPassword: {
+                sameAsPassword: sameAs(state.password),
+            }
+        };
+    });
+
+    const v$ = useValidate(rules, state);
+
+    const register = async () => {
+        v$.value.$touch();
+
+        if (v$.value.$error) return;
 
         isFormDisabled.value = true;
 
         const { data, error } = await auth.register({
-            firstName: firstName.value,
-            lastName: lastName.value,
-            email: email.value,
-            password: password.value,
-            confirmPassword: confirmPassword.value,
+            firstName: state.firstName,
+            lastName: state.lastName,
+            email: state.email,
+            password: state.password,
+            confirmPassword: state.confirmPassword,
         });
 
         if (error) {
             isFormDisabled.value = false;
 
-            return notify({
-                type: "error",
-                text: error.response?.data?.message || "Something went wrong",
-            });
+            return $error(error.response?.data?.message || "Something went wrong");
         }
 
-        notify({
-            type: "success",
-            text: "You registered successfully!",
-        });
+        $success("You registered successfully!");
 
         router.push('/login');
     };

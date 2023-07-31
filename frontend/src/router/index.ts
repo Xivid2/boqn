@@ -26,21 +26,75 @@ history: createWebHistory(import.meta.env.BASE_URL),
                 canSee: () => true
             }
         },
-        // {
-        //     path: '/services',
-        //     component: () => import('../views/ServicesView.vue'),
-        //     meta: {
-        //         requiresAuth: false,
-        //         canSee: () => true
-        //     }
-        // },
+        {
+            path: '/services',
+            redirect: '/services/massages',
+            component: () => import('../views/services/ServicesView.vue'),
+            meta: {
+                requiresAuth: false,
+                canSee: () => true
+            },
+            children: [
+                {
+                    path: 'massages',
+                    meta: {
+                        requiresAuth: false,
+                        canSee: () => true
+                    },
+                    component: () => import('../views/services/ServicesMassages.vue'),
+                },
+                {
+                    path: 'ergo',
+                    meta: {
+                        requiresAuth: false,
+                        canSee: () => true
+                    },
+                    component: () => import('../views/services/ServicesErgo.vue'),
+                },
+                {
+                    path: 'logo',
+                    meta: {
+                        requiresAuth: false,
+                        canSee: () => true
+                    },
+                    component: () => import('../views/services/ServicesLogo.vue'),
+                },
+            ],
+        },
         {
             path: '/prices',
-            component: () => import('../views/PricesView.vue'),
+            redirect: '/prices/massages',
+            component: () => import('../views/prices/PricesView.vue'),
             meta: {
                 requiresAuth: false,
                 canSee: () => true,
-            }
+            },
+            children: [
+                {
+                    path: 'massages',
+                    meta: {
+                        requiresAuth: false,
+                        canSee: () => true
+                    },
+                    component: () => import('../views/prices/PricesMassages.vue'),
+                },
+                {
+                    path: 'ergo',
+                    meta: {
+                        requiresAuth: false,
+                        canSee: () => true
+                    },
+                    component: () => import('../views/prices/PricesErgo.vue'),
+                },
+                {
+                    path: 'logo',
+                    meta: {
+                        requiresAuth: false,
+                        canSee: () => true
+                    },
+                    component: () => import('../views/prices/PricesLogo.vue'),
+                },
+            ],
         },
         {
             path: '/appointment',
@@ -107,6 +161,40 @@ history: createWebHistory(import.meta.env.BASE_URL),
                         canSee: (role: string) => admin.includes(role),
                     },
                     component: () => import('../views/admin/AdminPanel.vue')
+                },
+                {
+                    path: 'services',
+                    meta: {
+                        requiresAuth: true,
+                        canSee: (role: string) => admin.includes(role),
+                    },
+                    component: () => import('../views/admin/AdminServices/AdminServices.vue'),
+                    children: [
+                        {
+                            path: '',
+                            meta: {
+                                requiresAuth: true,
+                                canSee: (role: string) => admin.includes(role),
+                            },
+                            component: () => import('../views/admin/AdminServices/AdminServicesList.vue'),
+                        },
+                        {
+                            path: ':id',
+                            meta: {
+                                requiresAuth: true,
+                                canSee: (role: string) => admin.includes(role),
+                            },
+                            component: () => import('../views/admin/AdminServices/AdminServicesEdit.vue'),
+                        },
+                        {
+                            path: 'create',
+                            meta: {
+                                requiresAuth: true,
+                                canSee: (role: string) => admin.includes(role),
+                            },
+                            component: () => import('../views/admin/AdminServices/AdminServicesCreate.vue'),
+                        },
+                    ],
                 },
                 {
                     path: 'appointments',

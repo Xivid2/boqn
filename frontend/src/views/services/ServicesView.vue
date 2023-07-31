@@ -1,0 +1,33 @@
+<template>
+    <nav class="tabs mt-16">
+        <div class="d-flex justify-center">
+            <RouterLink
+                to="/services/massages"
+                class="tab mr-16"
+            >
+                Масажи
+            </RouterLink>
+
+            <RouterLink
+                to="/services/ergo"
+                class="tab mx-16"
+            >
+                Ерготерапия
+            </RouterLink>
+
+            <RouterLink
+                to="/services/logo"
+                class="tab ml-16"
+            >
+                Логопедия
+            </RouterLink>
+        </div>
+    </nav>
+
+
+    <RouterView />
+</template>
+
+<script lang="ts" setup>
+import { RouterLink, RouterView } from 'vue-router';
+</script>

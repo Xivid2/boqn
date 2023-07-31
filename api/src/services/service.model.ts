@@ -1,13 +1,16 @@
 import { Column, Model, Table, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
 
 @Table({
-    tableName: "massages",
+    tableName: "services",
 })
-export class Massage extends Model {
+export class Service extends Model {
     @PrimaryKey
     @AutoIncrement
     @Column
     id: number
+
+    @Column
+    type: string
 
     @Column
     name: string
@@ -16,7 +19,13 @@ export class Massage extends Model {
     goal: string
 
     @Column
+    imgSrc: string
+
+    @Column
     description: string
+
+    @Column
+    shortDescription: string
 
     @Column
     duration: number

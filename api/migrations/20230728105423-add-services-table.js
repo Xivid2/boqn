@@ -1,0 +1,227 @@
+'use strict';
+
+module.exports = {
+    up: async (queryInterface, Sequelize) => {
+        return queryInterface.sequelize.transaction(async transaction => {
+            await queryInterface.createTable("services", {
+                id: {
+                    type: Sequelize.INTEGER,
+                    autoIncrement: true,
+                    allowNull: false,
+                    primaryKey: true,
+                },
+                type: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
+                name: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
+                imgSrc: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
+                goal: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
+                shortDescription: {
+                    type: Sequelize.TEXT,
+                    allowNull: false,
+                },
+                description: {
+                    type: Sequelize.TEXT,
+                    allowNull: false,
+                },
+                duration: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                },
+                price: {
+                    type: Sequelize.NUMERIC(20, 2),
+                    allowNull: false,
+                },
+                createdAt: {
+                    type: Sequelize.DATE,
+                    allowNull: false,
+                },
+                updatedAt: {
+                    type: Sequelize.DATE,
+                    allowNull: false,
+                },
+            }, { transaction });
+
+            await queryInterface.addConstraint('services', {
+                fields: ["type", "name"],
+                type: 'unique',
+                transaction
+            });
+
+            await queryInterface.bulkInsert(
+                'services',
+                [
+                    {
+                        type: "MASSAGE",
+                        name: "Класически",
+                        goal: "Премахване на умората и стреса",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Класическият масаж отпуска напрежението в мускулите и засилва обменните процеси, повишава циркулацията на кръвта.",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 60,
+                        price: '75.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Релаксиращ",
+                        goal: "Премахване на стреса, успокояване на нервната система",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Помага за подобряването на съня, облекчава схванатите мускули, елиминира депресията, подобрява метаболизма, повишава доброто настроение.",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 60,
+                        price: '75.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Възстановителен",
+                        goal: "Облекчаване на болката, освобождаване на мускулно напрежение",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Облекчаване на болките, изчистване на токсините, премахване на стреса, нормализиране на обмяната на веществата. Възвръща свежестта и тонуса.",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 60,
+                        price: '75.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Регенериращ",
+                        goal: "Ефективно детоксикиране, възстановяване на силите и пълен рестарт на тялото. Специално внимание върху съединителната тъкан и фасцилията",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Този масаж е леко по-силен, но ще подобри циркулацията на енергията, кръвоносната и лимфната система, ще освободи тялото Ви от блокажите в меридианите и ще премахне напрежението, стреса и болката.",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 60,
+                        price: '80.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Дълбокотъканен",
+                        goal: "Релаксация на мускули, стажи и сухожилия",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Балансира нервната система и подобрява лимфопотока. Ефективен при хронично стегнати или болезнени мускули, възстановяване след контузии, постурални проблеми.",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 60,
+                        price: '80.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Спортен",
+                        goal: "Подобряване на обмяната, премахване на напрежението. Подготвителен, интензивен, възстановителен",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Силен, интензивен масаж - премахва умората, намалява напрежението, подобрява гъвкавостта на мускули, стави, сухожилия. Подобрява кръвообръщението.",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 60,
+                        price: '80.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Специализиран терапевтичен при болки в краката и стъпалата",
+                        goal: "Свободно движение на и лекота, без болка и напрежение в краката и стъпалата",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Елиминира болката, премахва тежестта, компресията, напрежението и сковаността. Подобрява лимфния поток, мобилността и обхвата на движение. Облекчава състояние на болка при плоскостъпие - дюстабан, подагра, плантарен фасциит, синдром на тежки крака, травми.",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 60,
+                        price: '80.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Терапия с вендузи",
+                        goal: "Изчиства от токсини, освобождава блокажите в тялото",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Подходящ при настинка, бронхит, главоболие, болки в гърба, проблеми с кръста, болки във врата, рамената, плексит, неврит, напрежение, безсъние.",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 60,
+                        price: '80.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Шиацу масаж",
+                        goal: "Балансиране на енергията, освобождаване на напрежението, успокояване на съзнанието",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Шиацу елиминира сковаността и хроничното напрежение. Облекчава болките в мускулите и подобрява тяхната еластичност. Облекчава болките в кръста, врата и раменете. Повлиява благоприятно болките в ставите и увеличава обхвата на движение. Подобрява координацията.",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 60,
+                        price: '75.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Бюти терапия",
+                        goal: "Цялостна грижа от пръстите на краката до върха на главата. Масаж на цяло тяло, масаж на стъпалата и масаж на лице. Подмладява, освежава, стяга и изглажда кожата на тялото и лицето",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Кадифена грижа за кожата на тялото и лицето с анти-бръчки ефект за стягане, подмладяване, хидратиране.",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 90,
+                        price: '150.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Масаж на лице, шия, доколте и ръце",
+                        goal: "Кожата на деколтето, шията и лицето е по-нежна и податлива на влияния, затова има нужда от по-внимателна и постоянна грижа, за да изглежда млада, сияйна и красива",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Приятен и тонизиращ масаж на лице, шия и деколте. Козметичният масаж на лицето тонизира и разкрасява кожата, карайки я да засияе отново в най-добрия си вид.",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 60,
+                        price: '85.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Масаж на стъпала",
+                        goal: "Цялостна грижа за тонуса на стъпалата",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Подобряване на работата на вътрешните органи. Премахване на отложените натрупвания и токсини в стъпалата. Работа върху втвърдявания и натрупана млечна киселина. Стимулира вътрешната енергия и премахва блокажите",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 30,
+                        price: '60.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                    {
+                        type: "MASSAGE",
+                        name: "Частичен масаж",
+                        goal: "Премахване локално болката и схванатите мускули",
+                        imgSrc: 'http://i.imgur.com/0tRMhmx.png',
+                        shortDescription: "Видове масажи: частичен масаж на гръб, масажна яка, масажен сегмент - горни крайници, масажен сегмент - долни крайници, локален масаж - корем (и гърди).",
+                        description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam exercitationem ducimus, hic modi perspiciatis molestias nulla illo consectetur rem soluta perferendis ipsa vitae est? Eaque aliquid doloremque eius accusamus assumenda? Incidunt deserunt rerum et maxime dolor, saepe sint voluptatibus at maiores fugiat blanditiis perferendis quod velit sunt adipisci. Recusandae minus soluta, tempora sit earum omnis quidem eius fuga nihil inventore? Quod cupiditate in unde repudiandae, labore repellendus consequuntur animi possimus quae nihil perspiciatis voluptate illum a et autem, pariatur velit assumenda nostrum recusandae corrupti. Iste quam nobis suscipit nemo impedit. Nemo incidunt autem vero exercitationem veritatis corporis quae ea minima, illum esse ullam quia cumque quam nesciunt at, molestiae adipisci consectetur molestias unde quos deleniti. Veniam nulla iure quod necessitatibus? Odio optio, ipsam mollitia nulla sunt non expedita laboriosam sit, libero explicabo earum recusandae! Voluptate laborum mollitia ducimus corporis tenetur soluta alias quisquam cum, dolorum ipsa aliquam officiis, veritatis eveniet. Laudantium aut blanditiis corrupti sunt facilis, aliquam dolorum mollitia, architecto repellendus consequuntur exercitationem natus dolor! Rem voluptate suscipit repellat excepturi iusto incidunt nam nulla pariatur consequatur quia culpa, distinctio eum. Iure eos inventore fugit, tempora magni harum, assumenda recusandae nesciunt odio soluta asperiores alias in numquam quasi corrupti voluptate cupiditate dolore voluptatibus, facere rem illum corporis! Ducimus blanditiis ex pariatur! Reprehenderit adipisci, aliquid quidem dolore incidunt dolorem a praesentium, facere, laboriosam recusandae sapiente ex necessitatibus quibusdam sed fugit illo in totam. Quod quaerat officiis nisi non, sed ratione consequatur explicabo. Vitae itaque reprehenderit ab quis pariatur ipsam rerum, voluptates saepe assumenda mollitia quaerat tempore, dolores maxime iure molestias ea, nisi natus fugiat? Blanditiis porro corrupti itaque alias eos dolorum at? Voluptatibus rem dicta voluptate nisi aliquid inventore. At rerum ducimus excepturi quam est voluptatem repudiandae quidem nam soluta ipsum necessitatibus incidunt maiores praesentium deserunt, molestias cupiditate. Laborum ducimus explicabo eum.`,
+                        duration: 30,
+                        price: '50.00',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                    },
+                ],
+                { transaction }
+            );
+        });
+    },
+
+    down: async (queryInterface, Sequelize) => { }
+};

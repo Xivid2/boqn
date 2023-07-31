@@ -1,6 +1,5 @@
 import { Controller, Req, Res, Get, Post, Body, UseGuards, Param, Delete, Query, ValidationPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { JwtAccessTokenGuard } from 'src/auth/guards/jwt-auth-access-token.guard';
 import { Role } from 'src/common/constants/role';
