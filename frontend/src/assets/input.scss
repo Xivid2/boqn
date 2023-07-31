@@ -1,55 +1,53 @@
 @import './variables.scss';
 
-.input-wrapper,
-.textarea-wrapper {
+.input-wrapper {
     position: relative;
+
+    .input, .textarea {
+        border: 1px solid $primary-color;
+        padding: 15px;
+        border-radius: 4px;
+        width: 100%;
+        outline: none;
+    }
+
+    .input-placeholder{
+        position: absolute;
+        bottom: -3px;
+        left: 8px;
+        transition: transform 250ms cubic-bezier(0.4,0,0.2,1),opacity 250ms cubic-bezier(0.4,0,0.2,1);
+        width: 100%;
+
+        span {
+            background-color: #ffffff;
+            padding: 4px 8px;
+        }
+    }
+
+    .textarea-placeholder{
+        position: absolute;
+        bottom: 125px;
+        left: 8px;
+        transition: transform 250ms cubic-bezier(0.4,0,0.2,1),opacity 250ms cubic-bezier(0.4,0,0.2,1);
+        width: 100%;
+
+        span {
+            background-color: #ffffff;
+            padding: 4px 8px;
+        }
+    }
+
+    .input:not([disabled]):focus~.input-placeholder,
+    .textarea:not([disabled]):focus~.textarea-placeholder,
+    .active {
+        transform: scale(.75) translateY(-2.25em) translateX(-16%);
+        color: $primary-color;
+    }
 }
 
 .textarea {
     resize: none;
     height: 10em;
-}
-
-.input-wrapper .input,
-.textarea-wrapper .textarea {
-    border: 1px solid $primary-color;
-    padding: 15px;
-    border-radius: 4px;
-    width: 100%;
-    outline: none;
-}
-
-.input-wrapper .input-placeholder{
-    position: absolute;
-    bottom: -3px;
-    left: 8px;
-    transition: transform 250ms cubic-bezier(0.4,0,0.2,1),opacity 250ms cubic-bezier(0.4,0,0.2,1);
-    width: 100%;
-}
-
-.input-wrapper .input-placeholder span {
-    background-color: #ffffff;
-    padding: 4px 8px;
-}
-
-.input-wrapper .input:not([disabled]):focus~.input-placeholder,
-.textarea-wrapper .textarea:not([disabled]):focus~.textarea-placeholder,
-.active {
-    transform: scale(.75) translateY(-2.25em) translateX(-16%);
-    color: $primary-color;
-}
-
-.textarea-wrapper .textarea-placeholder{
-    position: absolute;
-    bottom: 125px;
-    left: 8px;
-    transition: transform 250ms cubic-bezier(0.4,0,0.2,1),opacity 250ms cubic-bezier(0.4,0,0.2,1);
-    width: 100%;
-}
-
-.textarea-wrapper .textarea-placeholder span {
-    background-color: #ffffff;
-    padding: 4px 8px;
 }
 
 .input-error {

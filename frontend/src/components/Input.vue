@@ -1,6 +1,6 @@
 <template>
     <div class="mb-8">
-        <label class="textarea-wrapper" v-if="type === 'textarea'">
+        <label class="input-wrapper" v-if="type === 'textarea'">
             <textarea
                 :value="modelValue"
                 @input="emit('update:modelValue', $event.target.value)"
@@ -15,6 +15,12 @@
             >
                 <span>{{ text }}</span>
             </div>
+        </label>
+
+        <label class="input-wrapper" v-else-if="type === 'select'">
+            <select class="input select">
+                <slot></slot>
+            </select>
         </label>
 
         <label class="input-wrapper" v-else>

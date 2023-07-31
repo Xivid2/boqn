@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-16 mb-8">
+    <div class="mx-16 my-8">
         <card>
             <table>
                 <thead>
@@ -24,7 +24,7 @@
     
                 <tbody>
                     <tr
-                        v-for="service in services"
+                        v-for="service in massages"
                         :key="service.id"
                     >
                         <td>{{ service.name }}</td>
@@ -40,23 +40,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useHttp } from '@/plugins/api';
-import { type Service, ServicesService } from '@/services/services.service';
-const service = new ServicesService(useHttp);
-import { $error } from '@/services/notify.service';
+import { useServicesStore } from '@/stores/services.store';
+const servicesStore = useServicesStore();
 
-const services = ref(ref<Service[]>([]));
-
-const getAll = async () => {
-    const { data, error } = await service.getAll();
-
-    if (error) {
-        return $error(error.response?.data?.message || "Something went wrong");
-    }
-
-    services.value = data;
-};
-
-getAll();
+const massages = servicesStore.massages;
 </script>

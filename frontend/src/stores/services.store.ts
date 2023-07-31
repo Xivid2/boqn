@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { type Service, ServicesService } from '@/services/services.service';
+import { ServiceType } from '@/enums/service-type.enum';
 
 interface ServicesState {
     services: Service[];
@@ -15,8 +16,14 @@ export const useServicesStore = (options = {}) => {
         }),
         getters: {
             massages(): Service[] {
-                return this.services.filter(service => service.type === "MASSAGE");
-            }
+                return this.services.filter(service => service.type === ServiceType.MASSAGE);
+            },
+            logos(): Service[] {
+                return this.services.filter(service => service.type === ServiceType.LOGO);
+            },
+            ergos(): Service[] {
+                return this.services.filter(service => service.type === ServiceType.ERGO);
+            },
         },
         actions: {
             resetServices() {

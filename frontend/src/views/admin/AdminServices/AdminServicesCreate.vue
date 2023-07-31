@@ -29,11 +29,12 @@ import { $error, $success } from '@/services/notify.service';
 const service = new ServicesService(useHttp);
 import AdminServicesForm from './AdminServicesForm.vue';
 import { useRouter } from 'vue-router';
+import { ServiceType } from '@/enums/service-type.enum';
 const router = useRouter();
 
 const genInitialData = () => {
     return {
-        type: 'ERGO',
+        type: ServiceType.MASSAGE,
         name: '',
         goal: '',
         imgSrc: '',
@@ -56,7 +57,8 @@ const save = async () => {
 
     isFormDisabled.value = true;
 
-    const { data, error } = await service.create({ ...createData.value });
+    console.log('createData.value:', createData.value)
+    const { error } = await service.create({ ...createData.value });
 
     if (error) {
         return $error(error.response?.data?.message || "Something went wrong");

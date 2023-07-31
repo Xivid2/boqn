@@ -28,21 +28,13 @@ history: createWebHistory(import.meta.env.BASE_URL),
         },
         {
             path: '/services',
+            redirect: '/services/massages',
             component: () => import('../views/services/ServicesView.vue'),
             meta: {
                 requiresAuth: false,
                 canSee: () => true
             },
             children: [
-                // {
-                //     path: '',
-                //     meta: {
-                //         requiresAuth: false,
-                //         canSee: () => true
-                //     },
-                //     component: () => import('../views/services/ServicesView.vue'),
-                //     alias: '/services/messages',
-                // },
                 {
                     path: 'massages',
                     meta: {
@@ -71,11 +63,38 @@ history: createWebHistory(import.meta.env.BASE_URL),
         },
         {
             path: '/prices',
-            component: () => import('../views/PricesView.vue'),
+            redirect: '/prices/massages',
+            component: () => import('../views/prices/PricesView.vue'),
             meta: {
                 requiresAuth: false,
                 canSee: () => true,
-            }
+            },
+            children: [
+                {
+                    path: 'massages',
+                    meta: {
+                        requiresAuth: false,
+                        canSee: () => true
+                    },
+                    component: () => import('../views/prices/PricesMassages.vue'),
+                },
+                {
+                    path: 'ergo',
+                    meta: {
+                        requiresAuth: false,
+                        canSee: () => true
+                    },
+                    component: () => import('../views/prices/PricesErgo.vue'),
+                },
+                {
+                    path: 'logo',
+                    meta: {
+                        requiresAuth: false,
+                        canSee: () => true
+                    },
+                    component: () => import('../views/prices/PricesLogo.vue'),
+                },
+            ],
         },
         {
             path: '/appointment',

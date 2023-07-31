@@ -1,6 +1,17 @@
 <template>
     <div>
         <b-input
+            text="Тип"
+            type="select"
+            v-model="v$.type.$model"
+            :models="v$.type"
+        >
+            <option :value="ServiceType.MASSAGE">Massage</option>
+            <option :value="ServiceType.ERGO">Ergo</option>
+            <option :value="ServiceType.LOGO">Logo</option>
+        </b-input>
+
+        <b-input
             text="Име"
             v-model="v$.name.$model"
             :models="v$.name"
@@ -60,6 +71,7 @@ import { computed } from 'vue';
 import { type CreateServiceDto } from '@/services/services.service'
 import useValidate from '@vuelidate/core'
 import { required, maxLength, integer, decimal } from '@vuelidate/validators';
+import { ServiceType } from '@/enums/service-type.enum';
 
 const props = defineProps<{
     data: CreateServiceDto
@@ -69,6 +81,9 @@ const data = computed(() => props.data);
 
 const rules = computed(() => {
     return {
+        type: {
+            required,
+        },
         name: {
             required,
             maxLength: maxLength(100),
