@@ -2,40 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './fonts.scss';
+@import './common.scss';
 @import './buttons.scss';
 @import './card.scss';
 @import './table.scss';
 @import './input.scss';
 @import './tabs.scss';
 @import './services.scss';
-
-.primary-color {
-    color: $primary-color;
-}
-
-.secondary-color {
-    color: $secondary-color;
-}
-
-* {
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body {
-    font-size: 1em;
-}
-
-h1 {
-    font-size: 2em;
-}
-
-h3 {
-    font-weight: bold;
-    font-size: 1.5em;
-    margin-bottom: 1em;
-}
 
 .router-link-exact-active,
 .router-link-active {
@@ -58,16 +32,7 @@ a {
     text-align: center;
 }
 
-.wrapper {
-    max-width: 992px;
-    margin: 0 auto;
-}
-
 .image {
     width: 400px;
     height: auto
-}
-
-.tight-box {
-    width: 400px;
 }

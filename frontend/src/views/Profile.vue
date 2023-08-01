@@ -1,27 +1,29 @@
 <template>
     <div class="wrapper">
-        <card>
-            <h1 class="block text-center">
-                Акаунт
-            </h1>
+        <card class="d-flex justify-center py-8">
+            <div class="tight-box">
+                <h1 class="block text-center">
+                    Акаунт
+                </h1>
+        
+                <v-button
+                    v-if="isAdmin"
+                    block
+                    class="mt-8"
+                >
+                    <router-link to="/admin">
+                        Админски панел
+                    </router-link>
+                </v-button>
     
-            <v-button
-                v-if="isAdmin"
-                block
-                class="mt-8"
-            >
-                <router-link to="/admin">
-                    ADMIN PANEL
-                </router-link>
-            </v-button>
-
-            <v-button
-                class="mt-16"
-                block
-                @click="logout"
-            >
-                LOGOUT
-            </v-button>
+                <v-button
+                    class="mt-16"
+                    block
+                    @click="logout"
+                >
+                    Изход
+                </v-button>
+            </div>
         </card>
     </div>
 </template>

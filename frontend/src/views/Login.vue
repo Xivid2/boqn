@@ -1,41 +1,43 @@
 <template>
     <div class="wrapper">
         <card class="d-flex justify-center">
-            <form @submit.prevent="login" class="tight-box">
-                <h1 class="mb-16 text-center">
+            <form @submit.prevent="login" class="tight-box my-8">
+                <h1 class="text-center">
                     Вписване
                 </h1>
 
                 <b-input
                     v-model="v$.email.$model"
                     :models="v$.email"
-                    text="email"
-                >
-                </b-input>
+                    text="Имейл"
+                />
 
                 <b-input
                     v-model="v$.password.$model"
                     :models="v$.password"
-                    text="password"
+                    text="Парола"
                     type="password"
-                >
-                </b-input>
+                />
 
-                <a href="#" class="text-body-2 font-weight-regular">Forgot Password?</a>
+                <a href="#">
+                    <h5>
+                        Забравена парола?
+                    </h5>
+                </a>
 
                 <v-button
                     type="submit"
                     class="mt-4"
                     block
                 >
-                    SIGN IN
+                    Вход
                 </v-button>
 
                 <p class="text-body-2 mt-4">
-                    Don't have an account?
+                    Нямате акаунт?
                     <span class="primary-color">
                         <router-link to="/register">
-                            Sign Up
+                            Регистрация
                         </router-link>
                     </span>
                 </p>

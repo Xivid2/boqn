@@ -1,0 +1,28 @@
+@import './variables.scss';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.primary-color {
+    color: $primary-color;
+}
+
+.secondary-color {
+    color: $secondary-color;
+}
+
+.wrapper {
+    width: min(90%, 992px);
+    margin: 0 auto;
+}
+
+.tight-box {
+    width: 400px;
+}
+
+.shadowed:hover {
+    box-shadow: 0 2px 4px 0 $primary-color;
+}
