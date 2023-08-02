@@ -1,17 +1,23 @@
 <template>
     <a
         :href="props.src"
-        class="shadowed"
+        class="text-center"
+        @mouseover="applyShadow = true"
+        @mouseout="applyShadow = false"
     >
         <p class="mb-2">
             <fai :icon="props.icon" class="fa-xl" />
         </p>
 
-        {{ props.text }}
+        <span :class="{ shadowed: applyShadow }">
+            {{ props.text }}
+        </span>
     </a>
 </template>
 
-<script lant="ts" setup>
+<script lang="ts" setup>
+    import { ref } from 'vue';
+
     const props = defineProps({
         src: {
             type: String,
@@ -26,4 +32,6 @@
             required: true,
         }
     });
+
+    const applyShadow = ref(false);
 </script>

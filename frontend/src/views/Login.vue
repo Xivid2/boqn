@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <card class="d-flex justify-center">
+        <card class="d-flex justify-center mb-8">
             <form @submit.prevent="login" class="tight-box my-8">
                 <h1 class="text-center">
                     Вписване

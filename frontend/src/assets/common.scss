@@ -20,9 +20,9 @@
 }
 
 .tight-box {
-    width: 400px;
+    width: min(90%, 400px);
 }
 
-.shadowed:hover {
-    box-shadow: 0 2px 4px 0 $primary-color;
+.shadowed {
+    box-shadow: 0 2px 0 0 $primary-color;
 }
