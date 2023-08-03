@@ -1,55 +1,58 @@
 <template>
     <div class="wrapper">
         <card class="d-flex justify-center mb-8">
-            <form @submit.prevent="register" class="tight-box my-8">
-                <h1 class="text-center">
-                    Регистрация
-                </h1>
-                <b-input
-                    v-model="v$.firstName.$model"
-                    :models="v$.firstName"
-                    text="Име"
-                >
-                </b-input>
+            <div class="tight-wrapper">
 
-                <b-input
-                    v-model="v$.lastName.$model"
-                    :models="v$.lastName"
-                    text="Презиме"
-                >
-                </b-input>
-
-                <b-input
-                    v-model="v$.email.$model"
-                    :models="v$.email"
-                    text="Имейл"
-                >
-                </b-input>
-
-                <b-input
-                    v-model="v$.password.$model"
-                    :models="v$.password"
-                    type="password"
-                    text="Парола"
-                >
-                </b-input>
-
-                <b-input
-                    v-model="v$.confirmPassword.$model"
-                    :models="v$.confirmPassword"
-                    type="password"
-                    text="Потвърди парола"
-                >
-                </b-input>
-
-                <v-button
-                    :disabled="isFormDisabled"
-                    type="submit"
-                    block
-                >
-                    Регистрация
-                </v-button>
-            </form>
+                <form @submit.prevent="register" class="my-8">
+                    <h1 class="text-center">
+                        Регистрация
+                    </h1>
+                    <b-input
+                        v-model="v$.firstName.$model"
+                        :models="v$.firstName"
+                        text="Име"
+                    >
+                    </b-input>
+    
+                    <b-input
+                        v-model="v$.lastName.$model"
+                        :models="v$.lastName"
+                        text="Презиме"
+                    >
+                    </b-input>
+    
+                    <b-input
+                        v-model="v$.email.$model"
+                        :models="v$.email"
+                        text="Имейл"
+                    >
+                    </b-input>
+    
+                    <b-input
+                        v-model="v$.password.$model"
+                        :models="v$.password"
+                        type="password"
+                        text="Парола"
+                    >
+                    </b-input>
+    
+                    <b-input
+                        v-model="v$.confirmPassword.$model"
+                        :models="v$.confirmPassword"
+                        type="password"
+                        text="Потвърди парола"
+                    >
+                    </b-input>
+    
+                    <v-button
+                        :disabled="isFormDisabled"
+                        type="submit"
+                        block
+                    >
+                        Регистрация
+                    </v-button>
+                </form>
+            </div>
         </card>
     </div>
 </template>

@@ -1,47 +1,49 @@
 <template>
     <div class="wrapper">
         <card class="d-flex justify-center mb-8">
-            <form @submit.prevent="login" class="tight-box my-8">
-                <h1 class="text-center">
-                    Вписване
-                </h1>
-
-                <b-input
-                    v-model="v$.email.$model"
-                    :models="v$.email"
-                    text="Имейл"
-                />
-
-                <b-input
-                    v-model="v$.password.$model"
-                    :models="v$.password"
-                    text="Парола"
-                    type="password"
-                />
-
-                <a href="#">
-                    <h5>
-                        Забравена парола?
-                    </h5>
-                </a>
-
-                <v-button
-                    type="submit"
-                    class="mt-4"
-                    block
-                >
-                    Вход
-                </v-button>
-
-                <p class="text-body-2 mt-4">
-                    Нямате акаунт?
-                    <span class="primary-color">
-                        <router-link to="/register">
-                            Регистрация
-                        </router-link>
-                    </span>
-                </p>
-            </form>
+            <div class="tight-wrapper">
+                <form @submit.prevent="login" class="my-8">
+                    <h1 class="text-center">
+                        Вписване
+                    </h1>
+    
+                    <b-input
+                        v-model="v$.email.$model"
+                        :models="v$.email"
+                        text="Имейл"
+                    />
+    
+                    <b-input
+                        v-model="v$.password.$model"
+                        :models="v$.password"
+                        text="Парола"
+                        type="password"
+                    />
+    
+                    <a href="#">
+                        <h5>
+                            Забравена парола?
+                        </h5>
+                    </a>
+    
+                    <v-button
+                        type="submit"
+                        class="mt-4"
+                        block
+                    >
+                        Вход
+                    </v-button>
+    
+                    <p class="text-body-2 mt-4">
+                        Нямате акаунт?
+                        <span class="primary-color">
+                            <router-link to="/register">
+                                Регистрация
+                            </router-link>
+                        </span>
+                    </p>
+                </form>
+            </div>
         </card>
     </div>
 </template>

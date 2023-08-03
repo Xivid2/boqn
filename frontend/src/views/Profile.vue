@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <card class="d-flex justify-center py-8">
-            <div class="tight-box">
+            <div class="tight-wrapper">
                 <h1 class="block text-center">
                     Акаунт
                 </h1>
