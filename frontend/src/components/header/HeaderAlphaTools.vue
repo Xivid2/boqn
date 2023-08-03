@@ -1,41 +1,33 @@
 <template>
-    <div class="mx-16 py-4">
-        <v-row>
-            <v-col cols="2">
-                <fai icon="fa-solid fa-phone-flip" class="fa-xl" />
+    <div class="wide-wrapper">
+        <div class="header-alpha__tools">
+            <div class="header-alpha__tools__connections">
+                <LinkWithIcon
+                    src="tel:+359887107087"
+                    icon="fa-solid fa-phone-flip"
+                    text="0887107087"
+                    isHorizontal
+                />
 
-                <a
-                    class="flex items-center"
-                    href="tel:0887107087"
-                >
-                    0887107087
-                </a>
-            </v-col>
+                <LinkWithIcon
+                    src="https://maps.google.com/?q=гр. Казанлък, ул. Хината 14"
+                    icon="fa-solid fa-location-pin"
+                    text="гр. Казанлък, ул. Хината 14"
+                    isHorizontal
+                />
+            </div>
 
-            <v-col cols="3" class="ml-4">
-                <fai icon="fa-solid fa-location-pin" class="fa-xl" />
-
-                <a
-                    href="https://maps.google.com/?q=гр. Казанлък, ул. Хината 14"
-                    target="_blank"
-                    class="ml-2"
-                >
-                    гр. Казанлък, ул. Хината 14
-                </a>
-            </v-col>
-
-            <v-spacer></v-spacer>
-
-            <v-col cols="1" class="text-right">
+            <div class="header-alpha__tools__button">
                 <v-button @click="handleClick">
                     {{ signInText.toUpperCase() }}
                 </v-button>
-            </v-col>
-        </v-row>
+            </div>
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
+import LinkWithIcon from '../LinkWithIcon.vue';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth.store';
@@ -43,7 +35,7 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 const signInText = computed(() => {
-    return authStore.isAuthenticated ? "My account" : "Sign in";
+    return authStore.isAuthenticated ? "Акаунт" : "Впиши се";
 });
 
 const handleClick = async () => {
@@ -54,3 +46,18 @@ const handleClick = async () => {
     }
 };
 </script>
+
+<style scoped>
+.header-alpha__tools {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.header-alpha__tools__connections {
+    width: max(30%, 450px);
+    display: flex;
+    justify-content: space-between;
+}
+</style>

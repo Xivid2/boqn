@@ -1,11 +1,17 @@
 <template>
     <a
+        class="link-with-icon"
         :href="props.src"
-        class="text-center"
+        :style="{
+            'flex-direction': props.isHorizontal ? 'row' : 'column'
+        }"
         @mouseover="applyShadow = true"
         @mouseout="applyShadow = false"
     >
-        <p class="mb-2">
+        <p :class="{
+            'mb-2': !props.isHorizontal,
+            'mr-2': props.isHorizontal
+        }">
             <fai :icon="props.icon" class="fa-xl" />
         </p>
 
@@ -30,8 +36,20 @@
         text: {
             type: String,
             required: true,
+        },
+        isHorizontal: {
+            type: Boolean,
+            required: false,
+            default: false,
         }
     });
 
     const applyShadow = ref(false);
 </script>
+
+<style scoped>
+.link-with-icon {
+    display: flex;
+    align-items: center;
+}
+</style>

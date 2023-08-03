@@ -28,6 +28,11 @@
     width: min(90%, 400px);
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .shadowed {
     box-shadow: 0 2px 0 0 $primary-color;
 }
