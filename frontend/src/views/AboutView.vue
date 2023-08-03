@@ -69,5 +69,4 @@
 .container__image {
     justify-self: center;
 }
-
 </style>

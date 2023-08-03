@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <card class="d-flex justify-center py-8">
+        <card class="py-8">
             <div class="tight-wrapper">
                 <h1 class="block text-center">
                     Акаунт

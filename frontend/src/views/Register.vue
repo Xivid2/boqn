@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <card class="d-flex justify-center mb-8">
+        <card class="mb-8">
             <div class="tight-wrapper">
 
                 <form @submit.prevent="register" class="my-8">

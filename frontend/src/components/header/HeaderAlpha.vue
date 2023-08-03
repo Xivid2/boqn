@@ -21,7 +21,7 @@ import HeaderAlphaNavigation from './HeaderAlphaNavigation.vue';
 import HeaderAlphaTools from './HeaderAlphaTools.vue';
 </script>
 
-<style>
+<style scoped>
 @media only screen and (max-width: 1024px) {
     .header-alpha__body {
         display: none;

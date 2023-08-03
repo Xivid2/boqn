@@ -1,6 +1,6 @@
 <template>
-    <div class="mx-16 my-8">
-        <card>
+    <div class="wide-wrapper">
+        <card class="my-8 overflow-x-auto">
             <table>
                 <thead>
                     <tr>
