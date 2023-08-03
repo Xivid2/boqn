@@ -49,7 +49,7 @@ import LinkWithIcon from '@/components/LinkWithIcon.vue';
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
 
-    @media (max-width: 767px) {
+    @media only screen and (max-width: 767px) {
         grid-template-columns: 1fr;
         grid-template-rows: repeat(3, 1fr);
     }
