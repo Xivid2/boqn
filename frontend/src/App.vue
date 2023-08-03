@@ -9,13 +9,13 @@
 
             <div class="wrapper my-8">
                 <nav class="navigation">
-                    <RouterLink class="tab" to="/">Начало</RouterLink>
-                    <RouterLink class="tab" to="/about">За Нас</RouterLink>
-                    <RouterLink class="tab" to="/services">Услуги</RouterLink>
-                    <RouterLink class="tab" to="/prices">Ценоразпис</RouterLink>
-                    <RouterLink class="tab" to="/appointment">Запис на час</RouterLink>
-                    <RouterLink class="tab" to="/gallery">Галерия</RouterLink>
-                    <RouterLink class="tab" to="/contact">Контакти</RouterLink>
+                    <RouterLink to="/">Начало</RouterLink>
+                    <RouterLink to="/about">За Нас</RouterLink>
+                    <RouterLink to="/services">Услуги</RouterLink>
+                    <RouterLink to="/prices">Ценоразпис</RouterLink>
+                    <RouterLink to="/appointment">Запис на час</RouterLink>
+                    <RouterLink to="/gallery">Галерия</RouterLink>
+                    <RouterLink to="/contact">Контакти</RouterLink>
                 </nav>
           </div>
         </header>
