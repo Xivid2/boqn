@@ -1,9 +1,14 @@
 <template>
     <div v-if="isLoaded">
         <header>
-          <HeaderAlpha />
+            <HeaderAlpha />
+
+            <HamburgerButton @click="toggleMenu" />
+
+            <MobileMenu />
+
             <div class="wrapper my-8">
-                <nav>
+                <nav class="navigation">
                     <RouterLink class="tab" to="/">Начало</RouterLink>
                     <RouterLink class="tab" to="/about">За Нас</RouterLink>
                     <RouterLink class="tab" to="/services">Услуги</RouterLink>
@@ -22,14 +27,18 @@
 </template>
 
 <script lang="ts" setup>
+import HamburgerButton from './components/HamburgerButton.vue';
+import MobileMenu from './components/MobileMenu.vue';
 import HeaderAlpha from './components/header/HeaderAlpha.vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { useHttp } from './plugins/api';
 import { $error } from './services/notify.service';
 import { useAuthStore } from '@/stores/auth.store';
+import { useMenuStore } from '@/stores/menu.store';
 import { useServicesStore } from '@/stores/services.store';
 import { computed } from 'vue';
 const authStore = useAuthStore();
+const menuStore = useMenuStore();
 const servicesStore = useServicesStore({ useHttp, $error });
 
 const isLoaded = computed(() => {
@@ -41,13 +50,8 @@ const getServices = async () => {
 };
 
 getServices();
-</script>
 
-<style scoped>
-nav {
-    display: flex;
-    justify-content: space-between;
-    max-width: 1000px;
-    margin: 0 auto;
+const toggleMenu = () => {
+    menuStore.toggle();
 }
-</style>
+</script>
