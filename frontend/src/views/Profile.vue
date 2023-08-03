@@ -6,15 +6,14 @@
                     Акаунт
                 </h1>
         
-                <v-button
-                    v-if="isAdmin"
-                    block
-                    class="mt-8"
-                >
-                    <router-link to="/admin">
+                <RouterLink v-if="isAdmin" to="/admin">
+                    <v-button
+                        block
+                        class="mt-8"
+                    >
                         Админски панел
-                    </router-link>
-                </v-button>
+                    </v-button>
+                </RouterLink>
     
                 <v-button
                     class="mt-16"

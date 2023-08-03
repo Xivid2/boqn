@@ -15,16 +15,16 @@
 </template>
 
 <script lang="ts" setup>
-import HamburgerButton from './components/HamburgerButton.vue';
-import MobileMenu from './components/MobileMenu.vue';
-import HeaderAlpha from './components/header/HeaderAlpha.vue';
 import { RouterView } from 'vue-router';
-import { useHttp } from './plugins/api';
-import { $error } from './services/notify.service';
+import { computed } from 'vue';
+import HamburgerButton from '@/components/HamburgerButton.vue';
+import MobileMenu from '@/components/MobileMenu.vue';
+import HeaderAlpha from '@/components/header/HeaderAlpha.vue';
 import { useAuthStore } from '@/stores/auth.store';
 import { useMenuStore } from '@/stores/menu.store';
 import { useServicesStore } from '@/stores/services.store';
-import { computed } from 'vue';
+import { useHttp } from '@/plugins/api';
+import { $error } from '@/services/notify.service';
 const authStore = useAuthStore();
 const menuStore = useMenuStore();
 const servicesStore = useServicesStore({ useHttp, $error });

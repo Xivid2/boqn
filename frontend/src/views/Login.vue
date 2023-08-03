@@ -37,9 +37,9 @@
                     <p class="text-body-2 mt-4">
                         Нямате акаунт?
                         <span class="primary-color">
-                            <router-link to="/register">
+                            <RouterLink to="/register">
                                 Регистрация
-                            </router-link>
+                            </RouterLink>
                         </span>
                     </p>
                 </form>
