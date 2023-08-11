@@ -1,18 +1,11 @@
 <template>
     <div v-if="isLoaded">
         <header>
-          <HeaderAlpha />
-            <div class="wrapper my-8">
-                <nav>
-                    <RouterLink class="tab" to="/">Начало</RouterLink>
-                    <RouterLink class="tab" to="/about">За Нас</RouterLink>
-                    <RouterLink class="tab" to="/services">Услуги</RouterLink>
-                    <RouterLink class="tab" to="/prices">Ценоразпис</RouterLink>
-                    <RouterLink class="tab" to="/appointment">Запис на час</RouterLink>
-                    <RouterLink class="tab" to="/gallery">Галерия</RouterLink>
-                    <RouterLink class="tab" to="/contact">Контакти</RouterLink>
-                </nav>
-          </div>
+            <HeaderAlpha />
+
+            <HamburgerButton @click="toggleMenu" />
+
+            <MobileMenu />
         </header>
 
         <notifications />
@@ -22,14 +15,18 @@
 </template>
 
 <script lang="ts" setup>
-import HeaderAlpha from './components/header/HeaderAlpha.vue';
-import { RouterLink, RouterView } from 'vue-router';
-import { useHttp } from './plugins/api';
-import { $error } from './services/notify.service';
-import { useAuthStore } from '@/stores/auth.store';
-import { useServicesStore } from '@/stores/services.store';
+import { RouterView } from 'vue-router';
 import { computed } from 'vue';
+import HamburgerButton from '@/components/HamburgerButton.vue';
+import MobileMenu from '@/components/MobileMenu.vue';
+import HeaderAlpha from '@/components/header/HeaderAlpha.vue';
+import { useAuthStore } from '@/stores/auth.store';
+import { useMenuStore } from '@/stores/menu.store';
+import { useServicesStore } from '@/stores/services.store';
+import { useHttp } from '@/plugins/api';
+import { $error } from '@/services/notify.service';
 const authStore = useAuthStore();
+const menuStore = useMenuStore();
 const servicesStore = useServicesStore({ useHttp, $error });
 
 const isLoaded = computed(() => {
@@ -41,13 +38,8 @@ const getServices = async () => {
 };
 
 getServices();
-</script>
 
-<style scoped>
-nav {
-    display: flex;
-    justify-content: space-between;
-    max-width: 1000px;
-    margin: 0 auto;
+const toggleMenu = () => {
+    menuStore.toggle();
 }
-</style>
+</script>

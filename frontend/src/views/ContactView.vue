@@ -1,66 +1,60 @@
 <template>
     <div class="wrapper">
-        <card>
-                    <!-- <h1 class="block text-center">
-                        Контакти
-                    </h1> -->
-        
-            <v-row class="mt-8">
-                <v-col cols="4" class="text-center">
-                    <a
-                        href="https://maps.google.com/?q=гр. Казанлък, ул. Хината 14"
-                        target="_blank"
-                    >
-                        <p class="mb-2">
-                            <fai icon="fa-solid fa-house" class="fa-xl" />
-                        </p>
+        <card class="py-8">
+            <div class="contact-links-container">
+                <LinkWithIcon
+                    src="https://maps.google.com/?q=гр. Казанлък, ул. Хината 14"
+                    icon="fa-solid fa-house"
+                    text="гр. Казанлък, ул. Хината 14"
+                    target="_blank"
+                />
+    
+                <LinkWithIcon
+                    src="tel:+359887107087"
+                    icon="fa-solid fa-phone"
+                    text="0887107087"
+                />
+    
+                <LinkWithIcon
+                    src="mailto: boris.marinov99@gmail.com"
+                    icon="fa-solid fa-mail-bulk"
+                    text="boris.marinov99@gmail.com"
+                />
+            </div>
 
-                        гр. Казанлък, ул. Хината 14
-                    </a>
-                </v-col>
-
-                <v-col cols="4" class="text-center">
-                    <a href="tel:0887107087">
-                        <p class="mb-2">
-                            <fai icon="fa-solid fa-phone" class="fa-xl" />
-                        </p>
-
-                        0887107087
-                    </a>
-                </v-col>
-
-                <v-col cols="4" class="text-center">
-                    <a href="mailto: boris.marinov99@gmail.com">
-                        <p class="mb-2">
-                            <fai icon="fa-solid fa-mail-bulk" class="fa-xl" />
-                        </p>
-
-                        boris.marinov99@gmail.com
-                    </a>
-
-                </v-col>
-            </v-row>
-
-            <v-row>
-                <div class="mapouter mt-12">
-                    <div class="gmap_canvas">
-                        <iframe
-                            class="gmap_iframe"
-                            width="100%"
-                            frameborder="0"
-                            scrolling="no"
-                            marginheight="0"
-                            marginwidth="0"
-                            src="https://maps.google.com/maps?width=800&amp;height=400&amp;hl=en&amp;q=България, гр. Казанлък, ул. Хината 14&amp;t=p&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
-                        </iframe>
-                    </div>
+            <div class="mapouter mt-12">
+                <div class="gmap_canvas">
+                    <iframe
+                        class="gmap_iframe"
+                        width="100%"
+                        frameborder="0"
+                        scrolling="no"
+                        marginheight="0"
+                        marginwidth="0"
+                        src="https://maps.google.com/maps?width=800&amp;height=400&amp;hl=en&amp;q=България, гр. Казанлък, ул. Хината 14&amp;t=p&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+                    </iframe>
                 </div>
-            </v-row>
+            </div>
         </card>
     </div>
 </template>
 
-<style scoped>
+<script lang="ts" setup>
+import LinkWithIcon from '@/components/LinkWithIcon.vue';
+</script>
+
+<style scoped lang="scss">
+.contact-links-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+
+    @media only screen and (max-width: 767px) {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, 1fr);
+    }
+}
+
 .mapouter {
     position:relative;
     text-align: right;

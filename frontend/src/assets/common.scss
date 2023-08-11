@@ -1,0 +1,39 @@
+@import './variables.scss';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.primary-color {
+    color: $primary-color;
+}
+
+.secondary-color {
+    color: $secondary-color;
+}
+
+.wide-wrapper {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.wrapper {
+    width: min(90%, 992px);
+    margin: 0 auto;
+}
+
+.tight-wrapper {
+    width: min(90%, 400px);
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.shadowed {
+    box-shadow: 0 2px 0 0 $primary-color;
+}

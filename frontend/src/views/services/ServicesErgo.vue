@@ -1,25 +1,23 @@
 <template>
-    <div class="mx-16 my-8">
+    <div class="wide-wrapper my-8">
         <card
             v-for="(service, index) in ergos"
             :key="index"
-            class="mb-4"
+            class="service-card mb-4 px-8 py-8"
         >
             <div class="service">
-                <img
-                    :src="service.imgSrc"
-                    class="service-img"
-                    :class="{
-                        'order-last': index % 2 === 0,
-                        'ml-12': index % 2 === 0,
-                        'mr-12': index % 2 !== 0,
-                    }"
-                />
+                <h3>{{ service.name }}</h3>
 
-                <div class="service-content order-1">
-                    <h3>{{ service.name }}</h3>
-                    <p>{{ service.description }}</p>
+                <div class="service__content">
+                    <div class="service__content__image">
+                        <img :src="service.imgSrc" />
+                    </div>
+
+                    <p class="service__content__text">
+                        {{ service.description }}
+                    </p>
                 </div>
+
             </div>
         </card>
     </div>

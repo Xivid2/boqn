@@ -1,27 +1,28 @@
 <template>
     <div class="wrapper">
-        <card>
-            <h1 class="block text-center">
-                Акаунт
-            </h1>
+        <card class="py-8">
+            <div class="tight-wrapper">
+                <h1 class="block text-center">
+                    Акаунт
+                </h1>
+        
+                <RouterLink v-if="isAdmin" to="/admin">
+                    <v-button
+                        block
+                        class="mt-8"
+                    >
+                        Админски панел
+                    </v-button>
+                </RouterLink>
     
-            <v-button
-                v-if="isAdmin"
-                block
-                class="mt-8"
-            >
-                <router-link to="/admin">
-                    ADMIN PANEL
-                </router-link>
-            </v-button>
-
-            <v-button
-                class="mt-16"
-                block
-                @click="logout"
-            >
-                LOGOUT
-            </v-button>
+                <v-button
+                    class="mt-16"
+                    block
+                    @click="logout"
+                >
+                    Изход
+                </v-button>
+            </div>
         </card>
     </div>
 </template>

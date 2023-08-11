@@ -3,7 +3,8 @@
 table {
     width: 100%;
     text-align: left;
-    overflow: hidden;
+    overflow: scroll;
+    // overflow: auto;
     margin: auto;
 }
 

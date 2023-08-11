@@ -1,32 +1,23 @@
 <template>
     <div class="wrapper">
         <card>
-            <v-button
-                block
-                class="mt-2"
-            >
-                <router-link to="/admin/services">
+            <RouterLink to="/admin/services">
+                <v-button block class="mt-2">
                     Услуги
-                </router-link>
-            </v-button>
+                </v-button>
+            </RouterLink>
 
-            <v-button
-                block
-                class="mt-8"
-            >
-                <router-link to="/admin/appointments">
+            <RouterLink to="/admin/appointments">
+                <v-button block class="mt-8">
                     Записани часове
-                </router-link>
-            </v-button>
-        
-            <v-button
-                block
-                class="mt-8"
-            >
-                <router-link to="/admin/users">
+                </v-button>
+            </RouterLink>
+
+            <RouterLink to="/admin/users">
+                <v-button block class="mt-8">
                     Потребители
-                </router-link>
-            </v-button>
+                </v-button>
+            </RouterLink>
         </card>
     </div>
 </template>

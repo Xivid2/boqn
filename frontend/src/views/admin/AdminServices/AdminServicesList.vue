@@ -1,11 +1,11 @@
 <template>
     <div class="mx-16 mb-8">
         <card>
-            <v-button class="mb-4">
-                <router-link to="/admin/services/create">
+            <RouterLink to="/admin/services/create">
+                <v-button class="mb-4">
                     Създай
-                </router-link>
-            </v-button>
+                </v-button>
+            </RouterLink>
 
             <table>
                 <thead>
@@ -41,15 +41,15 @@
                         <td class="text-center">{{ service.price + 'лв.' }}</td>
                         <td class="text-center">
                             <div class="d-flex">
-                                <v-button
-                                    class="mr-2"
-                                    isUpdate
-                                    title="Обнови"
-                                >
-                                    <router-link :to="'/admin/services/' + service.id">
+                                <RouterLink :to="'/admin/services/' + service.id">
+                                    <v-button
+                                        class="mr-2"
+                                        isUpdate
+                                        title="Обнови"
+                                    >
                                         <fai icon="fa-solid fa-edit" />
-                                    </router-link>
-                                </v-button>
+                                    </v-button>
+                                </RouterLink>
     
                                 <v-button
                                     isDelete

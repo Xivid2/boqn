@@ -35,6 +35,8 @@ import {
     faMailBulk,
     faTrash,
     faEdit,
+    faUser,
+    faCircleArrowLeft,
 } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
@@ -45,6 +47,8 @@ library.add(faPhone)
 library.add(faMailBulk)
 library.add(faTrash)
 library.add(faEdit)
+library.add(faUser)
+library.add(faCircleArrowLeft)
 
 const vuetify = createVuetify({
     components,

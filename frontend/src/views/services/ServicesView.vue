@@ -1,6 +1,6 @@
 <template>
-    <nav class="tabs mt-16">
-        <div class="d-flex justify-center">
+    <div class="wrapper">
+        <nav class="tabs mt-16">
             <RouterLink
                 to="/services/massages"
                 class="tab mr-16"
@@ -21,9 +21,8 @@
             >
                 Логопедия
             </RouterLink>
-        </div>
-    </nav>
-
+        </nav>
+    </div>
 
     <RouterView />
 </template>
