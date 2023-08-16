@@ -13,5 +13,6 @@
             "PUT",
             "DELETE"
         ]
-    }]
+    }],
+    "installCommand": "npm install"
 }
