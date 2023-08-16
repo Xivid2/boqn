@@ -11,7 +11,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { TokenPayload } from './payloads/token.payload';
 import * as bcrypt from 'bcrypt';
 import { RegistrationDto } from './dto/registration.dto';
-import Role from 'src/common/constants/role';
+import Role from '../common/constants/role';
 
 @Injectable()
 export class AuthService {

@@ -6,7 +6,7 @@ import { g_UserRole } from "./models/user-roles.model";
 import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from "./dto/create-user.dto";
 import { DuplicateUserException } from "./users.errors";
-import Role from "src/common/constants/role";
+import Role from "../common/constants/role";
 
 @Injectable()
 export class UsersService {
