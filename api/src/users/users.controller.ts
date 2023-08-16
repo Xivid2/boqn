@@ -1,10 +1,10 @@
-import { Controller, Req, Res, Get, Post, Body, UseGuards, Param, Delete, Query, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, UseGuards, Param, Delete, Query, ValidationPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { JwtAccessTokenGuard } from 'src/auth/guards/jwt-auth-access-token.guard';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { JwtAccessTokenGuard } from '../auth/guards/jwt-auth-access-token.guard';
 import Role from '../common/constants/role';
-import Roles from 'src/common/decorators/role.decorator';
-import { RolesGuard } from 'src/common/guards/role.guard';
+import Roles from '../common/decorators/role.decorator';
+import { RolesGuard } from '../common/guards/role.guard';
 
 @Controller('users')
 export class UsersController {

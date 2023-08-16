@@ -1,5 +1,5 @@
 import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-import { User } from 'src/users/models/user.model';
+import { User } from '../../users/models/user.model';
 
 @ValidatorConstraint({ async: true })
 export class IsEmailNotRegistered implements ValidatorConstraintInterface {

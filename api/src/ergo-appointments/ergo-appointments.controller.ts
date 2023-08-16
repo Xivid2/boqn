@@ -1,7 +1,7 @@
 import { Controller, Req, Res, Get, Post, Body, UseGuards, Query } from '@nestjs/common';
 import { ErgoAppointmentsService } from './ergo-appointments.service';
 import { PeriodQueryParams } from './ergo-appointments.query.params';
-import { JwtAccessTokenGuard } from 'src/auth/guards/jwt-auth-access-token.guard';
+import { JwtAccessTokenGuard } from '../auth/guards/jwt-auth-access-token.guard';
 import { CreateErgoAppointmentDto } from './dto/create-ergo-appointment.dto';
 
 @Controller('ergo-appointments')

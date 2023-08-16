@@ -6,7 +6,7 @@ import { decode } from "jsonwebtoken"
 import { ConfigService } from '@nestjs/config';
 import { User } from '../users/models/user.model';
 import { UserRefreshToken } from '../users/models/user-refresh-token.model';
-import { g_UserRole } from 'src/users/models/user-roles.model';
+import { g_UserRole } from '../users/models/user-roles.model';
 import { Sequelize } from 'sequelize-typescript';
 import { TokenPayload } from './payloads/token.payload';
 import * as bcrypt from 'bcrypt';
