@@ -2,23 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import * as dayjs from "dayjs-with-plugins";
 import { BadRequestException } from '@nestjs/common';
-import { ErgoAppointment } from './models/ergo-appointments.model';
+import { Appointment } from './models/appointments.model';
 import { Op } from "sequelize";
-import { CreateErgoAppointmentDto } from './dto/create-ergo-appointment.dto';
+import { CreateAppointmentDto } from './dto/create-appointment.dto';
 
 const maximumEndDate = dayjs().add(1, 'month').endOf('day');
 
 @Injectable()
-export class ErgoAppointmentsService {
+export class AppointmentsService {
     constructor(
-        @InjectModel(ErgoAppointment)
-        private ergoAppointment: typeof ErgoAppointment,
+        @InjectModel(Appointment)
+        private appointment: typeof Appointment,
     ) {}
 
     async getForPeriod(startDate: Date, endDate: Date): Promise<any> {
         this.validateQueryPeriod(startDate, endDate);
 
-        const appointments = await this.ergoAppointment.findAll({
+        const appointments = await this.appointment.findAll({
             where: {
                 date: {
                     [Op.between]: [
@@ -46,10 +46,10 @@ export class ErgoAppointmentsService {
         return groupedByDay;
     }
 
-    async create(createErgoAppointmentDto: CreateErgoAppointmentDto) {
-        return this.ergoAppointment.create({
-            date: createErgoAppointmentDto.date,
-            userId: createErgoAppointmentDto.userId
+    async create(createAppointmentDto: CreateAppointmentDto) {
+        return this.appointment.create({
+            date: createAppointmentDto.date,
+            userId: createAppointmentDto.userId
         });
     }
 

@@ -5,7 +5,7 @@ export default class AppointmentService {
 
     async getForPeriod(startDate: Date, endDate: Date) {
         try {
-            const { data } = await this.http.get(`/ergo-appointments/period?startDate=${startDate}&endDate=${endDate}`);
+            const { data } = await this.http.get(`/appointments/period?startDate=${startDate}&endDate=${endDate}`);
 
             return { data };
         } catch (error) {
@@ -15,7 +15,7 @@ export default class AppointmentService {
 
     async create(date: Date) {
         try {
-            const { data } = await this.http.post(`/ergo-appointments`, { date });
+            const { data } = await this.http.post(`/appointments`, { date });
 
             return { data };
         } catch (error) {

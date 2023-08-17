@@ -3,7 +3,7 @@
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         return queryInterface.sequelize.transaction(async transaction => {
-            await queryInterface.createTable("ergoAppointments", {
+            await queryInterface.createTable("appointments", {
                 id: {
                     type: Sequelize.INTEGER,
                     autoIncrement: true,
@@ -34,7 +34,7 @@ module.exports = {
                 },
             }, { transaction });
 
-            await queryInterface.addConstraint('ergoAppointments', {
+            await queryInterface.addConstraint('appointments', {
                 fields: ["date"],
                 type: 'unique',
                 transaction
