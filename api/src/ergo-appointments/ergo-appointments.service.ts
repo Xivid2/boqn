@@ -4,7 +4,7 @@ import { BadRequestException } from '@nestjs/common';
 import { ErgoAppointment } from './models/ergo-appointments.model';
 import { Op } from "sequelize";
 import { CreateErgoAppointmentDto } from './dto/create-ergo-appointment.dto';
-import BDate from 'src/common/plugins/date.plugin';
+import BDate from '../common/plugins/date.plugin';
 
 const maximumEndDate = new BDate(new BDate().addMonths(1)).getEndOfDay();
 
