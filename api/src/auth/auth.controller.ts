@@ -5,6 +5,7 @@ import { JwtRefreshTokenGuard } from './guards/jwt-auth-refresh-token.guard';
 import { AuthService } from './auth.service';
 import { Request, Response } from "express";
 import { decode } from 'jsonwebtoken';
+import * as dayjs from 'dayjs';
 import { RegistrationDto } from './dto/registration.dto';
 
 @Controller('auth')
@@ -27,7 +28,7 @@ export class AuthController {
         const payload = await this.authService.login(req.user);
 
         const decoded = decode(payload.refresh_token, { json: true });
-        const expires = new Date(decoded.exp * 1000);
+        const expires = new Date(dayjs(decoded.exp * 1000).toDate());
  
         response.cookie(
             "jwt",

@@ -1,6 +1,7 @@
 import { Column, Model, Table, PrimaryKey, AutoIncrement, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import * as bcrypt from "bcrypt";
 import { User } from './user.model';
+import * as dayjs from 'dayjs';
 
 @Table({
     tableName: "userRefreshTokens",
@@ -29,9 +30,6 @@ export class UserRefreshToken extends Model {
     }
 
     isTokenExpired() {
-        const now = new Date().getTime();
-        const expiresAt = new Date(this.expiresAt).getTime();
-
-        return now > expiresAt;
+        return dayjs().isAfter(dayjs(this.expiresAt));
     }
 }
