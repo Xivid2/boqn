@@ -16,7 +16,7 @@ export class ErgoAppointmentsService {
     ) {}
 
     async getForPeriod(startDate: Date, endDate: Date): Promise<any> {
-        this.validateQueryPeriod(startDate, endDate);
+        // this.validateQueryPeriod(startDate, endDate);
 
         const appointments = await this.ergoAppointment.findAll({
             where: {
