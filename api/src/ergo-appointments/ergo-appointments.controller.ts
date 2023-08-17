@@ -11,7 +11,7 @@ export class ErgoAppointmentsController {
     ) {}
 
     @Get('/period')
-    async getAll(@Query() query: PeriodQueryParams) {
+    async getAll(@Query() query) {
         const { startDate, endDate } = query;
 
         return this.ergoAppointmentsService.getForPeriod(startDate, endDate);
