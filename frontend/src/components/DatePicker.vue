@@ -1,23 +1,28 @@
 <template>
-    <DatePicker
-        v-model:value="modelValue"
-        v-model:open="isOpen"
-        @change="handleChange"
-        @onUpdate:value="setDate"
-        type="datetime"
-        format="YYYY-MM-DD HH"
-        :show-hour="true"
-        :disabledDate="disabledDates"
-        :hour-options="availableHours"
-        style="width:400px;"
-    ></DatePicker>
+    <div class="datepicker-container">
+        <label v-if="props.label">
+            {{ props.label }}
+        </label>
+
+        <DatePicker
+            v-model:value="modelValue"
+            v-model:open="isOpen"
+            @change="handleChange"
+            @onUpdate:value="setDate"
+            type="datetime"
+            format="YYYY-MM-DD HH"
+            :show-hour="true"
+            :disabledDate="disabledDates"
+            :hour-options="availableHours"
+        ></DatePicker>
+    </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue';
 import dayjs from 'dayjs';
 
-const props = defineProps(['modelValue', 'unavailableDates', 'startDate', 'endDate', 'isParentLoaded']);
+const props = defineProps(['label', 'modelValue', 'unavailableDates', 'startDate', 'endDate', 'isParentLoaded']);
 const emit = defineEmits(['update:modelValue']);
 
 const isParentLoaded = computed(() => props.isParentLoaded);
@@ -105,3 +110,9 @@ watch(isParentLoaded, (val) => {
     };
 });
 </script>
+
+<style scoped>
+.mx-datepicker {
+    width: 100%;
+}
+</style>

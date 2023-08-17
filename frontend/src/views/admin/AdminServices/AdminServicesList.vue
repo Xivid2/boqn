@@ -7,7 +7,7 @@
                 </v-button>
             </RouterLink>
 
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th class="text-left">

@@ -5,7 +5,7 @@
                 Потребители
             </h1>
         
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th class="text-left">

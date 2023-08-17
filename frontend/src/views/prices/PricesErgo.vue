@@ -1,7 +1,7 @@
 <template>
     <div class="wide-wrapper">
         <card class="my-8 overflow-x-auto">
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th class="text-left">

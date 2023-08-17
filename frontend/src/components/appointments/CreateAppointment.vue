@@ -1,43 +1,37 @@
 <template>
-    <div class="d-flex align-center justify-center">
-        <v-sheet width="400" class="mx-auto mt-16">
-            <h1 class="block text-center">
-                Запис на час
-            </h1>
+    <div class="tight-wrapper">
+        <v-form
+            @submit.prevent="createAppointment"
+            ref="form"
+            class="mt-8"
+        >
+            <DatePicker
+                v-if="unavailableDates"
+                v-model="date"
+                @update:model-value="setDate"
+                :unavailableDates="unavailableDates"
+                :startDate="startDate"
+                :endDate="endDate"
+                :isParentLoaded="isParentLoaded"
+                class="block"
+                label="Избор на час:"
+            />
+            <p v-if="errorMessage" class="input-error">
+                {{ errorMessage }}
+            </p>
 
-            <v-form
-                @submit.prevent="createAppointment"
-                ref="form"
-                class="mt-8"
+            <p v-if="chosenDate" class="mt-8">
+                Избран час: {{ formattedDate }}
+            </p>
+
+            <v-button
+                type="submit"
+                block
+                class="mt-16"
             >
-                <label>Избор на час:</label>
-                <DatePicker
-                    v-if="unavailableDates"
-                    v-model="date"
-                    @update:model-value="setDate"
-                    :unavailableDates="unavailableDates"
-                    :startDate="startDate"
-                    :endDate="endDate"
-                    :isParentLoaded="isParentLoaded"
-                    class="block"
-                />
-                <p v-if="errorMessage" style="font-size: 13px; color: red; margin-top: 2px">
-                    {{ errorMessage }}
-                </p>
-
-                <p v-if="chosenDate" class="mt-8">
-                    Избран час: {{ formattedDate }}
-                </p>
-
-                <v-button
-                    type="submit"
-                    block
-                    class="mt-8"
-                >
-                    Запиши
-                </v-button>
-            </v-form>
-        </v-sheet>
+                Запиши
+            </v-button>
+        </v-form>
     </div>
 </template>
 
@@ -46,10 +40,10 @@ import dayjs from "dayjs";
 import { ref, watch } from "vue";
 import { useHttp } from '@/plugins/api';
 import { $error, $success } from "@/services/notify.service";
-import ErgoAppointmentService from '../../services/ergo-appointment.service';
+import ErgoAppointmentService from '@/services/ergo-appointment.service';
 const appointment = new ErgoAppointmentService(useHttp);
 import DatePicker from '../DatePicker.vue';
-import { useAuthStore } from '../../stores/auth.store';
+import { useAuthStore } from '@/stores/auth.store';
 
 const isParentLoaded = ref(false);
 const startDate = ref();
