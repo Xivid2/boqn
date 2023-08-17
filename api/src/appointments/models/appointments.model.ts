@@ -2,9 +2,9 @@ import { Column, Model, Table, PrimaryKey, AutoIncrement, ForeignKey, BelongsTo 
 import { User } from "../../users/models/user.model";
 
 @Table({
-    tableName: "ergoAppointments",
+    tableName: "appointments",
 })
-export class ErgoAppointment extends Model {
+export class Appointment extends Model {
     @PrimaryKey
     @AutoIncrement
     @Column

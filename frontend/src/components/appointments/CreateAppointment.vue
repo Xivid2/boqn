@@ -40,8 +40,8 @@ import dayjs from "dayjs";
 import { ref, watch } from "vue";
 import { useHttp } from '@/plugins/api';
 import { $error, $success } from "@/services/notify.service";
-import ErgoAppointmentService from '@/services/ergo-appointment.service';
-const appointment = new ErgoAppointmentService(useHttp);
+import AppointmentService from '@/services/appointment.service';
+const appointment = new AppointmentService(useHttp);
 import DatePicker from '../DatePicker.vue';
 import { useAuthStore } from '@/stores/auth.store';
 
@@ -70,10 +70,7 @@ const setUnavailableDates = async () => {
     const { data, error } = await appointment.getForPeriod(tomorrow, afterMonth);
 
     if (error) {
-        return notify({
-            type: "error",
-            text: error.response?.data?.message || "Something went wrong"
-        });
+        return $error(error.response?.data?.message || "Something went wrong");
     }
 
     startDate.value = tomorrow;
@@ -111,4 +108,4 @@ watch(chosenDate, (val) => {
 })
 
 setUnavailableDates();
-</script>
+</script>@/services/appointment.service
