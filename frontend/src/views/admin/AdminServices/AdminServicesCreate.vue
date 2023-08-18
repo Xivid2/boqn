@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <card class="mb-16">
-            <form @submit.prevent="save">
+            <form @submit.prevent="save" novalidate>
                 <h1 class="text-center mb-8">
                     Създаване на услуга
                 </h1>
@@ -23,25 +23,27 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { CreateServiceDto, ServicesService } from '@/services/services.service';
+import { type CreateServiceDto, ServicesService } from '@/services/services.service';
 import { useHttp } from '@/plugins/api';
 import { $error, $success } from '@/services/notify.service';
+import { useServicesStore } from '@/stores/services.store';
+const serviceStore = useServicesStore({ useHttp, $error });
 const service = new ServicesService(useHttp);
 import AdminServicesForm from './AdminServicesForm.vue';
 import { useRouter } from 'vue-router';
-import { ServiceType } from '@/enums/service-type.enum';
 const router = useRouter();
 
 const genInitialData = () => {
     return {
-        type: ServiceType.MASSAGE,
+        staffId: '',
+        type: '',
         name: '',
         goal: '',
         imgSrc: '',
         shortDescription: '',
         description: '',
-        duration: 0,
-        price: 0,
+        duration: '',
+        price: '',
     };
 };
 
@@ -57,7 +59,6 @@ const save = async () => {
 
     isFormDisabled.value = true;
 
-    console.log('createData.value:', createData.value)
     const { error } = await service.create({ ...createData.value });
 
     if (error) {

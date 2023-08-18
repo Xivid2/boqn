@@ -29,4 +29,14 @@
 
 <script lang="ts" setup>
 import { RouterLink, RouterView } from 'vue-router';
+import { useHttp } from '@/plugins/api';
+import { $error } from '@/services/notify.service';
+import { useServicesStore } from '@/stores/services.store';
+const servicesStore = useServicesStore({ useHttp, $error });
+
+const getServices = async () => {
+    await servicesStore.getAll();
+};
+
+getServices();
 </script>

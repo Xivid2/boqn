@@ -20,6 +20,16 @@ module.exports = {
                     onUpdate: 'cascade',
                     onDelete: 'cascade',
                 },
+                serviceId: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                    references: {
+                        model: 'services',
+                        key: 'id',
+                    },
+                    onUpdate: 'cascade',
+                    onDelete: 'cascade',
+                },
                 date: {
                     type: Sequelize.DATE,
                     allowNull: false,

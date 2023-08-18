@@ -6,30 +6,32 @@ export interface Service {
     imgSrc: string,
     shortDescription: string,
     description: string;
-    duration: number;
-    price: number;
+    duration: number | string;
+    price: number | string;
 };
 
 export interface CreateServiceDto {
+    staffId: number | string,
     type: string;
     name: string;
     goal: string;
     imgSrc: string,
     shortDescription: string,
     description: string;
-    duration: number;
-    price: number;
+    duration: number | string;
+    price: number | string;
 }
 
 export interface UpdateServiceDto {
+    staffId: number,
     type: string;
     name: string;
     goal: string;
     imgSrc: string,
     shortDescription: string,
     description: string;
-    duration: number;
-    price: number;
+    duration: number | string;
+    price: number | string;
 }
 
 export class ServicesService {

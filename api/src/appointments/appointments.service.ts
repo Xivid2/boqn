@@ -5,6 +5,7 @@ import { BadRequestException } from '@nestjs/common';
 import { Appointment } from './models/appointments.model';
 import { Op } from "sequelize";
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
+import { ServicesService } from './../services/services.service';
 
 const maximumEndDate = dayjs().add(1, 'month').endOf('day');
 
@@ -13,6 +14,7 @@ export class AppointmentsService {
     constructor(
         @InjectModel(Appointment)
         private appointment: typeof Appointment,
+        private servicesService: ServicesService
     ) {}
 
     async getForPeriod(startDate: Date, endDate: Date): Promise<any> {
@@ -47,9 +49,12 @@ export class AppointmentsService {
     }
 
     async create(createAppointmentDto: CreateAppointmentDto) {
+        const service = await this.servicesService.get(createAppointmentDto.serviceId);
+
         return this.appointment.create({
             date: createAppointmentDto.date,
-            userId: createAppointmentDto.userId
+            userId: createAppointmentDto.userId,
+            serviceId: service.id,
         });
     }
 

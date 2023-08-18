@@ -18,9 +18,22 @@
         </label>
 
         <label class="input-wrapper" v-else-if="type === 'select'">
-            <select class="input select">
+            <select
+                @change="emit('update:modelValue', $event.target.value)"
+                @blur="onBlur"
+                @focus="onFocus"
+                :value="modelValue"
+                class="input select mb-1"
+            >
                 <slot></slot>
             </select>
+
+            <div
+                class="input-placeholder"
+                :class="{ active: isFocused || modelValue }"
+            >
+                <span>{{ text }}</span>
+            </div>
         </label>
 
         <label class="input-wrapper" v-else>

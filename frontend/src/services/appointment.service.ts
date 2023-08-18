@@ -1,3 +1,8 @@
+type CreateAppointmentDto = {
+    date: Date;
+    serviceId: number;
+};
+
 export default class AppointmentService {
     constructor(useHttp) {
         this.http = useHttp();
@@ -13,9 +18,9 @@ export default class AppointmentService {
         }
     }
 
-    async create(date: Date) {
+    async create(createAppointmentDto: CreateAppointmentDto) {
         try {
-            const { data } = await this.http.post(`/appointments`, { date });
+            const { data } = await this.http.post(`/appointments`, createAppointmentDto);
 
             return { data };
         } catch (error) {

@@ -4,6 +4,11 @@ import { ServiceType } from '../enums/service-type.enum';
 
 export class CreateServiceDto {
     @IsNotEmpty()
+    @Transform(({ value }) => parseInt(value, 10))
+    @IsNumber()
+    staffId: number
+
+    @IsNotEmpty()
     @IsString()
     @MinLength(1)
     @MaxLength(100)
@@ -44,17 +49,13 @@ export class CreateServiceDto {
 
     @IsNotEmpty()
     @IsNumber()
-    @Transform(({ value }) => {
-        return Number(value);
-    })
+    @Transform(({ value }) => parseInt(value, 10))
     @Min(1)
     duration: number
 
     @IsNotEmpty()
     @IsNumber()
-    @Transform(({ value }) => {
-        return parseFloat(value);
-    })
+    @Transform(({ value }) => parseFloat(value))
     @Min(1)
     price: number
 };

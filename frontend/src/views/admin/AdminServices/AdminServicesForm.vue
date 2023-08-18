@@ -1,6 +1,21 @@
 <template>
     <div>
         <b-input
+            text="Работник"
+            type="select"
+            v-model="v$.staffId.$model"
+            :models="v$.staffId"
+        >
+            <option
+                v-for="(member, index) in staffMembers"
+                :key="index"
+                :value="member.id"
+            >
+                {{ member.user.firstName + " " + member.user.lastName }}
+            </option>
+        </b-input>
+
+        <b-input
             text="Тип"
             type="select"
             v-model="v$.type.$model"
@@ -72,6 +87,18 @@ import { type CreateServiceDto } from '@/services/services.service'
 import useValidate from '@vuelidate/core'
 import { required, maxLength, integer, decimal } from '@vuelidate/validators';
 import { ServiceType } from '@/enums/service-type.enum';
+import { useHttp } from '@/plugins/api';
+import { $error } from '@/services/notify.service';
+import { useStaffStore } from '@/stores/staff.store';
+const staffStore = useStaffStore({ useHttp, $error });
+
+const getStaff = async () => {
+    await staffStore.getAll();
+};
+
+getStaff();
+
+const staffMembers = computed(() => staffStore.staff);
 
 const props = defineProps<{
     data: CreateServiceDto
@@ -81,6 +108,9 @@ const data = computed(() => props.data);
 
 const rules = computed(() => {
     return {
+        staffId: {
+            required,
+        },
         type: {
             required,
         },
