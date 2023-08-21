@@ -3,6 +3,7 @@ import { ServicesService } from '@/services/services.service';
 import { type Service, type UpdateServiceDto, type CreateServiceDto } from '@/interfaces/services.interface';
 import { ServiceType } from '@/enums/service-type.enum';
 import { $error, $success } from '@/services/notify.service';
+import * as translations from '@/constants/ServicesTranslations';
 
 interface ServicesState {
     loading: boolean;
@@ -46,7 +47,7 @@ export const useServicesStore = (options = {}) => {
 
                     this.service = data;
                 } catch (error) {
-                    const err = error.response?.data?.message || "Възникна проблем при зареждането на услугите";
+                    const err = error.response?.data?.message || translations.TServiceCannotGet;
 
                     $error(err);
 
@@ -64,7 +65,7 @@ export const useServicesStore = (options = {}) => {
 
                     this.services = data;
                 } catch (error) {
-                    const err = error.response?.data?.message || "Възникна проблем при зареждането на услугите";
+                    const err = error.response?.data?.message || translations.TServiceCannotGetAll;
 
                     $error(err);
 
@@ -79,9 +80,9 @@ export const useServicesStore = (options = {}) => {
                 try {
                     await servicesService.create(createServiceDto);
 
-                    $success("Узпешно създаване");
+                    $success(translations.TServiceCreatedSuccessfully);
                 } catch (error) {
-                    const err = error.response?.data?.message || "Възникна проблем при създаването на услуга";
+                    const err = error.response?.data?.message || translations.TServiceCannotCreate;
 
                     $error(err);
 
@@ -96,9 +97,9 @@ export const useServicesStore = (options = {}) => {
                 try {
                     await servicesService.update(id, updateServiceDto);
 
-                    $success("Узпешно обновяване");
+                    $success(translations.TServiceUpdatedSuccessfully);
                 } catch (error) {
-                    const err = error.response?.data?.message || "Възникна проблем при обновяването на услугата";
+                    const err = error.response?.data?.message || translations.TServiceCannotUpdate;
 
                     $error(err);
 
@@ -113,9 +114,9 @@ export const useServicesStore = (options = {}) => {
                 try {
                     await servicesService.destroy(id);
 
-                    $success("Узпешно изтриване");
+                    $success(translations.TServiceDeletedSuccessfully);
                 } catch (error) {
-                    const err = error.response?.data?.message || "Възникна проблем при изтриването на услугата";
+                    const err = error.response?.data?.message || translations.TServiceCannotDelete;
 
                     $error(err);
 
