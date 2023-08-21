@@ -3,22 +3,22 @@
         <card class="py-8">
             <div class="contact-links-container">
                 <LinkWithIcon
-                    src="https://maps.google.com/?q=гр. Казанлък, ул. Хината 14"
+                    :src="'https://maps.google.com/?q=' + translations.ContactAddress"
                     icon="fa-solid fa-house"
-                    text="гр. Казанлък, ул. Хината 14"
+                    :text="translations.ContactAddress"
                     target="_blank"
                 />
     
                 <LinkWithIcon
-                    src="tel:+359887107087"
+                    :src="'tel:' + translations.ContactPhoneFull"
                     icon="fa-solid fa-phone"
-                    text="0887107087"
+                    :text="translations.ContactPhone"
                 />
     
                 <LinkWithIcon
-                    src="mailto: boris.marinov99@gmail.com"
+                    :src="'mailto: ' + translations.ContactEmail"
                     icon="fa-solid fa-mail-bulk"
-                    text="boris.marinov99@gmail.com"
+                    :text="translations.ContactEmail"
                 />
             </div>
 
@@ -31,7 +31,7 @@
                         scrolling="no"
                         marginheight="0"
                         marginwidth="0"
-                        src="https://maps.google.com/maps?width=800&amp;height=400&amp;hl=en&amp;q=България, гр. Казанлък, ул. Хината 14&amp;t=p&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+                        :src="'https://maps.google.com/maps?width=800&amp;height=400&amp;hl=en&amp;q=' + translations.ContactAddress + '&amp;t=p&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed'">
                     </iframe>
                 </div>
             </div>
@@ -40,6 +40,7 @@
 </template>
 
 <script lang="ts" setup>
+import * as translations from '@/constants/global';
 import LinkWithIcon from '@/components/LinkWithIcon.vue';
 </script>
 
