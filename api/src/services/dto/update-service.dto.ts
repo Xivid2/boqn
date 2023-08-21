@@ -4,6 +4,11 @@ import { ServiceType } from '../enums/service-type.enum';
 
 export class UpdateServiceDto {
     @IsNotEmpty()
+    @Transform(({ value }) => parseInt(value, 10))
+    @IsNumber()
+    staffId: number
+
+    @IsNotEmpty()
     @IsString()
     @MinLength(1)
     @MaxLength(100)

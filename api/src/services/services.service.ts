@@ -30,7 +30,10 @@ export class ServicesService {
 
         if (!queryServicesDto.type) delete where.type;
 
-        return this.service.findAll({ where });
+        return this.service.findAll({
+            where,
+            order: [['id', 'asc']]
+        });
     }
 
     async create(createServiceDto: CreateServiceDto): Promise<Service> {
@@ -54,11 +57,7 @@ export class ServicesService {
     }
 
     async update(id: number, updateServiceDto: UpdateServiceDto): Promise<Service> {
-        const service = await this.service.findByPk(id);
-
-        if (!service) {
-            throw new NotFoundException();
-        }
+        const service = await this.get(id);
 
         service.set(updateServiceDto);
 
@@ -68,11 +67,7 @@ export class ServicesService {
     }
 
     async destroy(id: number): Promise<void> {
-        const service = await this.service.findByPk(id);
-
-        if (!service) {
-            throw new NotFoundException();
-        }
+        const service = await this.get(id);
 
         await service.destroy();
     }
