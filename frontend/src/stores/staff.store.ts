@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { $error } from '@/services/notify.service';
 import { StaffService } from '@/services/staff.service';
 import { type Staff } from '@/interfaces/staff.interface';
+import * as translations from '@/constants/StaffTranslations';
 
 interface StaffState {
     loading: boolean;
@@ -27,7 +28,7 @@ export const useStaffStore = (options = {}) => {
 
                     this.staff = data;
                 } catch (error) {
-                    const err = error.response?.data?.message || "Възникна проблем при зареждането на работниците";
+                    const err = error.response?.data?.message || translations.TStaffCannotGetAll;
 
                     $error(err);
 

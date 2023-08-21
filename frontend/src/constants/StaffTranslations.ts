@@ -1,0 +1,1 @@
+export const TStaffCannotGetAll = "Възникна проблем при зареждането на данните за персонала";
