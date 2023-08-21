@@ -3,21 +3,25 @@
         <card>
             <RouterLink to="/admin/services">
                 <v-button block class="mt-2">
-                    Услуги
+                    {{ translations.TAdminPanelServices }}
                 </v-button>
             </RouterLink>
 
             <RouterLink to="/admin/appointments">
                 <v-button block class="mt-8">
-                    Записани часове
+                    {{ translations.TAdminPanelAppointments }}
                 </v-button>
             </RouterLink>
 
             <RouterLink to="/admin/users">
                 <v-button block class="mt-8">
-                    Потребители
+                    {{ translations.TAdminPanelUsers }}
                 </v-button>
             </RouterLink>
         </card>
     </div>
 </template>
+
+<script lang="ts" setup>
+import * as translations from '@/constants/AdminPanelTranslations';
+</script>

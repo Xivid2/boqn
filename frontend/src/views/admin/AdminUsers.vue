@@ -2,20 +2,20 @@
     <div class="mx-16 mb-16">
         <card>
             <h1 class="block text-center mb-8">
-                Потребители
+                {{ translations.TAdminPanelUsers }}
             </h1>
-        
+
             <table class="table">
                 <thead>
                     <tr>
                         <th class="text-left">
-                            Имена
+                            {{ translations.TAdminPanelUserNames }}
                         </th>
                         <th class="text-left">
-                            Имейл
+                            {{ translations.TAdminPanelUserEmail }}
                         </th>
                         <th class="text-center">
-                            Тип
+                            {{ translations.TAdminPanelUserType }}
                         </th>
                         <th class="text-center"></th>
                     </tr>
@@ -33,7 +33,7 @@
                             <v-button
                                 isDelete
                                 @click="openDeleteModal(user.id)"
-                                title="Изтрий"
+                                :title="translations.TDelete"
                             >
                                 <fai icon="fa-solid fa-trash" class="fa-l" />
                             </v-button>
@@ -57,13 +57,14 @@
         v-model="isDeleteModalOpen"
         @update:modelValue="isDeleteModalOpen = $event"
         @onConfirm="destroy(userIdToDelete)"
-        title="Изтриване на потребител"
-        text="Сигурни ли сте че искате да изтриете този потребител?"
+        :title="translations.TAdminPanelUserDeletion"
+        :text="translations.TAdminPanelUserDeletionConfirmation"
     >
     </ConfirmDialog>
 </template>
 
 <script lang="ts" setup>
+import * as translations from '@/constants/AdminPanelTranslations';
 import Pagination from "@/components/Pagination.vue"
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { ref, watch } from 'vue';
