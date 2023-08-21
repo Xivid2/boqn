@@ -1,20 +1,24 @@
 <template>
     <div class="wrapper">
         <card class="mb-16">
-            <form @submit.prevent="save">
+            <div v-if="loading">
+                loading...
+            </div>
+
+            <form @submit.prevent="save" v-else>
                 <h1 class="text-center mb-8">
-                    Обновяване на услуга
+                    {{ translations.TServiceUpdate }}
                 </h1>
 
-                <AdminServicesForm :data="state" ref="form" />
+                <AdminServicesForm :data="service" ref="form" />
 
                 <v-button
-                    :disabled="isFormDisabled"
+                    :disabled="loading"
                     type="submit"
                     block
                     class="mt-2"
                 >
-                    Запази
+                    {{ translations.TServiceFormSave }}
                 </v-button>
             </form>
         </card>
@@ -22,33 +26,27 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { type UpdateServiceDto, ServicesService } from '@/services/services.service';
-import { useHttp } from '@/plugins/api';
-import { $error, $success } from '@/services/notify.service';
-const service = new ServicesService(useHttp);
-import AdminServicesForm from './AdminServicesForm.vue';
+import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useServicesStore } from '@/stores/services.store';
+import AdminServicesForm from './AdminServicesForm.vue';
+import * as translations from '@/constants/ServicesTranslations';
 const router = useRouter();
 const route = useRoute();
+const servicesStore = useServicesStore();
 
-const serviceId = route.params.id;
+const loading = computed(() => servicesStore.loading);
+const service = computed(() => servicesStore.service);
+const anyError = computed(() => servicesStore.error);
 
-const state = ref(null);
+const paramId = +route.params.id;
 
 const getService = async () => {
-    const { data, error } = await service.get(serviceId);
-
-    if (error) {
-        return $error(error.response?.data?.message || "Something went wrong");
-    }
-
-    state.value = data;
+    await servicesStore.get(paramId);
 }
 
 getService();
 
-const isFormDisabled = ref(false);
 const form = ref(null);
 
 const save = async () => {
@@ -56,16 +54,10 @@ const save = async () => {
 
     if (!isValid) return;
 
-    isFormDisabled.value = true;
+    await servicesStore.update(paramId, service.value)
 
-    const { data, error } = await service.update(serviceId, { ...state.value });
-
-    if (error) {
-        return $error(error.response?.data?.message || "Something went wrong");
+    if (!anyError.value) {
+        router.push('/admin/services');
     }
-
-    $success('Успешно създаване');
-
-    router.push('/admin/services')
 }
 </script>

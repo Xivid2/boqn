@@ -3,18 +3,18 @@
         <card class="mb-16">
             <form @submit.prevent="save" novalidate>
                 <h1 class="text-center mb-8">
-                    Създаване на услуга
+                    {{ translations.TServiceCreation }}
                 </h1>
 
                 <AdminServicesForm :data="createData" ref="form" />
 
                 <v-button
-                    :disabled="isFormDisabled"
+                    :disabled="loading"
                     type="submit"
                     block
                     class="mt-2"
                 >
-                    Запази
+                    {{ translations.TServiceFormSave }}
                 </v-button>
             </form>
         </card>
@@ -22,16 +22,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { type CreateServiceDto, ServicesService } from '@/services/services.service';
-import { useHttp } from '@/plugins/api';
-import { $error, $success } from '@/services/notify.service';
+import { ref, computed } from 'vue';
+import { type CreateServiceDto } from '@/interfaces/services.interface';
 import { useServicesStore } from '@/stores/services.store';
-const serviceStore = useServicesStore({ useHttp, $error });
-const service = new ServicesService(useHttp);
+import * as translations from '@/constants/ServicesTranslations';
 import AdminServicesForm from './AdminServicesForm.vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
+const servicesStore = useServicesStore();
+
+const loading = computed(() => servicesStore.loading);
+const error = computed(() => servicesStore.error);
 
 const genInitialData = () => {
     return {
@@ -47,7 +48,6 @@ const genInitialData = () => {
     };
 };
 
-const isFormDisabled = ref(false);
 const form = ref(null);
 
 const createData = ref(ref<CreateServiceDto>(genInitialData()));
@@ -57,16 +57,10 @@ const save = async () => {
 
     if (!isValid) return;
 
-    isFormDisabled.value = true;
+    await servicesStore.create(createData.value);
 
-    const { error } = await service.create({ ...createData.value });
-
-    if (error) {
-        return $error(error.response?.data?.message || "Something went wrong");
+    if (!error.value) {
+        router.push('/admin/services');
     }
-
-    $success('Успешно създаване');
-
-    router.push('/admin/services')
 }
 </script>

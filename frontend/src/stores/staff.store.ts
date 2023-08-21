@@ -1,37 +1,40 @@
 import { defineStore } from 'pinia';
-import { type Staff, StaffService } from '@/services/staff.service';
+import { $error } from '@/services/notify.service';
+import { StaffService } from '@/services/staff.service';
+import { type Staff } from '@/interfaces/staff.interface';
 
 interface StaffState {
+    loading: boolean;
+    error: string;
     staff: Staff[];
 }
 
 export const useStaffStore = (options = {}) => {
-    const http = options.useHttp || null;
-    const $error = options.$error || null;
+    const staffService = new StaffService();
 
     return defineStore('staff', {
         state: (): StaffState => ({
+            loading: false,
+            error: '',
             staff: [],
         }),
         actions: {
-            resetStaff() {
-                this.staff = [];
-            },
-            setStaff(staff: Staff[]) {
-                this.staff = staff;
-            },
             async getAll() {
-                const staffService = new StaffService(http);
+                this.staff = [];
 
-                const { data, error } = await staffService.getAll();
+                try {
+                    const { data } = await staffService.getAll();
 
-                if (error) {
-                    this.resetStaff();
+                    this.staff = data;
+                } catch (error) {
+                    const err = error.response?.data?.message || "Възникна проблем при зареждането на работниците";
 
-                    return $error(error.response?.data?.message || "Something went wrong");
+                    $error(err);
+
+                    this.error = err;
+                } finally {
+                    this.loading = false;
                 }
-
-                this.setStaff(data);
             }
         }
     })();
