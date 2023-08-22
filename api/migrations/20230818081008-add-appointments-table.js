@@ -20,6 +20,16 @@ module.exports = {
                     onUpdate: 'cascade',
                     onDelete: 'cascade',
                 },
+                staffId: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                    references: {
+                        model: 'staff',
+                        key: 'id',
+                    },
+                    onUpdate: 'cascade',
+                    onDelete: 'cascade',
+                },
                 serviceId: {
                     type: Sequelize.INTEGER,
                     allowNull: false,
@@ -45,7 +55,7 @@ module.exports = {
             }, { transaction });
 
             await queryInterface.addConstraint('appointments', {
-                fields: ["date"],
+                fields: ["staffId", "date"],
                 type: 'unique',
                 transaction
             });

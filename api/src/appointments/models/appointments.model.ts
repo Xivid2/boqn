@@ -1,6 +1,7 @@
 import { Column, Model, Table, PrimaryKey, AutoIncrement, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { User } from "../../users/models/user.model";
 import { Service } from 'src/services/service.model';
+import { Staff } from 'src/staff/models/staff.model';
 
 @Table({
     tableName: "appointments",
@@ -15,6 +16,10 @@ export class Appointment extends Model {
     @Column
     userId: string
 
+    @ForeignKey(() => Staff)
+    @Column
+    staffId: number
+
     @ForeignKey(() => Service)
     @Column
     serviceId: number
@@ -27,4 +32,7 @@ export class Appointment extends Model {
 
     @BelongsTo(() => Service)
     service: Service
+
+    @BelongsTo(() => Staff)
+    staff: Staff
 }

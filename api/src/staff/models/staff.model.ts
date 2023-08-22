@@ -1,4 +1,5 @@
 import { Column, Model, Table, PrimaryKey, ForeignKey, AutoIncrement, BelongsTo, HasMany } from 'sequelize-typescript';
+import { Appointment } from 'src/appointments/models/appointments.model';
 import { Service } from 'src/services/service.model';
 import { User } from 'src/users/models/user.model';
 
@@ -20,4 +21,7 @@ export class Staff extends Model {
 
     @HasMany(() => Service)
     services: Service[]
+
+    @HasMany(() => Appointment)
+    appointments: Appointment[]
 }
