@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useAuthStore } from '@/stores/auth.store';
-import { useHttp } from '@/plugins/api';
-import AuthService from '@/services/auth.service';
 
 const authenticated = ["admin", "customer"];
 const admin = ["admin"];
@@ -219,39 +217,20 @@ history: createWebHistory(import.meta.env.BASE_URL),
 
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
-    const auth = new AuthService(useHttp);
 
     if (!authStore.isInitialRefreshComplete) {
-        const { data, error } = await auth.refreshTokens();
-
-        if (error) {
-            authStore.setUnauthenticated();
-        } else {
-            const { access_token, role } = data;
-
-            authStore.setToken(access_token);
-            authStore.setRole(role);
-        }
-
-        authStore.isInitialRefreshComplete = true;
+        await authStore.refreshTokens();
     }
 
     const requiresAuth = to.meta.requiresAuth;
     const redirectIfAuthenticated = to.meta.redirectIfAuthenticated;
 
     if (requiresAuth) {
-        const { data, error } = await auth.refreshTokens();
+        await authStore.refreshTokens();
 
-        if (error) {
-            authStore.setUnauthenticated();
-
+        if (authStore.error) {
             return next('/login');
         } else {
-            const { access_token, role } = data;
-
-            authStore.setToken(access_token);
-            authStore.setRole(role);
-
             const {
                 canSee = () => true,
             } = to.meta || {};

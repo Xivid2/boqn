@@ -1,55 +1,21 @@
-type RegistrationDto = {
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    confirmPassword: string,
-};
-
-export default class AuthService {
-    constructor(useHttp) {
-        this.http = useHttp();
-    }
+import { http } from "@/plugins/newApi";
+import { type RegistrationDto } from "@/interfaces/auth.interface";
+export class AuthService {
+    constructor() {}
 
     async register(input: RegistrationDto) {
-        try {
-            const { data } = await this.http.post('/auth/register', input);
-
-            return { data };
-        } catch (error) {
-            return { error };
-        }
+        return http.post('/auth/register', input);
     }
 
     async login(email: string, password: string) {
-        try {
-            const { data } = await this.http.post('/auth/login', {
-                email, password,
-            });
-
-            return { data };
-        } catch (error) {
-            return { error };
-        }
+        return http.post('/auth/login', { email, password });
     }
 
     async logout() {
-        try {
-            const { data } = await this.http.post('/auth/logout');
-
-            return { data };
-        } catch (error) {
-            return { error };
-        }
+        return http.post('/auth/logout');
     }
 
     async refreshTokens() {
-        try {
-            const { data } = await this.http.post('/auth/refresh');
-
-            return { data };
-        } catch (error) {
-            return { error };
-        }
+        return http.post('/auth/refresh');
     }
 }

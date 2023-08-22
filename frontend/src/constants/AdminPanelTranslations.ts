@@ -1,3 +1,4 @@
+export const TAdminPanel = "Админски панел";
 export const TAdminPanelServices = "Услуги";
 export const TAdminPanelAppointments = "Записани часове";
 export const TAdminPanelUsers = "Потребители";
