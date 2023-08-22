@@ -32,6 +32,7 @@ export const useAuthStore = (options = {}) => {
             },
             setUnauthenticated() {
                 this.accessToken = '';
+                this.role = '';
             },
             prepareAction() {
                 this.loading = true;
@@ -99,10 +100,6 @@ export const useAuthStore = (options = {}) => {
 
                     this.accessToken = access_token;
                     this.role = role;
-
-                    if (!this.isInitialRefreshComplete) {
-                        this.isInitialRefreshComplete = true;
-                    }
                 } catch (error) {
                     this.setUnauthenticated();
 
@@ -113,6 +110,10 @@ export const useAuthStore = (options = {}) => {
                     this.error = err;
                 } finally {
                     this.loading = false;
+
+                    if (!this.isInitialRefreshComplete) {
+                        this.isInitialRefreshComplete = true;
+                    }
                 }
             },
         }
