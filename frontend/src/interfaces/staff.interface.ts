@@ -1,4 +1,4 @@
-import { type User } from "../services/user.service"; //TODO: FIx
+import { type User } from "./users.interface";
 
 export interface Staff {
     id: number;
