@@ -1,3 +1,4 @@
+export const TService = "Услуга";
 export const TCreateService = "Създай";
 export const TUpdateService = "Обнови";
 export const TDeleteService = "Изтрий";

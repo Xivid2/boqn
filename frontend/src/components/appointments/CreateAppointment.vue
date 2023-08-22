@@ -6,7 +6,7 @@
             class="mt-8"
         >
             <b-input
-                text="Тип"
+                :text="serviceTranslations.TServiceType"
                 type="select"
                 @change="handleChangeServiceType"
                 v-model="v$.chosenServiceType.$model"
@@ -23,7 +23,7 @@
 
             <b-input
                 v-if="input.chosenServiceType"
-                text="Услуга"
+                :text="serviceTranslations.TService"
                 type="select"
                 @change="handleChangeService"
                 v-model="v$.chosenServiceId.$model"
@@ -44,11 +44,11 @@
                     v-model="date"
                     @update:model-value="setDate"
                     :unavailableDates="unavailableDates"
-                    :startDate="startDate"
-                    :endDate="endDate"
+                    :startDate="tomorrow"
+                    :endDate="afterMonth"
                     :isParentLoaded="isParentLoaded"
                     class="block"
-                    label="Избор на час:"
+                    :label="appointmentTranslations.TAppointmentsAppointmentCreate"
                 />
                 <p v-if="errorMessage" class="input-error">
                     {{ errorMessage }}
@@ -56,7 +56,7 @@
             </div>
 
             <p v-if="chosenDate" class="mt-8">
-                Избран час: {{ formattedDate }}
+                {{ appointmentTranslations.TAppointmentsChosenAppointment }} {{ formattedDate }}
             </p>
 
             <v-button
@@ -64,7 +64,7 @@
                 block
                 class="mt-16"
             >
-                Запиши
+                {{ appointmentTranslations.TAppointmentsCreate }}
             </v-button>
         </v-form>
     </div>
@@ -73,35 +73,36 @@
 <script lang="ts" setup>
 import dayjs from "dayjs";
 import { ref, reactive, computed, watch } from "vue";
-import { useHttp } from '@/plugins/api';
-import { $error, $success } from "@/services/notify.service";
-import AppointmentService from '@/services/appointment.service';
-const appointment = new AppointmentService(useHttp);
 import { useServicesStore } from '@/stores/services.store';
 const servicesStore = useServicesStore();
 import DatePicker from '../DatePicker.vue';
 import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators';
 import { ServiceType } from '@/enums/service-type.enum';
+import { useAppointmentsStore } from '@/stores/appointments.store';
+const appointmentsStore = useAppointmentsStore();
+import * as serviceTranslations from '@/constants/ServicesTranslations';
+import * as appointmentTranslations from '@/constants/AppointmentsTranslations';
+import { type AppointmentByPeriod } from '@/interfaces/appointments.interface';
 
 const services = {
     ...servicesStore.massages.length ? {
         [ServiceType.MASSAGE]: {
-            name: "Масажи",
+            name: serviceTranslations.TServiceTypeMassages,
             model: ServiceType.MASSAGE,
             values: servicesStore.massages,
         }
     } : {},
     ...servicesStore.ergos.length ? {
         [ServiceType.ERGO]: {
-            name: "Ерготерапия",
+            name: serviceTranslations.TServiceTypeErgo,
             model: ServiceType.ERGO,
             values: servicesStore.ergos,
         }
     } : {},
     ...servicesStore.logos.length ? {
         [ServiceType.LOGO]: {
-            name: "Логопедия",
+            name: serviceTranslations.TServiceTypeLogo,
             model: ServiceType.LOGO,
             values: servicesStore.logos,
         }
@@ -109,13 +110,15 @@ const services = {
 };
 
 const isParentLoaded = ref(false);
-const startDate = ref();
-const endDate = ref();
 const date = ref(null);
 const chosenDate = ref();
 const formattedDate = ref("");
-const unavailableDates = ref([]);
 const errorMessage = ref("");
+
+const tomorrow = dayjs().startOf('day').add(1, 'day');
+const afterMonth = dayjs().startOf('day').add(1, 'month');
+
+const unavailableDates = computed(() => appointmentsStore.appointments);
 
 const input = reactive({
     chosenServiceType: null,
@@ -161,19 +164,8 @@ const setDate = (value: any) => {
     chosenDate.value = new Date(value);
 }
 
-const setUnavailableDates = async () => {
-    const tomorrow = dayjs().startOf('day').add(1, 'day');
-    const afterMonth = dayjs().startOf('day').add(1, 'month');
-
-    const { data, error } = await appointment.getForPeriod(tomorrow, afterMonth);
-
-    if (error) {
-        return $error(error.response?.data?.message || "Something went wrong");
-    }
-
-    startDate.value = tomorrow;
-    endDate.value = afterMonth;
-    unavailableDates.value = data;
+const setUnavailableDates = async (query: AppointmentByPeriod) => {
+    await appointmentsStore.getForPeriod(query);
 
     isParentLoaded.value = true;
 }
@@ -185,23 +177,14 @@ const createAppointment = async () => {
 
     if (!isValid) return;
 
-
     if (!chosenDate.value) {
-        return errorMessage.value = "Трябва да изберете час";
+        return errorMessage.value = appointmentTranslations.TAppointmentsYouNeedToChooseValue;
     }
 
-    const { error } = await appointment.create({
+    await appointmentsStore.create({
         date: chosenDate.value,
         serviceId: +input.chosenServiceId
     });
-
-    if (error) {
-        return $error(error.response?.data?.message || "Something went wrong");
-    }
-
-    $success("Успешно записахте час");
-
-    await setUnavailableDates();
 
     input.chosenServiceType = null;
     input.chosenServiceId = null;
@@ -209,10 +192,21 @@ const createAppointment = async () => {
     errorMessage.value = "";
 }
 
+watch(
+    () => input.chosenServiceType,
+    (type) => {
+        if (!type) return;
+
+        setUnavailableDates({
+            type,
+            startDate: tomorrow,
+            endDate: afterMonth,
+        });
+    }
+);
+
 watch(chosenDate, (val) => {
     formattedDate.value = dayjs(val).format('YYYY-MM-DD HH:mm');
     errorMessage.value = "";
 });
-
-setUnavailableDates();
 </script>
