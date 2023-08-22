@@ -1,0 +1,16 @@
+export const TAuthCannotLogin = 'Възникна проблем при опита за влизане';
+export const TAuthCannotRegister = 'Възникна проблем при опита за регистрация';
+export const TAuthCannotSignOut = 'Възникна проблем при опита за отписване';
+export const TAuthCannotRefreshTokens = 'Възникна проблем при опита за поддръжка на сесията';
+export const TAuthSignIn = 'Вписване';
+export const TAuthSignOut = 'Отписване';
+export const TAuthEmail = 'Имейл';
+export const TAuthPassword = 'Парола';
+export const TAuthConfirmPassword = 'Потвърди парола';
+export const TAuthForgottenPasswordQuestion = 'Забравена парола?';
+export const TAuthDontHaveAccountQuestion = 'Нямате акаунт?';
+export const TAuthLogin = 'Вход';
+export const TAuthRegistration = 'Регистрация';
+export const TAuthFirstName = 'Име';
+export const TAuthLastName = 'Фамилия';
+export const TAuthAccount = 'Акаунт';

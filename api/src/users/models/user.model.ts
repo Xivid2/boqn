@@ -2,6 +2,7 @@ import { Column, Model, Table, PrimaryKey, ForeignKey, AutoIncrement, DefaultSco
 import * as bcrypt from "bcrypt";
 import { UserRefreshToken } from './user-refresh-token.model';
 import { g_UserRole } from './user-roles.model';
+import { Staff } from '../../staff/models/staff.model';
 
 @DefaultScope({
     attributes: {
@@ -46,6 +47,9 @@ export class User extends Model {
 
     @BelongsTo(() => g_UserRole)
     role: g_UserRole
+
+    @HasOne(() => Staff)
+    staff: Staff
 
     async comparePassword(candidatePassword: string): Promise<boolean> {
         return bcrypt.compare(candidatePassword, this.password);

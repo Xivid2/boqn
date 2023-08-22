@@ -1,6 +1,6 @@
-import { Controller, Req, Res, Get, Post, Body, UseGuards, Query } from '@nestjs/common';
+import { Controller, Req, Get, Post, Body, UseGuards, Query, Param } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
-import { PeriodQueryParams } from '../ergo-appointments/appointments.query.params';
+import { PeriodQueryParams, PeriodTypeParam } from '../ergo-appointments/appointments.query.params';
 import { JwtAccessTokenGuard } from '../auth/guards/jwt-auth-access-token.guard';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 
@@ -10,11 +10,15 @@ export class AppointmentsController {
         private appointmentsService: AppointmentsService
     ) {}
 
-    @Get('/period')
-    async getAll(@Query() query: PeriodQueryParams) {
+    @Get('/period/:type')
+    async getAll(
+        @Param() params: PeriodTypeParam,
+        @Query() query: PeriodQueryParams,
+    ) {
+        const { type } = params;
         const { startDate, endDate } = query;
 
-        return this.appointmentsService.getForPeriod(startDate, endDate);
+        return this.appointmentsService.getForPeriod(type, startDate, endDate);
     }
 
     @UseGuards(JwtAccessTokenGuard)

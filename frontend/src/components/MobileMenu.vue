@@ -9,12 +9,12 @@
                 </div>
     
                 <div class="mobile-menu__tools__connections">
-                    <a src="tel:+359887107087">
+                    <a :src="'tel:' + ContactPhoneFull">
                         <fai icon="fa-solid fa-phone" class="fa-xl" />
                     </a>
         
                     <a
-                        href="https://maps.google.com/?q=гр. Казанлък, ул. Хината 14"
+                        :href="'https://maps.google.com/?q=' + ContactAddress"
                         target="_blank"
                     >
                         <fai icon="fa-solid fa-location-pin" class="fa-xl" />
@@ -24,13 +24,13 @@
     
             <div class="mobile-menu__navigation my-8">
                 <div class="mobile-menu__links-container">
-                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/">Начало</RouterLink>
-                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/about">За Нас</RouterLink>
-                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/services">Услуги</RouterLink>
-                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/prices">Ценоразпис</RouterLink>
-                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/appointment">Запис на час</RouterLink>
-                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/gallery">Галерия</RouterLink>
-                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/contact">Контакти</RouterLink>
+                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/">{{ menuTranslations.TMobileMenuHome }}</RouterLink>
+                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/about">{{ menuTranslations.TMobileMenuAbout }}</RouterLink>
+                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/services">{{ menuTranslations.TMobileMenuServices }}</RouterLink>
+                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/prices">{{ menuTranslations.TMobileMenuPrices }}</RouterLink>
+                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/appointment">{{ menuTranslations.TMobileMenuCreateAppointment }}</RouterLink>
+                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/gallery">{{ menuTranslations.TMobileMenuGallery }}</RouterLink>
+                    <RouterLink @click="handleClose" class="mobile-menu__link" to="/contact">{{ menuTranslations.TMobileMenuContacts }}</RouterLink>
                 </div>
     
                 <div class="mobile-menu__close-button" @click="handleClose">
@@ -44,6 +44,8 @@
 <script lang="ts" setup>
 import { computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { ContactPhoneFull, ContactAddress } from '@/constants/global';
+import * as menuTranslations from '@/constants/MobileMenuTranslations';
 import { useAuthStore } from '@/stores/auth.store';
 import { useMenuStore } from '@/stores/menu.store';
 const authStore = useAuthStore();

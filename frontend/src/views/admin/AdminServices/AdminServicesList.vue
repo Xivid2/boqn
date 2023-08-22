@@ -1,68 +1,73 @@
 <template>
     <div class="mx-16 mb-8">
         <card>
-            <RouterLink to="/admin/services/create">
-                <v-button class="mb-4">
-                    Създай
-                </v-button>
-            </RouterLink>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="text-left">
-                            Име
-                        </th>
-                        <th class="text-center">
-                            Цел
-                        </th>
-                        <th class="text-center">
-                            Кратко описание
-                        </th>
-                        <th class="text-center">
-                            Времетраене
-                        </th>
-                        <th class="text-center">
-                            Цена
-                        </th>
-                        <th class="text-center"></th>
-                    </tr>
-                </thead>
+            <div v-if="loading">
+                loading...
+            </div>
+            <div v-else>
+                <RouterLink to="/admin/services/create">
+                    <v-button class="mb-4">
+                        {{ translations.TCreateService }}
+                    </v-button>
+                </RouterLink>
     
-                <tbody>
-                    <tr
-                        v-for="service in services"
-                        :key="service.id"
-                    >
-                        <td>{{ service.name }}</td>
-                        <td>{{ service.goal }}</td>
-                        <td>{{ service.shortDescription }}</td>
-                        <td class="text-center">{{ service.duration }}</td>
-                        <td class="text-center">{{ service.price + 'лв.' }}</td>
-                        <td class="text-center">
-                            <div class="d-flex">
-                                <RouterLink :to="'/admin/services/' + service.id">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-left">
+                                {{ translations.TServiceFormName }}
+                            </th>
+                            <th class="text-center">
+                                {{ translations.TServiceFormGoal }}
+                            </th>
+                            <th class="text-center">
+                                {{ translations.TServiceFormShortDescription }}
+                            </th>
+                            <th class="text-center">
+                                {{ translations.TServiceFormDuration }}
+                            </th>
+                            <th class="text-center">
+                                {{ translations.TServiceFormPrice }}
+                            </th>
+                            <th class="text-center"></th>
+                        </tr>
+                    </thead>
+        
+                    <tbody>
+                        <tr
+                            v-for="service in services"
+                            :key="service.id"
+                        >
+                            <td>{{ service.name }}</td>
+                            <td>{{ service.goal }}</td>
+                            <td>{{ service.shortDescription }}</td>
+                            <td class="text-center">{{ service.duration }}</td>
+                            <td class="text-center">{{ service.price + CurrencySuffix }}</td>
+                            <td class="text-center">
+                                <div class="d-flex">
+                                    <RouterLink :to="'/admin/services/' + service.id">
+                                        <v-button
+                                            class="mr-2"
+                                            isUpdate
+                                            :title="translations.TUpdateService"
+                                        >
+                                            <fai icon="fa-solid fa-edit" />
+                                        </v-button>
+                                    </RouterLink>
+        
                                     <v-button
-                                        class="mr-2"
-                                        isUpdate
-                                        title="Обнови"
+                                        isDelete
+                                        @click="openDeleteModal(service.id)"
+                                        :title="translations.TDeleteService"
                                     >
-                                        <fai icon="fa-solid fa-edit" />
+                                        <fai icon="fa-solid fa-trash" />
                                     </v-button>
-                                </RouterLink>
-    
-                                <v-button
-                                    isDelete
-                                    @click="openDeleteModal(service.id)"
-                                    title="Изтрий"
-                                >
-                                    <fai icon="fa-solid fa-trash" />
-                                </v-button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </card>
     </div>
 
@@ -70,21 +75,22 @@
         v-model="isDeleteModalOpen"
         @update:modelValue="isDeleteModalOpen = $event"
         @onConfirm="destroy(serviceIdToDelete)"
-        title="Изтриване на услуга"
-        text="Сигурни ли сте че искате да изтриете тази услуга?"
+        :title="translations.TServiceDeletion"
+        :text="translations.TAreYouSureYouWantToDelete"
     >
     </ConfirmDialog>
 </template>
 
 <script lang="ts" setup>
+import { ref, watch, computed } from 'vue';
+import { useServicesStore } from '@/stores/services.store';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import { ref } from 'vue';
-import { useHttp } from '@/plugins/api';
-import { type Service, ServicesService } from '@/services/services.service';
-const service = new ServicesService(useHttp);
-import { $error, $success } from '@/services/notify.service';
+import * as translations from '@/constants/ServicesTranslations';
+import { CurrencySuffix } from '@/constants/global';
+const servicesStore = useServicesStore();
 
-const services = ref(ref<Service[]>([]));
+const services = computed(() => servicesStore.services);
+const loading = computed(() => servicesStore.loading);
 
 const serviceIdToDelete = ref(0);
 const isDeleteModalOpen = ref(false);
@@ -94,31 +100,19 @@ const openDeleteModal = (id: number) => {
     serviceIdToDelete.value = id;
 };
 
-const destroy = async (id: number) => {
-    const { error } = await service.destroy(id);
-
-    isDeleteModalOpen.value = false;
-
-    if (error) {
-        return $error(error.response?.data?.message || "Something went wrong");
+watch(loading, (val: boolean) => {
+    if (val === true) {
+        isDeleteModalOpen.value = false;
     }
+});
 
-    $success("Изпешно изтриване");
+servicesStore.getAll();
+
+const destroy = async (id: number) => {
+    await servicesStore.destroy(id);
 
     serviceIdToDelete.value = 0;
 
-    await getAll();
+    await servicesStore.getAll();
 };
-
-const getAll = async () => {
-    const { data, error } = await service.getAll();
-
-    if (error) {
-        $error(error.response?.data?.message || "Something went wrong");
-    }
-
-    services.value = data;
-};
-
-getAll();
 </script>

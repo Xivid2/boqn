@@ -10,6 +10,16 @@ module.exports = {
                     allowNull: false,
                     primaryKey: true,
                 },
+                staffId: {
+                    type: Sequelize.INTEGER,
+                    allowNull: false,
+                    references: {
+                        model: 'staff',
+                        key: 'id'
+                    },
+                    onUpdate: 'cascade',
+                    onDelete: 'cascade',
+                },
                 type: {
                     type: Sequelize.STRING,
                     allowNull: false,
@@ -62,6 +72,7 @@ module.exports = {
                 'services',
                 [
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Класически",
                         goal: "Премахване на умората и стреса",
@@ -74,6 +85,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Релаксиращ",
                         goal: "Премахване на стреса, успокояване на нервната система",
@@ -86,6 +98,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Възстановителен",
                         goal: "Облекчаване на болката, освобождаване на мускулно напрежение",
@@ -98,6 +111,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Регенериращ",
                         goal: "Ефективно детоксикиране, възстановяване на силите и пълен рестарт на тялото. Специално внимание върху съединителната тъкан и фасцилията",
@@ -110,6 +124,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Дълбокотъканен",
                         goal: "Релаксация на мускули, стажи и сухожилия",
@@ -122,6 +137,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Спортен",
                         goal: "Подобряване на обмяната, премахване на напрежението. Подготвителен, интензивен, възстановителен",
@@ -134,6 +150,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Специализиран терапевтичен при болки в краката и стъпалата",
                         goal: "Свободно движение на и лекота, без болка и напрежение в краката и стъпалата",
@@ -146,6 +163,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Терапия с вендузи",
                         goal: "Изчиства от токсини, освобождава блокажите в тялото",
@@ -158,6 +176,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Шиацу масаж",
                         goal: "Балансиране на енергията, освобождаване на напрежението, успокояване на съзнанието",
@@ -170,6 +189,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Бюти терапия",
                         goal: "Цялостна грижа от пръстите на краката до върха на главата. Масаж на цяло тяло, масаж на стъпалата и масаж на лице. Подмладява, освежава, стяга и изглажда кожата на тялото и лицето",
@@ -182,6 +202,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Масаж на лице, шия, доколте и ръце",
                         goal: "Кожата на деколтето, шията и лицето е по-нежна и податлива на влияния, затова има нужда от по-внимателна и постоянна грижа, за да изглежда млада, сияйна и красива",
@@ -194,6 +215,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Масаж на стъпала",
                         goal: "Цялостна грижа за тонуса на стъпалата",
@@ -206,6 +228,7 @@ module.exports = {
                         updatedAt: new Date(),
                     },
                     {
+                        staffId: 1,
                         type: "MASSAGE",
                         name: "Частичен масаж",
                         goal: "Премахване локално болката и схванатите мускули",

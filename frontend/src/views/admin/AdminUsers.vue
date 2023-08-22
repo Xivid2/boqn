@@ -2,20 +2,20 @@
     <div class="mx-16 mb-16">
         <card>
             <h1 class="block text-center mb-8">
-                Потребители
+                {{ translations.TAdminPanelUsers }}
             </h1>
-        
+
             <table class="table">
                 <thead>
                     <tr>
                         <th class="text-left">
-                            Имена
+                            {{ translations.TAdminPanelUserNames }}
                         </th>
                         <th class="text-left">
-                            Имейл
+                            {{ translations.TAdminPanelUserEmail }}
                         </th>
                         <th class="text-center">
-                            Тип
+                            {{ translations.TAdminPanelUserType }}
                         </th>
                         <th class="text-center"></th>
                     </tr>
@@ -33,7 +33,7 @@
                             <v-button
                                 isDelete
                                 @click="openDeleteModal(user.id)"
-                                title="Изтрий"
+                                :title="translations.TDelete"
                             >
                                 <fai icon="fa-solid fa-trash" class="fa-l" />
                             </v-button>
@@ -57,27 +57,26 @@
         v-model="isDeleteModalOpen"
         @update:modelValue="isDeleteModalOpen = $event"
         @onConfirm="destroy(userIdToDelete)"
-        title="Изтриване на потребител"
-        text="Сигурни ли сте че искате да изтриете този потребител?"
+        :title="translations.TAdminPanelUserDeletion"
+        :text="translations.TAdminPanelUserDeletionConfirmation"
     >
     </ConfirmDialog>
 </template>
 
 <script lang="ts" setup>
+import * as translations from '@/constants/AdminPanelTranslations';
 import Pagination from "@/components/Pagination.vue"
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import { ref, watch } from 'vue';
-import { useHttp } from '@/plugins/api';
-import UserService from '@/services/user.service';
-const user = new UserService(useHttp);
-import { $error, $success } from "@/services/notify.service";
-const limit = 10;
+import { ref, watch, computed } from 'vue';
+import { PaginationLimit } from '@/constants/global';
+import { useUsersStore } from '@/stores/users.store';
+const usersStore = useUsersStore();
 
 const updatePage = (page: number) => {
     paginationInfo.value.page = page;
 }
 
-const users = ref([]);
+const users = computed(() => usersStore.users);
 const paginationInfo = ref({
     page: 1,
     pages: 1,
@@ -85,7 +84,7 @@ const paginationInfo = ref({
 
 watch(paginationInfo.value, async () => {
     await getAll();
-})
+});
 
 const userIdToDelete = ref(0);
 const isDeleteModalOpen = ref(false);
@@ -96,15 +95,9 @@ const openDeleteModal = (id: number) => {
 };
 
 const destroy = async (id: number) => {
-    const { error } = await user.destroy(id);
+    await usersStore.destroy(id);
 
     isDeleteModalOpen.value = false;
-
-    if (error) {
-        return $error(error.response?.data?.message || "Something went wrong");
-    }
-
-    $success("Изпешно изтриване");
 
     userIdToDelete.value = 0;
 
@@ -112,20 +105,12 @@ const destroy = async (id: number) => {
 };
 
 const getAll = async () => {
-    const { data, error } = await user.getAll({
+    await usersStore.getAll({
         page: paginationInfo.value.page,
-        limit,
+        limit: PaginationLimit,
     });
 
-    if (error) {
-        return notify({
-            type: "error",
-            text: error.response?.data?.message || "Something went wrong"
-        });
-    }
-
-    paginationInfo.value.pages = data.pages;
-    users.value = data.users;
+    paginationInfo.value.pages = usersStore.pages;
 };
 
 getAll();

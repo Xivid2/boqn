@@ -5,26 +5,26 @@
 
                 <form @submit.prevent="register" class="my-8">
                     <h1 class="text-center">
-                        Регистрация
+                        {{ translations.TAuthRegistration }}
                     </h1>
                     <b-input
                         v-model="v$.firstName.$model"
                         :models="v$.firstName"
-                        text="Име"
+                        :text="translations.TAuthFirstName"
                     >
                     </b-input>
     
                     <b-input
                         v-model="v$.lastName.$model"
                         :models="v$.lastName"
-                        text="Презиме"
+                        :text="translations.TAuthLastName"
                     >
                     </b-input>
     
                     <b-input
                         v-model="v$.email.$model"
                         :models="v$.email"
-                        text="Имейл"
+                        :text="translations.TAuthEmail"
                     >
                     </b-input>
     
@@ -32,24 +32,24 @@
                         v-model="v$.password.$model"
                         :models="v$.password"
                         type="password"
-                        text="Парола"
+                        :text="translations.TAuthPassword"
                     >
                     </b-input>
-    
+
                     <b-input
                         v-model="v$.confirmPassword.$model"
                         :models="v$.confirmPassword"
                         type="password"
-                        text="Потвърди парола"
+                        :text="translations.TAuthConfirmPassword"
                     >
                     </b-input>
     
                     <v-button
-                        :disabled="isFormDisabled"
+                        :disabled="loading"
                         type="submit"
                         block
                     >
-                        Регистрация
+                        {{ translations.TAuthRegistration }}
                     </v-button>
                 </form>
             </div>
@@ -58,17 +58,17 @@
 </template>
 
 <script lang="ts" setup>
-    import { ref, reactive, computed } from "vue";
+    import { reactive, computed } from "vue";
     import { useRouter } from 'vue-router'
-    import AuthService from "../services/auth.service";
-    import { useHttp } from '../plugins/api';
-    import { $error, $success } from '../services/notify.service';
     import useValidate from '@vuelidate/core'
     import { required, maxLength, minLength, email, sameAs } from '@vuelidate/validators';
+    import * as translations from '@/constants/AuthTranslations';
+    import { useAuthStore } from "@/stores/auth.store";
+    const authStore = useAuthStore();
 
-    const isFormDisabled = ref(false);
+    const loading = computed(() => authStore.loading);
+    const error = computed(() => authStore.error);
 
-    const auth = new AuthService(useHttp);
     const router = useRouter();
 
     const state = reactive({
@@ -114,9 +114,7 @@
 
         if (v$.value.$error) return;
 
-        isFormDisabled.value = true;
-
-        const { data, error } = await auth.register({
+        await authStore.register({
             firstName: state.firstName,
             lastName: state.lastName,
             email: state.email,
@@ -124,14 +122,8 @@
             confirmPassword: state.confirmPassword,
         });
 
-        if (error) {
-            isFormDisabled.value = false;
-
-            return $error(error.response?.data?.message || "Something went wrong");
+        if (!error.value) {
+            router.push('/login');
         }
-
-        $success("You registered successfully!");
-
-        router.push('/login');
     };
 </script>

@@ -22,22 +22,16 @@ import MobileMenu from '@/components/MobileMenu.vue';
 import HeaderAlpha from '@/components/header/HeaderAlpha.vue';
 import { useAuthStore } from '@/stores/auth.store';
 import { useMenuStore } from '@/stores/menu.store';
-import { useServicesStore } from '@/stores/services.store';
-import { useHttp } from '@/plugins/api';
-import { $error } from '@/services/notify.service';
+import { useServicesStore } from './stores/services.store';
 const authStore = useAuthStore();
 const menuStore = useMenuStore();
-const servicesStore = useServicesStore({ useHttp, $error });
+const servicesStore = useServicesStore();
+
+servicesStore.getAll();
 
 const isLoaded = computed(() => {
     return authStore.isInitialRefreshComplete;
 });
-
-const getServices = async () => {
-    await servicesStore.getAll();
-};
-
-getServices();
 
 const toggleMenu = () => {
     menuStore.toggle();

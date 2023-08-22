@@ -1,89 +1,26 @@
-export interface Service {
-    id: number;
-    type: string;
-    name: string;
-    goal: string;
-    imgSrc: string,
-    shortDescription: string,
-    description: string;
-    duration: number;
-    price: number;
-};
-
-export interface CreateServiceDto {
-    type: string;
-    name: string;
-    goal: string;
-    imgSrc: string,
-    shortDescription: string,
-    description: string;
-    duration: number;
-    price: number;
-}
-
-export interface UpdateServiceDto {
-    type: string;
-    name: string;
-    goal: string;
-    imgSrc: string,
-    shortDescription: string,
-    description: string;
-    duration: number;
-    price: number;
-}
+import { http } from "@/plugins/newApi";
+import { type Service, type CreateServiceDto, type UpdateServiceDto } from "@/interfaces/services.interface";
 
 export class ServicesService {
-    constructor(useHttp) {
-        this.http = useHttp();
-    }
+    constructor() {}
 
     async get(id: number) {
-        try {
-            const { data } = await this.http.get<Service>(`/services/${id}`);
-
-            return { data };
-        } catch (error) {
-            return { error };
-        }
+        return http.get<Service>(`/services/${id}`);
     }
 
     async getAll() {
-        try {
-            const { data } = await this.http.get<Service[]>(`/services`);
-
-            return { data };
-        } catch (error) {
-            return { error };
-        }
+        return http.get<Service[]>(`/services`);
     }
 
     async create(createServiceDto: CreateServiceDto) {
-        try {
-            const { data } = await this.http.post<Service>('/services', createServiceDto);
-
-            return { data };
-        } catch (error) {
-            return { error };
-        }
+        return http.post<Service>('/services', createServiceDto);
     }
 
     async update(id: number, updateServiceDto: UpdateServiceDto) {
-        try {
-            const { data } = await this.http.put<Service>(`/services/${id}`, updateServiceDto);
-
-            return { data };
-        } catch (error) {
-            return { error };
-        }
+        return http.put<Service>(`/services/${id}`, updateServiceDto);
     }
 
     async destroy(id: number) {
-        try {
-            const { data } = await this.http.delete(`/services/${id}`);
-
-            return { data };
-        } catch (error) {
-            return { error };
-        }
+        return http.delete(`/services/${id}`);
     }
 }

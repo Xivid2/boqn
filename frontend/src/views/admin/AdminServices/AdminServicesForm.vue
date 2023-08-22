@@ -1,44 +1,62 @@
 <template>
-    <div>
+    <div v-if="loading">
+        Loading...
+    </div>
+    <div v-else>
         <b-input
-            text="Тип"
+            :text="translations.TServiceStaff"
+            type="select"
+            v-model="v$.staffId.$model"
+            :models="v$.staffId"
+        >
+            <option
+                v-for="(member, index) in staffMembers"
+                :key="index"
+                :value="member.id"
+            >
+                {{ member.user.firstName + " " + member.user.lastName }}
+            </option>
+        </b-input>
+
+        <b-input
+            :text="translations.TServiceType"
             type="select"
             v-model="v$.type.$model"
             :models="v$.type"
         >
-            <option :value="ServiceType.MASSAGE">Massage</option>
-            <option :value="ServiceType.ERGO">Ergo</option>
-            <option :value="ServiceType.LOGO">Logo</option>
+            <option :value="ServiceType.MASSAGE">{{ translations.TServiceTypeMassage }}</option>
+            <option :value="ServiceType.ERGO">{{ translations.TServiceTypeErgo }}</option>
+            <option :value="ServiceType.LOGO">{{ translations.TServiceTypeLogo }}</option>
         </b-input>
 
         <b-input
-            text="Име"
+            :text="translations.TServiceFormName"
             v-model="v$.name.$model"
             :models="v$.name"
             @update:modelValue="(name: string) => data.name = name"
         ></b-input>
 
         <b-input
-            text="Цел"
+            :text="translations.TServiceFormGoal"
             v-model="v$.goal.$model"
             :models="v$.goal"
         ></b-input>
 
         <b-input
-            text="Линк към изображение"
+            :text="translations.TServiceFormLink"
             v-model="v$.imgSrc.$model"
             :models="v$.imgSrc"
         ></b-input>
 
         <b-input
-            text="Кратко описание"
+            :text="translations.TServiceFormShortDescription"
             v-model="v$.shortDescription.$model"
             :models="v$.shortDescription"
             type="textarea"
         ></b-input>
 
         <b-input
-            text="Описание"
+            :text="translations.TServiceFormDescription"
             v-model="v$.description.$model"
             :models="v$.description"
             type="textarea"
@@ -47,7 +65,7 @@
         <v-row>
             <v-col>
                 <b-input
-                    text="Продължителност (минути)"
+                    :text="translations.TServiceFormDurationMinutes"
                     v-model="v$.duration.$model"
                     :models="v$.duration"
                     number
@@ -56,7 +74,7 @@
 
             <v-col>
                 <b-input
-                    text="Цена"
+                    :text="translations.TServiceFormPrice"
                     v-model="v$.price.$model"
                     :models="v$.price"
                     number
@@ -68,19 +86,31 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { type CreateServiceDto } from '@/services/services.service'
 import useValidate from '@vuelidate/core'
+import { type CreateServiceDto, type UpdateServiceDto } from '@/interfaces/services.interface';
 import { required, maxLength, integer, decimal } from '@vuelidate/validators';
+import * as translations from '@/constants/ServicesTranslations';
 import { ServiceType } from '@/enums/service-type.enum';
+import { useStaffStore } from '@/stores/staff.store';
+const staffStore = useStaffStore();
+
+staffStore.getAll();
+
+const loading = computed(() => staffStore.loading);
+
+const staffMembers = computed(() => staffStore.staff);
 
 const props = defineProps<{
-    data: CreateServiceDto
+    data: CreateServiceDto | UpdateServiceDto
 }>();
 
-const data = computed(() => props.data);
+const state = computed(() => props.data);
 
 const rules = computed(() => {
     return {
+        staffId: {
+            required,
+        },
         type: {
             required,
         },
@@ -114,7 +144,7 @@ const rules = computed(() => {
     }
 });
 
-const v$ = useValidate(rules, data);
+const v$ = useValidate(rules, state.value);
 
 const validate = () => {
     v$.value.$touch();

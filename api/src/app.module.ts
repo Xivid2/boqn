@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { ServicesModule } from './services/services.module';
+import { StaffModule } from './staff/staff.module';
 import models from "./models";
 
 @Module({
@@ -30,6 +31,7 @@ import models from "./models";
         }),
         AppointmentsModule,
         ServicesModule,
+        StaffModule,
     ],
 })
 export class AppModule {}

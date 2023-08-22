@@ -4,25 +4,25 @@
             <div class="tight-wrapper">
                 <form @submit.prevent="login" class="my-8">
                     <h1 class="text-center">
-                        Вписване
+                        {{ translations.TAuthSignIn }}
                     </h1>
     
                     <b-input
                         v-model="v$.email.$model"
                         :models="v$.email"
-                        text="Имейл"
+                        :text="translations.TAuthEmail"
                     />
     
                     <b-input
                         v-model="v$.password.$model"
                         :models="v$.password"
-                        text="Парола"
+                        :text="translations.TAuthPassword"
                         type="password"
                     />
     
                     <a href="#">
                         <h5>
-                            Забравена парола?
+                            {{ translations.TAuthForgottenPasswordQuestion }}
                         </h5>
                     </a>
     
@@ -31,14 +31,14 @@
                         class="mt-4"
                         block
                     >
-                        Вход
+                        {{ translations.TAuthLogin }}
                     </v-button>
     
                     <p class="text-body-2 mt-4">
-                        Нямате акаунт?
+                        {{ translations.TAuthDontHaveAccountQuestion }}
                         <span class="primary-color">
                             <RouterLink to="/register">
-                                Регистрация
+                                {{ translations.TAuthRegistration }}
                             </RouterLink>
                         </span>
                     </p>
@@ -50,17 +50,16 @@
 
 <script lang="ts" setup>
     import { useAuthStore } from '../stores/auth.store';
-    import { $error } from '@/services/notify.service';
     import { reactive, computed } from "vue";
     import { useRouter } from 'vue-router'
-    import AuthService from "../services/auth.service";
-    import { useHttp } from '../plugins/api';
     import useValidate from '@vuelidate/core'
     import { required, maxLength, minLength, email } from '@vuelidate/validators';
+    import * as translations from '@/constants/AuthTranslations';
 
     const authStore = useAuthStore();
-    const auth = new AuthService(useHttp);
     const router = useRouter();
+
+    const error = computed(() => authStore.error);
 
     const state = reactive({
         email: '',
@@ -89,18 +88,9 @@
 
         if (v$.value.$error) return;
 
-        const { data, error } = await auth.login(state.email, state.password);
+        await authStore.login(state.email, state.password);
 
-        if (error) {
-            return $error(error.response?.data?.message || "Something went wrong");
-        }
-
-        const { access_token, role } = data;
-
-        authStore.setToken(access_token);
-        authStore.setRole(role);
-
-        if (authStore.isAuthenticated) {
+        if (authStore.isAuthenticated && !error.value) {
             router.push('/');
         }
     };
