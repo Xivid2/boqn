@@ -1,30 +1,20 @@
-type CreateAppointmentDto = {
-    date: Date;
-    serviceId: number;
-};
+import { http } from "@/plugins/newApi";
+import { type AppointmentByPeriod, type CreateAppointmentDto } from "@/interfaces/appointments.interface";
 
-export default class AppointmentService {
-    constructor(useHttp) {
-        this.http = useHttp();
-    }
+export class AppointmentsService {
+    constructor() {}
 
-    async getForPeriod(startDate: Date, endDate: Date) {
-        try {
-            const { data } = await this.http.get(`/appointments/period?startDate=${startDate}&endDate=${endDate}`);
+    async getForPeriod(query: AppointmentByPeriod) {
+        const {
+            startDate,
+            endDate,
+            type,
+        } = query;
 
-            return { data };
-        } catch (error) {
-            return { error };
-        }
+        return http.get(`/appointments/period/${type}?startDate=${startDate}&endDate=${endDate}`);
     }
 
     async create(createAppointmentDto: CreateAppointmentDto) {
-        try {
-            const { data } = await this.http.post(`/appointments`, createAppointmentDto);
-
-            return { data };
-        } catch (error) {
-            return { error };
-        }
+        return http.post(`/appointments`, createAppointmentDto);
     }
 }
