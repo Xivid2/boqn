@@ -5,19 +5,19 @@
                 <thead>
                     <tr>
                         <th class="text-left">
-                            Име
+                            {{ translations.TServiceFormName }}
                         </th>
                         <th class="text-center">
-                            Цел
+                            {{ translations.TServiceFormGoal }}
                         </th>
                         <th class="text-center">
-                            Кратко описание
+                            {{ translations.TServiceFormShortDescription }}
                         </th>
                         <th class="text-center">
-                            Времетраене
+                            {{ translations.TServiceFormDuration }}
                         </th>
                         <th class="text-center">
-                            Цена
+                            {{ translations.TServiceFormPrice }}
                         </th>
                     </tr>
                 </thead>
@@ -31,7 +31,7 @@
                         <td>{{ service.goal }}</td>
                         <td>{{ service.shortDescription }}</td>
                         <td class="text-center">{{ service.duration }}</td>
-                        <td class="text-center">{{ service.price + 'лв.' }}</td>
+                        <td class="text-center">{{ service.price + CurrencySuffix }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -40,6 +40,8 @@
 </template>
 
 <script lang="ts" setup>
+import * as translations from '@/constants/ServicesTranslations';
+import { CurrencySuffix } from '@/constants/global';
 import { useServicesStore } from '@/stores/services.store';
 const servicesStore = useServicesStore();
 
