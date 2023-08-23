@@ -30,8 +30,4 @@
 <script lang="ts" setup>
 import { RouterLink, RouterView } from 'vue-router';
 import * as translations from '@/constants/ServicesTranslations';
-import { useServicesStore } from '@/stores/services.store';
-const servicesStore = useServicesStore();
-
-servicesStore.getAll();
 </script>
