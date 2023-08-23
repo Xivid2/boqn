@@ -5,21 +5,21 @@
                 to="/services/massages"
                 class="tab mr-16"
             >
-                Масажи
+                {{ translations.TServiceTypeMassages }}
             </RouterLink>
 
             <RouterLink
                 to="/services/ergo"
                 class="tab mx-16"
             >
-                Ерготерапия
+                {{ translations.TServiceTypeErgo }}
             </RouterLink>
 
             <RouterLink
                 to="/services/logo"
                 class="tab ml-16"
             >
-                Логопедия
+                {{ translations.TServiceTypeLogo }}
             </RouterLink>
         </nav>
     </div>
@@ -29,4 +29,9 @@
 
 <script lang="ts" setup>
 import { RouterLink, RouterView } from 'vue-router';
+import * as translations from '@/constants/ServicesTranslations';
+import { useServicesStore } from '@/stores/services.store';
+const servicesStore = useServicesStore();
+
+servicesStore.getAll();
 </script>
