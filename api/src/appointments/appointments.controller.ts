@@ -1,6 +1,7 @@
-import { Controller, Req, Get, Post, Body, UseGuards, Query, Param } from '@nestjs/common';
+import { Controller, Req, Get, Post, Body, UseGuards, Query, Param, ParseIntPipe } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import { PeriodQueryParams, PeriodTypeParam } from 'src/appointments/dto/get-all-appointments-query.dto';
+import { StaffQueryParams } from './dto/get-all-appointments-for-staff.dto';
 import { JwtAccessTokenGuard } from '../auth/guards/jwt-auth-access-token.guard';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 
@@ -11,7 +12,7 @@ export class AppointmentsController {
     ) {}
 
     @Get('/period/:type')
-    async getAll(
+    async getAllForPeriod(
         @Param() params: PeriodTypeParam,
         @Query() query: PeriodQueryParams,
     ) {
@@ -19,6 +20,17 @@ export class AppointmentsController {
         const { startDate, endDate } = query;
 
         return this.appointmentsService.getForPeriod(type, startDate, endDate);
+    }
+
+    @Get('/staff/:id')
+    async getAllForStaffForWeek(
+        @Param('id', ParseIntPipe) id: number,
+        @Query() query: StaffQueryParams,
+    ) {
+        const staffId = id;
+        const { week, year } = query;
+
+        return this.appointmentsService.getForStaffForWeek(staffId, year, week);
     }
 
     @UseGuards(JwtAccessTokenGuard)
