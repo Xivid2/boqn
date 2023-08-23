@@ -1,6 +1,6 @@
 import { Controller, Req, Get, Post, Body, UseGuards, Query, Param } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
-import { PeriodQueryParams, PeriodTypeParam } from '../ergo-appointments/appointments.query.params';
+import { PeriodQueryParams, PeriodTypeParam } from 'src/appointments/dto/get-all-appointments-query.dto';
 import { JwtAccessTokenGuard } from '../auth/guards/jwt-auth-access-token.guard';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 
