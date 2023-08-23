@@ -16,6 +16,7 @@
                 </RouterLink>
 
                 <v-button
+                    variant="secondary"
                     class="mt-16"
                     block
                     @click="logout"
