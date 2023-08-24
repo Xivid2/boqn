@@ -7,6 +7,8 @@ import { Op } from "sequelize";
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { StaffService } from 'src/staff/staff.service';
 import { DuplicatedAppointmentException } from './appointments.errors';
+import { User } from 'src/users/models/user.model';
+import { Service } from 'src/services/service.model';
 
 const maximumEndDate = dayjs().add(1, 'month').endOf('day');
 
@@ -15,8 +17,37 @@ export class AppointmentsService {
     constructor(
         @InjectModel(Appointment)
         private appointment: typeof Appointment,
+        @InjectModel(User)
+        private user: typeof User,
+        @InjectModel(Service)
+        private service: typeof Service,
         private staffService: StaffService,
     ) {}
+
+    async getForStaffForWeek(staffId: number, year: number, week: number) {
+        // NB: Dayjs start day is sunday, we have to add 1 day;
+        // Locales are currently stupid af
+        const startDate = dayjs().year(year).week(week).startOf('week').add(1, 'day');
+        const endDate = dayjs().year(year).week(week).endOf('week').add(1, 'day');
+
+        const appointments = await this.appointment.findAll({
+            where: {
+                staffId,
+                date: {
+                    [Op.between]: [
+                        new Date(dayjs(startDate).startOf('day')),
+                        new Date(dayjs(endDate).endOf('day'))
+                    ]
+                }
+            },
+            include: [
+                { model: this.user },
+                { model: this.service },
+            ]
+        });
+
+        return appointments;
+    }
 
     async getForPeriod(type: string, startDate: Date, endDate: Date): Promise<any> {
         const staff = await this.staffService.getByServiceType(type);

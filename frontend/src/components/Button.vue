@@ -18,6 +18,9 @@ const props = defineProps({
     variant: {
         type: String,
         default: "primary",
+        validator(value: string) {
+            return ['primary', 'secondary'].includes(value);
+        },
     },
     block: {
         type: Boolean,

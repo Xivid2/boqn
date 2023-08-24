@@ -3,12 +3,15 @@ import { type Service, type UpdateServiceDto, type CreateServiceDto } from '@/in
 import { $error, $success } from '@/services/notify.service';
 import * as translations from '@/constants/AppointmentsTranslations';
 import { AppointmentsService } from '@/services/appointment.service';
-import type { AppointmentByPeriod, CreateAppointmentDto } from '@/interfaces/appointments.interface';
+import type { AppointmentsByPeriod, CreateAppointmentDto, AppointmentsByStaffForWeek } from '@/interfaces/appointments.interface';
 
 interface ServicesState {
     loading: boolean;
     error: string;
     appointments: Service[];
+    // TODO: Fix this 
+
+    staffAppointments: [],
 }
 
 export const useAppointmentsStore = (options = {}) => {
@@ -19,13 +22,14 @@ export const useAppointmentsStore = (options = {}) => {
             loading: false,
             error: "",
             appointments: [],
+            staffAppointments: [],
         }),
         actions: {
             prepareAction() {
                 this.loading = true;
                 this.error = '';
             },
-            async getForPeriod(query: AppointmentByPeriod) {
+            async getForPeriod(query: AppointmentsByPeriod) {
                 this.appointments = [];
                 this.prepareAction();
 
@@ -35,6 +39,24 @@ export const useAppointmentsStore = (options = {}) => {
                     this.appointments = data;
                 } catch (error) {
                     const err = error.response?.data?.message || translations.TAppointmentsCannotGetForPeriod;
+
+                    $error(err);
+
+                    this.error = err;
+                } finally {
+                    this.loading = false;
+                }
+            },
+            async getForMemberForWeek(query: AppointmentsByStaffForWeek) {
+                this.staffAppointments = [];
+                this.prepareAction();
+
+                try {
+                    const { data } = await appointmentsService.getForStaffForWeek(query);
+
+                    this.staffAppointments = data;
+                } catch (error) {
+                    const err = error.response?.data?.message || translations.TAppointmentsCannotGetForStaffForWeek;
 
                     $error(err);
 

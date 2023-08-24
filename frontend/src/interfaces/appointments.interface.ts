@@ -5,8 +5,14 @@ export interface CreateAppointmentDto {
     serviceId: number;
 };
 
-export interface AppointmentByPeriod {
+export interface AppointmentsByPeriod {
     type: keyof ServiceType;
     startDate: Date;
     endDate: Date;
+}
+
+export interface AppointmentsByStaffForWeek {
+    staffId: number;
+    year: number;
+    week: number;
 }

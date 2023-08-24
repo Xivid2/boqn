@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <card class="py-8">
+        <card class="py-8 mb-8">
             <div class="contact-links-container">
                 <LinkWithIcon
                     :src="'https://maps.google.com/?q=' + translations.ContactAddress"

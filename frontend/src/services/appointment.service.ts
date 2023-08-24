@@ -1,10 +1,10 @@
 import { http } from "@/plugins/newApi";
-import { type AppointmentByPeriod, type CreateAppointmentDto } from "@/interfaces/appointments.interface";
+import { type AppointmentsByPeriod, type CreateAppointmentDto, type AppointmentsByStaffForWeek } from "@/interfaces/appointments.interface";
 
 export class AppointmentsService {
     constructor() {}
 
-    async getForPeriod(query: AppointmentByPeriod) {
+    async getForPeriod(query: AppointmentsByPeriod) {
         const {
             startDate,
             endDate,
@@ -12,6 +12,16 @@ export class AppointmentsService {
         } = query;
 
         return http.get(`/appointments/period/${type}?startDate=${startDate}&endDate=${endDate}`);
+    }
+
+    async getForStaffForWeek(query: AppointmentsByStaffForWeek) {
+        const {
+            staffId,
+            year,
+            week,
+        } = query;
+
+        return http.get(`/appointments/staff/${staffId}?year=${year}&week=${week}`);
     }
 
     async create(createAppointmentDto: CreateAppointmentDto) {

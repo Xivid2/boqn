@@ -1,5 +1,5 @@
 export const PaginationLimit = 10;
-
+export const TToday = "Днес";
 export const CurrencySuffix = "лв.";
 export const ContactPhoneFull = "+359887107087";
 export const ContactPhone = "0887107087";
