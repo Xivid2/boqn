@@ -2,8 +2,8 @@
     <b-input
         :text="TStaffMember"
         type="select"
-        @change="selectedStaffId = $event.target.value"
-        v-model="selectedStaffId"
+        @change="chosenStaffId = $event.target.value"
+        v-model="chosenStaffId"
     >
         <option
             v-for="(staffMember, index) in staff"
@@ -36,9 +36,11 @@
     import weekOfYear from 'dayjs/plugin/weekOfYear';
     dayjs.extend(weekOfYear);
 
+    const emit = defineEmits(['dateClicked', 'chosenStaffId']);
+
     const fullCalendar = ref();
     const staff = computed(() => staffStore.staff);
-    const selectedStaffId = ref(1);
+    const chosenStaffId = ref(1);
     const appointments = computed(() => appointmentsStore.staffAppointments);
     const events = ref([]);
 
@@ -51,7 +53,7 @@
 
     const getSchedule = async () => {
         await appointmentsStore.getForMemberForWeek({
-            staffId: selectedStaffId.value,
+            staffId: chosenStaffId.value,
             year: +navigation.selectedYear,
             week: +navigation.selectedWeek,
         });
@@ -59,7 +61,7 @@
 
     getSchedule();
 
-    watch(selectedStaffId, async () => {
+    watch(chosenStaffId, async () => {
         await getSchedule();
     });
 
@@ -73,8 +75,9 @@
         });
     });
 
-    const dateClick = (event) => {
-        console.log('event', event)
+    const dateClick = (event: any) => {
+        emit("dateClicked", event);
+        emit("chosenStaffId", chosenStaffId);
     }
 
     const calendarOptions = computed(() => {
