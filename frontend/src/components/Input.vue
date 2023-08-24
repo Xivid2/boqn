@@ -7,8 +7,9 @@
                 @blur="onBlur"
                 @focus="onFocus"
                 class="textarea"
+                v-bind="$attrs"
             ></textarea>
-        
+
             <div
                 class="textarea-placeholder"
                 :class="{ active: isFocused || modelValue }"
@@ -24,6 +25,7 @@
                 @focus="onFocus"
                 :value="modelValue"
                 class="input select mb-1"
+                v-bind="$attrs"
             >
                 <slot></slot>
             </select>
@@ -44,8 +46,9 @@
                 @blur="onBlur"
                 @focus="onFocus"
                 class="input mb-1"
+                v-bind="$attrs"
             />
-        
+
             <div
                 class="input-placeholder"
                 :class="{ active: isFocused || modelValue }"
