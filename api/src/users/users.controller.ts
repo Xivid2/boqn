@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Param, Delete, Query, ValidationPipe } from '@nestjs/common';
+import { Controller, Req, Get, UseGuards, Param, Delete, Query, ValidationPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { JwtAccessTokenGuard } from '../auth/guards/jwt-auth-access-token.guard';
@@ -19,6 +19,16 @@ export class UsersController {
         @Query(new ValidationPipe({ transform: true })) pagination: PaginationDto
     ) {
         return this.userService.getPaginated(pagination);
+    }
+
+    @UseGuards(JwtAccessTokenGuard, RolesGuard)
+    @Get('/current')
+    async getCurrent(
+        @Req() req,
+    ) {
+        const { sub: userId } = req.user;
+
+        return this.userService.findById(userId);
     }
 
     @Roles(Role.ADMIN)

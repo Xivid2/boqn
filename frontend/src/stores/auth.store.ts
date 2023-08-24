@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
 import { $error, $success } from '@/services/notify.service';
 import { AuthService } from '@/services/auth.service';
+import { UsersService } from '@/services/users.service';
 import { type AuthStoreState, type RegistrationDto } from '@/interfaces/auth.interface';
 import * as translations from '@/constants/AuthTranslations';
 
 export const useAuthStore = (options = {}) => {
     const authService = new AuthService();
+    const usersService = new UsersService();
 
     return defineStore('auth', {
         state: (): AuthStoreState => ({
@@ -14,6 +16,12 @@ export const useAuthStore = (options = {}) => {
             accessToken: '',
             role: '',
             isInitialRefreshComplete: false,
+            user: {
+                firstName: "",
+                lastName: "",
+                email: "",
+                phone: "",
+            },
         }),
         getters: {
             isAuthenticated(): boolean {
@@ -48,7 +56,16 @@ export const useAuthStore = (options = {}) => {
 
                     this.accessToken = access_token;
                     this.role = role;
+
+                    const { data: currentUser } = await usersService.getCurrent();
+                    
+                    this.user.email = currentUser.email;
+                    this.user.firstName = currentUser.firstName;
+                    this.user.lastName = currentUser.lastName;
+                    this.user.phone = currentUser.phone;
                 } catch (error) {
+                    this.setUnauthenticated();
+
                     const err = error.response?.data?.message || translations.TAuthCannotLogin;
 
                     $error(err);
@@ -100,6 +117,13 @@ export const useAuthStore = (options = {}) => {
 
                     this.accessToken = access_token;
                     this.role = role;
+
+                    const { data: currentUser } = await usersService.getCurrent();
+
+                    this.user.email = currentUser.email;
+                    this.user.firstName = currentUser.firstName;
+                    this.user.lastName = currentUser.lastName;
+                    this.user.phone = currentUser.phone;
                 } catch (error) {
                     this.setUnauthenticated();
 

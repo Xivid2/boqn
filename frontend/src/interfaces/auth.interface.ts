@@ -12,4 +12,10 @@ export interface AuthStoreState {
     accessToken: string;
     role: string;
     isInitialRefreshComplete: boolean;
+    user: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+    }
 };
