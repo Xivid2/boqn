@@ -2,7 +2,7 @@ import * as bcrypt from "bcrypt";
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './models/user.model';
-import { g_UserRole } from "./models/user-roles.model";
+import { UserRole } from "./models/user-roles.model";
 import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from "./dto/create-user.dto";
 import { DuplicateUserException } from "./users.errors";
@@ -13,8 +13,8 @@ export class UsersService {
     constructor(
         @InjectModel(User)
         private userModel: typeof User,
-        @InjectModel(g_UserRole)
-        private userRole: typeof g_UserRole,
+        @InjectModel(UserRole)
+        private userRole: typeof UserRole,
         private config: ConfigService,
     ) {}
 

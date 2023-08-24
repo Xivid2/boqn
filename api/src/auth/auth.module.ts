@@ -12,14 +12,14 @@ import { ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from '../users/models/user.model';
 import { UserRefreshToken } from '../users/models/user-refresh-token.model';
-import { g_UserRole } from '../users/models/user-roles.model';
+import { UserRole } from '../users/models/user-roles.model';
 
 @Module({
     imports: [
         ConfigModule,
         UsersModule,
         PassportModule,
-        SequelizeModule.forFeature([User, UserRefreshToken, g_UserRole]),
+        SequelizeModule.forFeature([User, UserRefreshToken, UserRole]),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             useFactory: async (config: ConfigService) => ({

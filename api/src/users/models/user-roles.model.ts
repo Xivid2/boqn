@@ -1,9 +1,9 @@
 import { Column, Model, Table, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
 
 @Table({
-    tableName: "g_userRoles",
+    tableName: "userRoles",
 })
-export class g_UserRole extends Model {
+export class UserRole extends Model {
     @PrimaryKey
     @AutoIncrement
     @Column

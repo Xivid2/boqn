@@ -3,7 +3,7 @@
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         return queryInterface.sequelize.transaction(async transaction => {
-            await queryInterface.createTable("g_userRoles", {
+            await queryInterface.createTable("userRoles", {
                 id: {
                     type: Sequelize.INTEGER,
                     autoIncrement: true,
@@ -24,14 +24,14 @@ module.exports = {
                 },
             }, { transaction });
 
-            await queryInterface.addConstraint('g_userRoles', {
+            await queryInterface.addConstraint('userRoles', {
                 fields: ["name"],
                 type: 'unique',
                 transaction
             });
 
             await queryInterface.bulkInsert(
-                'g_userRoles',
+                'userRoles',
                 [
                     {
                         name: "admin",
@@ -58,7 +58,7 @@ module.exports = {
                     type: Sequelize.INTEGER,
                     allowNull: false,
                     references: {
-                        model: 'g_userRoles',
+                        model: 'userRoles',
                         key: 'id'
                     },
                     onUpdate: 'cascade',

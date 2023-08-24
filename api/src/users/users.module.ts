@@ -4,10 +4,10 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from "./models/user.model";
 import { UsersController } from './users.controller';
 import { UserRefreshToken } from './models/user-refresh-token.model';
-import { g_UserRole } from './models/user-roles.model';
+import { UserRole } from './models/user-roles.model';
 
 @Module({
-    imports: [SequelizeModule.forFeature([User, UserRefreshToken, g_UserRole])],
+    imports: [SequelizeModule.forFeature([User, UserRefreshToken, UserRole])],
     providers: [UsersService],
     exports: [UsersService, SequelizeModule],
     controllers: [UsersController],
