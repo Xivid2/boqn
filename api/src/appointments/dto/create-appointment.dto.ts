@@ -12,7 +12,15 @@ export class CreateAppointmentDto {
     @IsNumber()
     serviceId: number
 
+    @IsNotEmpty()
+    firstName: string
+
+    @IsNotEmpty()
+    lastName: string
+
     @IsOptional()
-    @IsNumber()
-    userId: number
+    email: string
+
+    @IsNotEmpty()
+    phone: string
 };

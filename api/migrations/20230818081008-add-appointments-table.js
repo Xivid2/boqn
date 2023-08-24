@@ -10,16 +10,6 @@ module.exports = {
                     allowNull: false,
                     primaryKey: true,
                 },
-                userId: {
-                    type: Sequelize.INTEGER,
-                    allowNull: false,
-                    references: {
-                        model: 'users',
-                        key: 'id'
-                    },
-                    onUpdate: 'cascade',
-                    onDelete: 'cascade',
-                },
                 staffId: {
                     type: Sequelize.INTEGER,
                     allowNull: false,
@@ -42,6 +32,22 @@ module.exports = {
                 },
                 date: {
                     type: Sequelize.DATE,
+                    allowNull: false,
+                },
+                firstName: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
+                lastName: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
+                email: {
+                    type: Sequelize.STRING,
+                    allowNull: true,
+                },
+                phone: {
+                    type: Sequelize.STRING,
                     allowNull: false,
                 },
                 createdAt: {
