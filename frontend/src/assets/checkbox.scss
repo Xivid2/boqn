@@ -1,0 +1,39 @@
+@import './variables.scss';
+
+.checkbox {
+    background-color: $primary-color;
+}
+/* Hide the default checkbox */
+.checkbox {
+    display: none;
+}
+
+/* Style the custom checkbox */
+.checkbox + .checkbox-text {
+    position: relative;
+    padding-top: 3px;
+    padding-left: 35px; /* Space for custom checkbox appearance */
+    cursor: pointer;
+}
+
+/* Style the checkbox indicator */
+.checkbox + .checkbox-text::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 25px; /* Size of the checkbox */
+    height: 25px; /* Size of the checkbox */
+    border: 2px solid #000; /* Checkbox border */
+    background-color: #fff; /* Checkbox background */
+}
+
+/* Style the checkbox indicator when checked */
+.checkbox:checked + .checkbox-text::before {
+    background-color: $primary-color; /* Checkbox background when checked */
+    content: "\2713"; /* Unicode checkmark character */
+    font-size: 25px; /* Adjust size of the checkmark */
+    color: #fff; /* Checkmark color */
+    text-align: center;
+    line-height: 15px;
+}

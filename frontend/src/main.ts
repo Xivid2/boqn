@@ -15,6 +15,7 @@ import 'vue-datepicker-next/index.css';
 import Button from './components/Button.vue';
 import Card from './components/Card.vue';
 import Input from './components/Input.vue';
+import Checkbox from './components/Checkbox.vue';
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -69,6 +70,7 @@ const app = createApp(App)
     .component('v-button', Button)
     .component('card', Card)
     .component('b-input', Input)
+    .component('checkbox', Checkbox)
 app.use(plugin);
 app.use(createPinia())
 app.use(router)
