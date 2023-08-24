@@ -6,7 +6,7 @@ import { decode } from "jsonwebtoken"
 import { ConfigService } from '@nestjs/config';
 import { User } from '../users/models/user.model';
 import { UserRefreshToken } from '../users/models/user-refresh-token.model';
-import { g_UserRole } from '../users/models/user-roles.model';
+import { UserRole } from '../users/models/user-roles.model';
 import { Sequelize } from 'sequelize-typescript';
 import { TokenPayload } from './payloads/token.payload';
 import * as bcrypt from 'bcrypt';
@@ -17,8 +17,8 @@ import Role from '../common/constants/role';
 export class AuthService {
     constructor(
         private sequelize: Sequelize,
-        @InjectModel(g_UserRole)
-        private userRole: typeof g_UserRole,
+        @InjectModel(UserRole)
+        private userRole: typeof UserRole,
         @InjectModel(User)
         private userModel: typeof User,
         @InjectModel(UserRefreshToken)

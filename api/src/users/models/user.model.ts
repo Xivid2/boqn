@@ -1,7 +1,7 @@
 import { Column, Model, Table, PrimaryKey, ForeignKey, AutoIncrement, DefaultScope, Scopes, HasOne, BelongsTo } from 'sequelize-typescript';
 import * as bcrypt from "bcrypt";
 import { UserRefreshToken } from './user-refresh-token.model';
-import { g_UserRole } from './user-roles.model';
+import { UserRole } from './user-roles.model';
 import { Staff } from '../../staff/models/staff.model';
 
 @DefaultScope({
@@ -26,7 +26,7 @@ export class User extends Model {
     @Column
     id: number
 
-    @ForeignKey(() => g_UserRole)
+    @ForeignKey(() => UserRole)
     @Column
     userRoleId: number
 
@@ -45,8 +45,8 @@ export class User extends Model {
     @HasOne(() => UserRefreshToken)
     refreshToken: UserRefreshToken
 
-    @BelongsTo(() => g_UserRole)
-    role: g_UserRole
+    @BelongsTo(() => UserRole)
+    role: UserRole
 
     @HasOne(() => Staff)
     staff: Staff
