@@ -1,24 +1,21 @@
 import { defineStore } from 'pinia';
-import { type Service, type UpdateServiceDto, type CreateServiceDto } from '@/interfaces/services.interface';
 import { $error, $success } from '@/services/notify.service';
 import * as translations from '@/constants/AppointmentsTranslations';
 import { AppointmentsService } from '@/services/appointment.service';
-import type { AppointmentsByPeriod, CreateAppointmentDto, AppointmentsByStaffForWeek } from '@/interfaces/appointments.interface';
+import type { AppointmentsByPeriod, CreateAppointmentDto, AppointmentsByStaffForWeek, Appointment } from '@/interfaces/appointments.interface';
 
-interface ServicesState {
+interface AppointmentsState {
     loading: boolean;
     error: string;
-    appointments: Service[];
-    // TODO: Fix this 
-
-    staffAppointments: [],
+    appointments: Appointment[];
+    staffAppointments: Appointment[],
 }
 
 export const useAppointmentsStore = (options = {}) => {
     const appointmentsService = new AppointmentsService();
 
     return defineStore('appointments', {
-        state: (): ServicesState => ({
+        state: (): AppointmentsState => ({
             loading: false,
             error: "",
             appointments: [],

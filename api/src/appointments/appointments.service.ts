@@ -41,7 +41,6 @@ export class AppointmentsService {
                 }
             },
             include: [
-                { model: this.user },
                 { model: this.service },
             ]
         });
@@ -98,7 +97,10 @@ export class AppointmentsService {
 
         return this.appointment.create({
             date: createAppointmentDto.date,
-            userId: createAppointmentDto.userId,
+            firstName: createAppointmentDto.firstName,
+            lastName: createAppointmentDto.lastName,
+            email: createAppointmentDto.email,
+            phone: createAppointmentDto.phone,
             staffId: staff.id,
             serviceId: createAppointmentDto.serviceId,
         });

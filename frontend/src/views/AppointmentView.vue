@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <card>
+        <card class="mb-8">
             <CreateAppointment />
         </card>
     </div>

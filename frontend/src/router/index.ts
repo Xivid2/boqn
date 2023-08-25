@@ -200,7 +200,7 @@ history: createWebHistory(import.meta.env.BASE_URL),
                         requiresAuth: true,
                         canSee: (role: string) => admin.includes(role),
                     },
-                    component: () => import('../views/admin/AdminAppointments.vue')
+                    component: () => import('../views/admin/AdminAppointments/AdminAppointmentsList.vue')
                 },
                 {
                     path: 'users',

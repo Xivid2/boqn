@@ -6,6 +6,7 @@ export const TAuthSignIn = 'Вписване';
 export const TAuthSignOut = 'Отписване';
 export const TAuthEmail = 'Имейл';
 export const TAuthPassword = 'Парола';
+export const TAuthPhone = 'Телефон';
 export const TAuthConfirmPassword = 'Потвърди парола';
 export const TAuthForgottenPasswordQuestion = 'Забравена парола?';
 export const TAuthDontHaveAccountQuestion = 'Нямате акаунт?';

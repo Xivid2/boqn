@@ -1,19 +1,4 @@
 <template>
-    <b-input
-        :text="TStaffMember"
-        type="select"
-        @change="chosenStaffId = $event.target.value"
-        v-model="chosenStaffId"
-    >
-        <option
-            v-for="(staffMember, index) in staff"
-            :key="index"
-            :value="staffMember.id"
-        >
-            {{ staffMember.user.firstName + " " + staffMember.user.lastName }}
-        </option>
-    </b-input>
-
     <FullCalendar
         ref="fullCalendar"
         :options="calendarOptions"
@@ -21,64 +6,49 @@
 </template>
 
 <script lang="ts" setup>
-    import { ref, reactive, computed, watch } from 'vue';
-    import { useStaffStore } from '@/stores/staff.store';
-    const staffStore = useStaffStore();
-    import { useAppointmentsStore } from '@/stores/appointments.store';
-    const appointmentsStore = useAppointmentsStore();
+    import { ref, computed, watch } from 'vue';
     import FullCalendar from '@fullcalendar/vue3';
     import timeGridPlugin from '@fullcalendar/timegrid';
     import interactionPlugin from '@fullcalendar/interaction';
     import bgLocale from '@fullcalendar/core/locales/bg';
     import { TToday } from '@/constants/global';
-    import { TStaffMember } from '@/constants/StaffTranslations';
     import * as dayjs from 'dayjs';
     import weekOfYear from 'dayjs/plugin/weekOfYear';
     dayjs.extend(weekOfYear);
+    const currentYear = new Date().getFullYear();
+    const currentWeek = dayjs().week();
 
-    const emit = defineEmits(['dateClicked', 'chosenStaffId']);
+    const props = defineProps(["events"]);
+    const emit = defineEmits(['dateClicked', 'queryUpdated']);
 
+    const events = computed(() => props.events.map(ev => {
+        return {
+            title: `${ev.firstName} ${ev.lastName} (${ev.service.name})`,
+            start: ev.date,
+            allDay: false,
+        };
+    }));
     const fullCalendar = ref();
-    const staff = computed(() => staffStore.staff);
-    const chosenStaffId = ref(1);
-    const appointments = computed(() => appointmentsStore.staffAppointments);
-    const events = ref([]);
 
-    const navigation = reactive({
-        currentYear: new Date().getFullYear(),
-        selectedYear: new Date().getFullYear(),
-        currentWeek: dayjs().week(),
-        selectedWeek: dayjs().week()
+    const query = ref({
+        year: currentYear,
+        week: currentWeek,
     });
 
-    const getSchedule = async () => {
-        await appointmentsStore.getForMemberForWeek({
-            staffId: chosenStaffId.value,
-            year: +navigation.selectedYear,
-            week: +navigation.selectedWeek,
-        });
-    };
-
-    getSchedule();
-
-    watch(chosenStaffId, async () => {
-        await getSchedule();
-    });
-
-    watch(appointments, (val) => {
-        events.value = val.map(ev => {
-            return {
-                title: `${ev.user.firstName} ${ev.user.lastName} (${ev.service.name})`,
-                start: ev.date,
-                allDay: false,
-            };
-        });
+    watch(query, (val) => {
+        emit("queryUpdated", val);
     });
 
     const dateClick = (event: any) => {
         emit("dateClicked", event);
-        emit("chosenStaffId", chosenStaffId);
-    }
+    };
+
+    const updateQuery = (date: Date) => {
+        query.value = {
+            year: dayjs(date).year(),
+            week: dayjs(date).week(),
+        };
+    };
 
     const calendarOptions = computed(() => {
         return {
@@ -97,12 +67,10 @@
                 today: {
                     text: TToday,
                     click: async () => {
-                        navigation.selectedWeek = navigation.currentWeek;
-                        navigation.selectedYear = navigation.currentYear;
-
-                        await getSchedule();
                         const calendarApi = fullCalendar.value.getApi();
                         calendarApi.today();
+
+                        updateQuery(new Date());
                     }
                 },
                 prev: {
@@ -110,10 +78,7 @@
                         const api = fullCalendar.value.getApi();
                         api.prev();
 
-                        const start = api.view.activeStart;
-                        navigation.selectedWeek = dayjs(start).week();
-
-                        await getSchedule();
+                        updateQuery(api.view.activeStart);
                     }
                 },
                 next: {
@@ -121,10 +86,7 @@
                         const api = fullCalendar.value.getApi();
                         api.next();
 
-                        const start = api.view.activeStart;
-                        navigation.selectedWeek = dayjs(start).week();
-
-                        await getSchedule();
+                        updateQuery(api.view.activeStart);
                     }
                 }
             }

@@ -36,14 +36,8 @@ export class AppointmentsController {
     @UseGuards(JwtAccessTokenGuard)
     @Post('')
     async create(
-        @Req() req,
         @Body() createAppointmentDto: CreateAppointmentDto,
     ) {
-        const { sub: userId } = req.user;
-
-        return this.appointmentsService.create({
-            ...createAppointmentDto,
-            userId,
-        })
+        return this.appointmentsService.create(createAppointmentDto);
     }
 }

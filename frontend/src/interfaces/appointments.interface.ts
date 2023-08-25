@@ -1,8 +1,22 @@
 import type { ServiceType } from "@/enums/service-type.enum";
+import type { Service } from "./services.interface";
+
+export interface Appointment {
+    staffId: number;
+    service: Service;
+    firstName: string;
+    lastName: string;
+    email?: string;
+    phone: string;
+}
 
 export interface CreateAppointmentDto {
-    date: Date;
-    serviceId: number;
+    firstName: string;
+    lastName: string;
+    email?: string;
+    phone: string;
+    date: Date | string;
+    serviceId: number | string;
 };
 
 export interface AppointmentsByPeriod {

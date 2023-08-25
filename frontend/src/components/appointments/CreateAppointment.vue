@@ -55,14 +55,50 @@
                 </p>
             </div>
 
-            <p v-if="chosenDate" class="mt-8">
+            <p v-if="chosenDate" class="my-4">
                 {{ appointmentTranslations.TAppointmentsChosenAppointment }} {{ formattedDate }}
             </p>
+
+            <div class="mt-6">
+                <checkbox
+                    v-model="useUserData"
+                    text="Използвай данните от потребителя"
+                />
+            </div>
+
+            <b-input
+                v-model="v$.firstName.$model"
+                :models="v$.firstName"
+                :text="authTranslations.TAuthFirstName"
+                :disabled="useUserData"
+                class="mt-3"
+            />
+
+            <b-input
+                v-model="v$.lastName.$model"
+                :models="v$.lastName"
+                :text="authTranslations.TAuthLastName"
+                :disabled="useUserData"
+            />
+
+            <b-input
+                v-model="v$.email.$model"
+                :models="v$.email"
+                :text="authTranslations.TAuthEmail"
+                :disabled="useUserData"
+            />
+
+            <b-input
+                v-model="v$.phone.$model"
+                :models="v$.phone"
+                :text="authTranslations.TAuthPhone"
+                :disabled="useUserData"
+            />
 
             <v-button
                 type="submit"
                 block
-                class="mt-16"
+                class="mt-8"
             >
                 {{ appointmentTranslations.TAppointmentsCreate }}
             </v-button>
@@ -80,10 +116,13 @@ import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators';
 import { ServiceType } from '@/enums/service-type.enum';
 import { useAppointmentsStore } from '@/stores/appointments.store';
+import { useAuthStore } from "@/stores/auth.store";
 const appointmentsStore = useAppointmentsStore();
+const authStore = useAuthStore();
 import * as serviceTranslations from '@/constants/ServicesTranslations';
 import * as appointmentTranslations from '@/constants/AppointmentsTranslations';
-import { type AppointmentByPeriod } from '@/interfaces/appointments.interface';
+import * as authTranslations from '@/constants/AuthTranslations';
+import { type AppointmentsByPeriod } from '@/interfaces/appointments.interface';
 
 const services = {
     ...servicesStore.massages.length ? {
@@ -114,6 +153,7 @@ const date = ref(null);
 const chosenDate = ref();
 const formattedDate = ref("");
 const errorMessage = ref("");
+const useUserData = ref(true);
 
 const tomorrow = dayjs().startOf('day').add(1, 'day');
 const afterMonth = dayjs().startOf('day').add(1, 'month');
@@ -121,18 +161,22 @@ const afterMonth = dayjs().startOf('day').add(1, 'month');
 const unavailableDates = computed(() => appointmentsStore.appointments);
 
 const input = reactive({
+    firstName: authStore.user.firstName,
+    lastName: authStore.user.lastName,
+    email: authStore.user.email,
+    phone: authStore.user.phone,
     chosenServiceType: null,
     chosenServiceId: null,
 });
 
 const rules = computed(() => {
     return {
-        chosenServiceType: {
-            required,
-        },
-        chosenServiceId: {
-            required,
-        },
+        firstName: { required },
+        lastName: { required },
+        email: { required },
+        phone: { required },
+        chosenServiceType: { required },
+        chosenServiceId: { required },
     };
 });
 
@@ -164,7 +208,7 @@ const setDate = (value: any) => {
     chosenDate.value = new Date(value);
 }
 
-const setUnavailableDates = async (query: AppointmentByPeriod) => {
+const setUnavailableDates = async (query: AppointmentsByPeriod) => {
     await appointmentsStore.getForPeriod(query);
 
     isParentLoaded.value = true;
@@ -182,6 +226,10 @@ const createAppointment = async () => {
     }
 
     await appointmentsStore.create({
+        firstName: input.firstName,
+        lastName: input.lastName,
+        email: input.email,
+        phone: input.phone,
         date: chosenDate.value,
         serviceId: +input.chosenServiceId
     });
@@ -208,5 +256,14 @@ watch(
 watch(chosenDate, (val) => {
     formattedDate.value = dayjs(val).format('YYYY-MM-DD HH:mm');
     errorMessage.value = "";
+});
+
+watch(useUserData, (val: boolean) => {
+    if (val === true) {
+        input.firstName = authStore.user.firstName;
+        input.lastName = authStore.user.lastName;
+        input.email = authStore.user.email;
+        input.phone = authStore.user.phone;
+    }
 });
 </script>
