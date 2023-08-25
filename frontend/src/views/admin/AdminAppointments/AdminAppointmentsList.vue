@@ -98,7 +98,6 @@ const handleDateClick = (event: any) => {
 };
 
 const appointments = computed(() => appointmentsStore.staffAppointments);
-console.log('appointments:', appointments)
 
 const handleQueryUpdate = async (event: any) => {
     query.value = event;
