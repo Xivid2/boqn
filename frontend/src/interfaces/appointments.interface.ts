@@ -2,6 +2,7 @@ import type { ServiceType } from "@/enums/service-type.enum";
 import type { Service } from "./services.interface";
 
 export interface Appointment {
+    id: number;
     staffId: number;
     service: Service;
     firstName: string;

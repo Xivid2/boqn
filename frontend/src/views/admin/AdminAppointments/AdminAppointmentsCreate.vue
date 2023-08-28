@@ -14,6 +14,7 @@ import AdminAppointmentsForm from './AdminAppointmentsForm.vue';
 import { useAppointmentsStore } from '@/stores/appointments.store';
 const appointmentsStore = useAppointmentsStore();
 
+const emit = defineEmits(["createdSuccessfully"]);
 const props = defineProps(["date", "staffId"]);
 const propDate = computed(() => props.date);
 const staffId = props.staffId;
@@ -44,6 +45,10 @@ const save = async () => {
     if (!isValid) return;
 
     await appointmentsStore.create(formInput.value);
+
+    if (!appointmentsStore.error) {
+        emit("createdSuccessfully");
+    }
 };
 
 defineExpose({ save, clearForm });

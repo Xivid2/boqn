@@ -136,4 +136,14 @@ export class AppointmentsService {
             throw new BadRequestException(`endDate must be before ${maximumEndDate}`);
         }
     }
+
+    async destroy(id: number): Promise<void> {
+        const appointment = await this.appointment.findByPk(id);
+
+        if (!appointment) {
+            throw new NotFoundException();
+        }
+
+        await appointment.destroy();
+    }
 }

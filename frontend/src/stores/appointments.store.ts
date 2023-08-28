@@ -79,6 +79,23 @@ export const useAppointmentsStore = (options = {}) => {
                     this.loading = false;
                 }
             },
+            async destroy(id: number) {
+                this.prepareAction();
+
+                try {
+                    await appointmentsService.destroy(id);
+
+                    $success(translations.TAppointmentsDeletedSuccessfully);
+                } catch (error) {
+                    const err = error.response?.data?.message || translations.TAppointmentsCannotDelete;
+
+                    $error(err);
+
+                    this.error = err;
+                } finally {
+                    this.loading = false;
+                }
+            }
         },
     })();
 }

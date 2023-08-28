@@ -19,13 +19,16 @@
     const currentWeek = dayjs().week();
 
     const props = defineProps(["events"]);
-    const emit = defineEmits(['dateClicked', 'queryUpdated']);
+    const emit = defineEmits(['createEvent', 'queryUpdated', 'cancelEvent']);
 
     const events = computed(() => props.events.map(ev => {
         return {
             title: `${ev.firstName} ${ev.lastName} (${ev.service.name})`,
             start: ev.date,
             allDay: false,
+            extendedProps: {
+                appointmentId: ev.id
+            }
         };
     }));
     const fullCalendar = ref();
@@ -40,7 +43,7 @@
     });
 
     const dateClick = (event: any) => {
-        emit("dateClicked", event);
+        emit("createEvent", event);
     };
 
     const updateQuery = (date: Date) => {
@@ -63,6 +66,9 @@
             slotMinTime: "08:00",
             slotMaxTime: "17:00",
             events: events.value,
+            eventClick: (info: any) => {
+                emit("cancelEvent", info.event);
+            },
             customButtons: {
                 today: {
                     text: TToday,

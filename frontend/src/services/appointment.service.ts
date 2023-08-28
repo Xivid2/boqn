@@ -27,4 +27,8 @@ export class AppointmentsService {
     async create(createAppointmentDto: CreateAppointmentDto) {
         return http.post(`/appointments`, createAppointmentDto);
     }
+
+    async destroy(id: number) {
+        return http.delete(`/appointments/${id}`);
+    }
 }
