@@ -12,6 +12,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import DatePicker from 'vue-datepicker-next';
 import 'vue-datepicker-next/index.css';
+import 'vue-datepicker-next/locale/bg';
 import Button from './components/Button.vue';
 import Card from './components/Card.vue';
 import Input from './components/Input.vue';
