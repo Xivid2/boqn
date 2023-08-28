@@ -7,42 +7,44 @@
                     <h1 class="text-center">
                         {{ translations.TAuthRegistration }}
                     </h1>
+
                     <b-input
                         v-model="v$.firstName.$model"
                         :models="v$.firstName"
                         :text="translations.TAuthFirstName"
-                    >
-                    </b-input>
+                    />
     
                     <b-input
                         v-model="v$.lastName.$model"
                         :models="v$.lastName"
                         :text="translations.TAuthLastName"
-                    >
-                    </b-input>
+                    />
     
                     <b-input
                         v-model="v$.email.$model"
                         :models="v$.email"
                         :text="translations.TAuthEmail"
-                    >
-                    </b-input>
+                    />
+
+                    <b-input
+                        v-model="v$.phone.$model"
+                        :models="v$.phone"
+                        :text="translations.TAuthPhone"
+                    />
     
                     <b-input
                         v-model="v$.password.$model"
                         :models="v$.password"
                         type="password"
                         :text="translations.TAuthPassword"
-                    >
-                    </b-input>
+                    />
 
                     <b-input
                         v-model="v$.confirmPassword.$model"
                         :models="v$.confirmPassword"
                         type="password"
                         :text="translations.TAuthConfirmPassword"
-                    >
-                    </b-input>
+                    />
     
                     <v-button
                         :disabled="loading"
@@ -75,6 +77,7 @@
         firstName: '',
         lastName: '',
         email: '',
+        phone: '',
         password: '',
         confirmPassword: '',
     });
@@ -95,6 +98,11 @@
                 email,
                 required,
                 maxLength: maxLength(255),
+            },
+            phone: {
+                required,
+                minLength: minLength(4),
+                maxLength: maxLength(20),
             },
             password: {
                 required,
@@ -118,6 +126,7 @@
             firstName: state.firstName,
             lastName: state.lastName,
             email: state.email,
+            phone: state.phone,
             password: state.password,
             confirmPassword: state.confirmPassword,
         });

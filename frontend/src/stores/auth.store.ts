@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { $error, $success } from '@/services/notify.service';
 import { AuthService } from '@/services/auth.service';
 import { UsersService } from '@/services/users.service';
-import { type AuthStoreState, type RegistrationDto } from '@/interfaces/auth.interface';
+import type { AuthStoreState, RegistrationDto } from '@/interfaces/auth.interface';
 import * as translations from '@/constants/AuthTranslations';
 
 export const useAuthStore = (options = {}) => {
