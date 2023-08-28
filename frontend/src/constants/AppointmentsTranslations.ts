@@ -5,6 +5,7 @@ export const TAppointmentsCannotCreate = "Възникна проблем при
 export const TAppointmentsCreatedSuccessfully = "Успешно записахте час";
 export const TAppointmentsDeletedSuccessfully = "Успешно изтрихте записан час";
 export const TAppointmentsCannotDelete = "Възникна проблем при изтриването на запазен час";
+export const TAppointmentsUseUserData = "Използвай данните от потребителя";
 export const TAppointmentsAppointmentCreate = "Запис на час:";
 export const TAppointmentsAppointmentDelete = "Изтриване на записан на час:";
 export const TAppointmentsChosenAppointment = "Избран час:";
