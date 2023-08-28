@@ -96,7 +96,7 @@ history: createWebHistory(import.meta.env.BASE_URL),
         },
         {
             path: '/appointment',
-            component: () => import('../views/AppointmentView.vue'),
+            component: () => import('../views/appointments/AppointmentsView.vue'),
             meta: {
                 requiresAuth: true,
                 canSee: (role: string) => authenticated.includes(role),
