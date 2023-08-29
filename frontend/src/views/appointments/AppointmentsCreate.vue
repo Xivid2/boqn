@@ -24,12 +24,14 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import * as dayjs from 'dayjs';
+import { useRouter } from 'vue-router';
 import AppointmentsForm from './AppointmentsForm.vue';
 import * as appointmentsTranslations from '@/constants/AppointmentsTranslations';
 import { useAppointmentsStore } from '@/stores/appointments.store';
 const appointmentsStore = useAppointmentsStore();
 import { useAuthStore } from '@/stores/auth.store';
 const authStore = useAuthStore();
+const router = useRouter();
 
 const startDate = dayjs().startOf('day').add(1, 'day');
 const endDate = dayjs().startOf('day').add(1, 'month');
@@ -57,7 +59,7 @@ const save = async () => {
 
     await appointmentsStore.create(input.value);
 
-    // TODO: Navigate to appointments page
+    router.push('/appointments');
 };
 
 const setDate = (val: any) => {

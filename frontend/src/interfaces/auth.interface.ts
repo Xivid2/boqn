@@ -1,3 +1,5 @@
+import type { User } from './users.interface';
+
 export interface RegistrationDto {
     firstName: string;
     lastName: string;
@@ -13,10 +15,5 @@ export interface AuthStoreState {
     accessToken: string;
     role: string;
     isInitialRefreshComplete: boolean;
-    user: {
-        firstName: string;
-        lastName: string;
-        email: string;
-        phone: string;
-    }
+    user: User
 };

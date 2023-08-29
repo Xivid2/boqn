@@ -2,14 +2,8 @@ import { defineStore } from 'pinia';
 import { $error, $success } from '@/services/notify.service';
 import * as translations from '@/constants/AppointmentsTranslations';
 import { AppointmentsService } from '@/services/appointment.service';
-import type { AppointmentsByPeriod, CreateAppointmentDto, AppointmentsByStaffForWeek, Appointment } from '@/interfaces/appointments.interface';
-
-interface AppointmentsState {
-    loading: boolean;
-    error: string;
-    appointments: Appointment[];
-    staffAppointments: Appointment[],
-}
+import type { AppointmentsByPeriod, CreateAppointmentDto, AppointmentsByStaffForWeek, AppointmentsState } from '@/interfaces/appointments.interface';
+import type { IPagination } from '@/interfaces/global.interfaces';
 
 export const useAppointmentsStore = (options = {}) => {
     const appointmentsService = new AppointmentsService();
@@ -18,8 +12,10 @@ export const useAppointmentsStore = (options = {}) => {
         state: (): AppointmentsState => ({
             loading: false,
             error: "",
+            pages: 1,
             appointments: [],
             staffAppointments: [],
+            userAppointments: [],
         }),
         actions: {
             prepareAction() {
@@ -88,6 +84,42 @@ export const useAppointmentsStore = (options = {}) => {
                     $success(translations.TAppointmentsDeletedSuccessfully);
                 } catch (error) {
                     const err = error.response?.data?.message || translations.TAppointmentsCannotDelete;
+
+                    $error(err);
+
+                    this.error = err;
+                } finally {
+                    this.loading = false;
+                }
+            },
+            async destroyOwn(userId: number, id: number) {
+                this.prepareAction();
+
+                try {
+                    await appointmentsService.destroyOwn(userId, id);
+
+                    $success(translations.TAppointmentsDeletedSuccessfully);
+                } catch (error) {
+                    const err = error.response?.data?.message || translations.TAppointmentsCannotDelete;
+
+                    $error(err);
+
+                    this.error = err;
+                } finally {
+                    this.loading = false;
+                }
+            },
+            async getUserAppointments(userId: number, query: IPagination) {
+                this.userAppointments = [];
+                this.prepareAction();
+
+                try {
+                    const { data } = await appointmentsService.getForUser(userId, query);
+
+                    this.userAppointments = data.appointments;
+                    this.pages = data.pages;
+                } catch (error) {
+                    const err = error.response?.data?.message || translations.TAppointmentsCannotGetForUser;
 
                     $error(err);
 

@@ -33,7 +33,7 @@ export const useUsersStore = (options = {}) => {
                     const { data } = await usersService.getAll(query);
 
                     this.users = data.users;
-                    this.pages = data.pages
+                    this.pages = data.pages;
                 } catch (error) {
                     const err = error.response?.data?.message || translations.TUsersCannotGetAll;
 

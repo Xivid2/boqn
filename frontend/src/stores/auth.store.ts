@@ -17,6 +17,7 @@ export const useAuthStore = (options = {}) => {
             role: '',
             isInitialRefreshComplete: false,
             user: {
+                id: 0,
                 firstName: "",
                 lastName: "",
                 email: "",
@@ -58,7 +59,8 @@ export const useAuthStore = (options = {}) => {
                     this.role = role;
 
                     const { data: currentUser } = await usersService.getCurrent();
-                    
+
+                    this.user.id = currentUser.id;
                     this.user.email = currentUser.email;
                     this.user.firstName = currentUser.firstName;
                     this.user.lastName = currentUser.lastName;
@@ -120,6 +122,7 @@ export const useAuthStore = (options = {}) => {
 
                     const { data: currentUser } = await usersService.getCurrent();
 
+                    this.user.id = currentUser.id;
                     this.user.email = currentUser.email;
                     this.user.firstName = currentUser.firstName;
                     this.user.lastName = currentUser.lastName;
