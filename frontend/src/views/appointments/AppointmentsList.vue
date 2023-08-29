@@ -32,6 +32,7 @@
                         <td class="text-right">
                             <div class="d-flex justify-end">
                                 <v-button
+                                    v-if="dayjs().isBefore(appointment.date)"
                                     isDelete
                                     @click="openDeleteModal(appointment.id)"
                                     :title="translations.TDelete"

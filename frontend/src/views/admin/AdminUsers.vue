@@ -30,13 +30,15 @@
                         <td>{{ user.email }}</td>
                         <td class="text-center">{{ user.role.name }}</td>
                         <td class="text-center">
-                            <v-button
-                                isDelete
-                                @click="openDeleteModal(user.id)"
-                                :title="translations.TDelete"
-                            >
-                                <fai icon="fa-solid fa-trash" class="fa-l" />
-                            </v-button>
+                            <div class="d-flex justify-end">
+                                <v-button
+                                    isDelete
+                                    @click="openDeleteModal(user.id)"
+                                    :title="translations.TDelete"
+                                >
+                                    <fai icon="fa-solid fa-trash" class="fa-l" />
+                                </v-button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

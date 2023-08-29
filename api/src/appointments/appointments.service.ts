@@ -169,6 +169,12 @@ export class AppointmentsService {
             throw new NotFoundException();
         }
 
+        const isPastDate = dayjs(appointment.date).isBefore(dayjs());
+
+        if (isPastDate) {
+            throw new BadRequestException("You can't delete past dates");
+        }
+
         await appointment.destroy();
     }
 
@@ -178,10 +184,16 @@ export class AppointmentsService {
                 email: user.email,
                 id,
             }
-        })
+        });
 
         if (!appointment) {
             throw new NotFoundException();
+        }
+
+        const isPastDate = dayjs(appointment.date).isBefore(dayjs());
+
+        if (isPastDate) {
+            throw new BadRequestException("You can't delete past dates");
         }
 
         await appointment.destroy();
