@@ -1,28 +1,21 @@
 import { defineStore } from 'pinia';
-import { type Service, type UpdateServiceDto, type CreateServiceDto } from '@/interfaces/services.interface';
 import { $error, $success } from '@/services/notify.service';
 import * as translations from '@/constants/AppointmentsTranslations';
 import { AppointmentsService } from '@/services/appointment.service';
-import type { AppointmentsByPeriod, CreateAppointmentDto, AppointmentsByStaffForWeek } from '@/interfaces/appointments.interface';
-
-interface ServicesState {
-    loading: boolean;
-    error: string;
-    appointments: Service[];
-    // TODO: Fix this 
-
-    staffAppointments: [],
-}
+import type { AppointmentsByPeriod, CreateAppointmentDto, AppointmentsByStaffForWeek, AppointmentsState } from '@/interfaces/appointments.interface';
+import type { IPagination } from '@/interfaces/global.interfaces';
 
 export const useAppointmentsStore = (options = {}) => {
     const appointmentsService = new AppointmentsService();
 
     return defineStore('appointments', {
-        state: (): ServicesState => ({
+        state: (): AppointmentsState => ({
             loading: false,
             error: "",
+            pages: 1,
             appointments: [],
             staffAppointments: [],
+            userAppointments: [],
         }),
         actions: {
             prepareAction() {
@@ -82,6 +75,59 @@ export const useAppointmentsStore = (options = {}) => {
                     this.loading = false;
                 }
             },
+            async destroy(id: number) {
+                this.prepareAction();
+
+                try {
+                    await appointmentsService.destroy(id);
+
+                    $success(translations.TAppointmentsDeletedSuccessfully);
+                } catch (error) {
+                    const err = error.response?.data?.message || translations.TAppointmentsCannotDelete;
+
+                    $error(err);
+
+                    this.error = err;
+                } finally {
+                    this.loading = false;
+                }
+            },
+            async destroyOwn(userId: number, id: number) {
+                this.prepareAction();
+
+                try {
+                    await appointmentsService.destroyOwn(userId, id);
+
+                    $success(translations.TAppointmentsDeletedSuccessfully);
+                } catch (error) {
+                    const err = error.response?.data?.message || translations.TAppointmentsCannotDelete;
+
+                    $error(err);
+
+                    this.error = err;
+                } finally {
+                    this.loading = false;
+                }
+            },
+            async getUserAppointments(userId: number, query: IPagination) {
+                this.userAppointments = [];
+                this.prepareAction();
+
+                try {
+                    const { data } = await appointmentsService.getForUser(userId, query);
+
+                    this.userAppointments = data.appointments;
+                    this.pages = data.pages;
+                } catch (error) {
+                    const err = error.response?.data?.message || translations.TAppointmentsCannotGetForUser;
+
+                    $error(err);
+
+                    this.error = err;
+                } finally {
+                    this.loading = false;
+                }
+            }
         },
     })();
 }

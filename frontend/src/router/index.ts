@@ -96,7 +96,7 @@ history: createWebHistory(import.meta.env.BASE_URL),
         },
         {
             path: '/appointment',
-            component: () => import('../views/AppointmentView.vue'),
+            component: () => import('../views/appointments/AppointmentsView.vue'),
             meta: {
                 requiresAuth: true,
                 canSee: (role: string) => authenticated.includes(role),
@@ -139,6 +139,14 @@ history: createWebHistory(import.meta.env.BASE_URL),
         {
             path: '/profile',
             component: () => import('../views/Profile.vue'),
+            meta: {
+                requiresAuth: true,
+                canSee: (role: string) => authenticated.includes(role),
+            }
+        },
+        {
+            path: '/appointments',
+            component: () => import('../views/appointments/AppointmentsList.vue'),
             meta: {
                 requiresAuth: true,
                 canSee: (role: string) => authenticated.includes(role),
@@ -200,7 +208,7 @@ history: createWebHistory(import.meta.env.BASE_URL),
                         requiresAuth: true,
                         canSee: (role: string) => admin.includes(role),
                     },
-                    component: () => import('../views/admin/AdminAppointments.vue')
+                    component: () => import('../views/admin/AdminAppointments/AdminAppointmentsList.vue')
                 },
                 {
                     path: 'users',

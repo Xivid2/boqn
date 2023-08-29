@@ -9,6 +9,7 @@ import { StaffService } from 'src/staff/staff.service';
 import { DuplicatedAppointmentException } from './appointments.errors';
 import { User } from 'src/users/models/user.model';
 import { Service } from 'src/services/service.model';
+import { PaginationDto } from './../common/dto/pagination.dto';
 
 const maximumEndDate = dayjs().add(1, 'month').endOf('day');
 
@@ -23,6 +24,30 @@ export class AppointmentsService {
         private service: typeof Service,
         private staffService: StaffService,
     ) {}
+
+    async getForUserPaginated(user: User, pagination: PaginationDto) {
+        const { limit, page } = pagination;
+        const offset = (page - 1) * limit;
+
+        const queryOptions = {
+            limit,
+            offset,
+            include: [{
+                model: this.service
+            }],
+            where: {
+                email: user.email
+            },
+        };
+
+        const { count, rows } = await this.appointment.findAndCountAll(queryOptions);
+
+        return {
+            totalCount: count,
+            pages: Math.ceil(count / limit),
+            appointments: rows,
+        };
+    }
 
     async getForStaffForWeek(staffId: number, year: number, week: number) {
         // NB: Dayjs start day is sunday, we have to add 1 day;
@@ -41,7 +66,6 @@ export class AppointmentsService {
                 }
             },
             include: [
-                { model: this.user },
                 { model: this.service },
             ]
         });
@@ -98,7 +122,10 @@ export class AppointmentsService {
 
         return this.appointment.create({
             date: createAppointmentDto.date,
-            userId: createAppointmentDto.userId,
+            firstName: createAppointmentDto.firstName,
+            lastName: createAppointmentDto.lastName,
+            email: createAppointmentDto.email,
+            phone: createAppointmentDto.phone,
             staffId: staff.id,
             serviceId: createAppointmentDto.serviceId,
         });
@@ -133,5 +160,42 @@ export class AppointmentsService {
         if (!isEndDateAfterMaximumEndDate) {
             throw new BadRequestException(`endDate must be before ${maximumEndDate}`);
         }
+    }
+
+    async destroy(id: number): Promise<void> {
+        const appointment = await this.appointment.findByPk(id);
+
+        if (!appointment) {
+            throw new NotFoundException();
+        }
+
+        const isPastDate = dayjs(appointment.date).isBefore(dayjs());
+
+        if (isPastDate) {
+            throw new BadRequestException("You can't delete past dates");
+        }
+
+        await appointment.destroy();
+    }
+
+    async destroyOwn(user: User, id: number): Promise<void> {
+        const appointment = await this.appointment.findOne({
+            where: {
+                email: user.email,
+                id,
+            }
+        });
+
+        if (!appointment) {
+            throw new NotFoundException();
+        }
+
+        const isPastDate = dayjs(appointment.date).isBefore(dayjs());
+
+        if (isPastDate) {
+            throw new BadRequestException("You can't delete past dates");
+        }
+
+        await appointment.destroy();
     }
 }

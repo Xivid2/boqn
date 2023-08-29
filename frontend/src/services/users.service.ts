@@ -4,6 +4,10 @@ import { type UsersPaginationDto } from "@/interfaces/users.interface";
 export class UsersService {
     constructor() {}
 
+    async getCurrent() {
+        return http.get(`/users/current`);
+    }
+
     async getAll(query: UsersPaginationDto) {
         const {
             page = 1,

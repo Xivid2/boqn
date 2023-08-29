@@ -22,10 +22,9 @@
 import { ref, computed, watch } from 'vue';
 import dayjs from 'dayjs';
 
-const props = defineProps(['label', 'modelValue', 'unavailableDates', 'startDate', 'endDate', 'isParentLoaded']);
+const props = defineProps(['label', 'modelValue', 'unavailableDates', 'startDate', 'endDate']);
 const emit = defineEmits(['update:modelValue']);
 
-const isParentLoaded = computed(() => props.isParentLoaded);
 const modelValue = computed(() => props.modelValue);
 const isOpen = ref(false);
 const unavailableDates = computed(() => props.unavailableDates);
@@ -63,7 +62,7 @@ const isDateDisabled = (date: string) => {
     return hasAllElems;
 }
 
-const getDatesUntilNextMonth = () => {
+const getDatesBetweenStartAndEnd = () => {
     const dates = [];
     let currentDate = dayjs(startDate.value);
 
@@ -99,15 +98,19 @@ const getAvailableHours = (date: Date) => {
     availableHours.value = available;
 };
 
-watch(isParentLoaded, (val) => {
-    if (val === false) return;
-
-    const availableDates = getDatesUntilNextMonth();
+const recalculate = () => {
+    const availableDates = getDatesBetweenStartAndEnd();
 
     disabledDates.value = (date: any) => {
         const formatted = dayjs(date).format('YYYY-MM-DD');
         return !availableDates.includes(formatted);
     };
+};
+
+defineExpose({ recalculate });
+
+watch(unavailableDates, () => {
+    recalculate();
 });
 </script>
 

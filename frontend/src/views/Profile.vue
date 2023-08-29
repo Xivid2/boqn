@@ -15,6 +15,15 @@
                     </v-button>
                 </RouterLink>
 
+                <RouterLink to="/appointments">
+                    <v-button
+                        block
+                        class="mt-8"
+                    >
+                        {{ TAppointments }}
+                    </v-button>
+                </RouterLink>
+
                 <v-button
                     variant="secondary"
                     class="mt-16"
@@ -34,6 +43,7 @@
     import { useRouter } from 'vue-router'
     import { TAdminPanel } from '@/constants/AdminPanelTranslations';
     import { TAuthAccount, TAuthSignOut } from '@/constants/AuthTranslations';
+    import { TAppointments } from '@/constants/AppointmentsTranslations';
 
     const authStore = useAuthStore();
     const router = useRouter();

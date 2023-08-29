@@ -80,6 +80,10 @@ module.exports = {
                     type: Sequelize.STRING,
                     allowNull: false,
                 },
+                phone: {
+                    type: Sequelize.STRING,
+                    allowNull: false,
+                },
                 createdAt: {
                     type: Sequelize.DATE,
                     allowNull: false,
@@ -113,6 +117,7 @@ module.exports = {
                         lastName: "Marinov",
                         email: "boris.marinov99@gmail.com",
                         password: "$2b$12$kW4LxuNejhqcOxfg.lyy3exhVBdRbuqQiiy1O8JMq7rVafNtpVMbK",
+                        phone: "0887107087",
                         createdAt: new Date(),
                         updatedAt: new Date(),
                     },
@@ -122,6 +127,7 @@ module.exports = {
                         lastName: "Zamtikova",
                         email: "qnitsa.zamtikova99@gmail.com",
                         password: "$2b$12$kW4LxuNejhqcOxfg.lyy3exhVBdRbuqQiiy1O8JMq7rVafNtpVMbK",
+                        phone: "0887107087",
                         createdAt: new Date(),
                         updatedAt: new Date(),
                     },
@@ -131,6 +137,7 @@ module.exports = {
                         lastName: "Zamtikov",
                         email: "bogdan.zamtikov99@gmail.com",
                         password: "$2b$12$kW4LxuNejhqcOxfg.lyy3exhVBdRbuqQiiy1O8JMq7rVafNtpVMbK",
+                        phone: "0887107087",
                         createdAt: new Date(),
                         updatedAt: new Date(),
                     }

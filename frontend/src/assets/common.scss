@@ -37,3 +37,7 @@ a {
 .shadowed {
     box-shadow: 0 2px 0 0 $primary-color;
 }
+
+*:disabled {
+    color: $primary-color;
+}

@@ -1,8 +1,16 @@
 export const TAppointmentsCannotGetForPeriod = "Възникна проблем при опита за взимане на заетите часове";
 export const TAppointmentsCannotGetForStaffForWeek = "Възникна проблем при опита за взимане на заетите часове за служител по седмица";
+export const TAppointmentsCannotGetForUser = "Възникна проблем при опита за взимане на заетите часове за потребителя";
 export const TAppointmentsYouNeedToChooseValue = "Трябва да изберете час";
 export const TAppointmentsCannotCreate = "Възникна проблем при опита за запис на час";
 export const TAppointmentsCreatedSuccessfully = "Успешно записахте час";
+export const TAppointmentsDeletedSuccessfully = "Успешно изтрихте записан час";
+export const TAppointmentsCannotDelete = "Възникна проблем при изтриването на запазен час";
+export const TAppointmentsUseUserData = "Използвай данните от потребителя";
 export const TAppointmentsAppointmentCreate = "Запис на час:";
+export const TAppointmentsAppointmentDelete = "Изтриване на записан час:";
+export const TAppointmentsAppointmentDeletionConfirmation = "Сигурни ли сте че искате да изтриете записания час?";
 export const TAppointmentsChosenAppointment = "Избран час:";
 export const TAppointmentsCreate = "Запиши";
+export const TAppointmentHour = "Час";
+export const TAppointments = "Записани часове"

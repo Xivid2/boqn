@@ -19,6 +19,11 @@ export class RegistrationDto {
     email: string
 
     @IsNotEmpty()
+    @MinLength(4)
+    @MaxLength(20)
+    phone: string
+
+    @IsNotEmpty()
     @MinLength(8)
     @MaxLength(50)
     password: string
