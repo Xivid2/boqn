@@ -11,3 +11,4 @@ export const TAppointmentsAppointmentDelete = "Изтриване на запи�
 export const TAppointmentsChosenAppointment = "Избран час:";
 export const TAppointmentsCreate = "Запиши";
 export const TAppointmentHour = "Час";
+export const TAppointments = "Записани часове"
