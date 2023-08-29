@@ -145,6 +145,14 @@ history: createWebHistory(import.meta.env.BASE_URL),
             }
         },
         {
+            path: '/appointments',
+            component: () => import('../views/appointments/AppointmentsList.vue'),
+            meta: {
+                requiresAuth: true,
+                canSee: (role: string) => authenticated.includes(role),
+            }
+        },
+        {
             path: '/admin',
             meta: {
                 requiresAuth: true,
